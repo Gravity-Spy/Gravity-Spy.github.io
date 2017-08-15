@@ -1,0 +1,4 @@
+.. automodule:: pyomega.API.projectStructure
+    :members:
+    :undoc-members:
+    :show-inheritance:

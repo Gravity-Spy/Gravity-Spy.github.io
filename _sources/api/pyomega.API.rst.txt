@@ -1,0 +1,19 @@
+pyomega\.API package
+====================
+
+Submodules
+----------
+
+.. toctree::
+
+   pyomega.API.getGoldenImages
+   pyomega.API.getLabelDict
+   pyomega.API.projectStructure
+
+Module contents
+---------------
+
+.. automodule:: pyomega.API
+    :members:
+    :undoc-members:
+    :show-inheritance:

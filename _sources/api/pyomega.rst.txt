@@ -1,0 +1,18 @@
+pyomega package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+
+    pyomega.API
+    pyomega.ML
+
+Module contents
+---------------
+
+.. automodule:: pyomega
+    :members:
+    :undoc-members:
+    :show-inheritance:
