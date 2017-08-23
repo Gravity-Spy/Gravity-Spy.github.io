@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyomega.API.calcConfMatrix &mdash; GravitySpy 0+untagged.454.g65f3eed.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/hveto-docs.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="GravitySpy 0+untagged.454.g65f3eed.dirty documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> GravitySpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.454.g65f3eed.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../command-line/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../DBs/index.html">The many DBs of Gravity Spy</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GravitySpy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyomega.API.calcConfMatrix</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyomega.API.calcConfMatrix</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">panoptes_client</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">pdb</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine</span> <span class="k">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">pyomega.API.getLabelDict</span> <span class="k">import</span> <span class="n">getAnswers</span>
+<span class="kn">from</span> <span class="nn">pyomega.API</span> <span class="k">import</span> <span class="n">getGoldenImages</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="k">import</span> <span class="n">coo_matrix</span>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/pyomega.API.calcConfMatrix.html#pyomega.API.calcConfMatrix.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">levelDict</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">workflowLevelDict</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;postgresql://</span><span class="si">{0}</span><span class="s1">:</span><span class="si">{1}</span><span class="s1">@gravityspy.ciera.northwestern.edu:5432/gravityspy&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;QUEST_SQL_USER&#39;</span><span class="p">],</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;QUEST_SQL_PASSWORD&#39;</span><span class="p">]))</span>
+
+    <span class="c1"># Load classifications, current user DB status and golden images from DB</span>
+    <span class="n">classifications</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT links_user, links_subjects, links_workflow, &quot;annotations_value_choiceINT&quot; FROM classificationsdev&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+    <span class="n">userStatus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;userStatus&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+    <span class="n">goldenDF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;goldenimages&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+
+    <span class="c1"># Obtain workflow order</span>
+    <span class="n">workflowOrder</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Project</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;1104&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="s1">&#39;workflow_order&#39;</span><span class="p">]]</span>
+    <span class="n">levelWorkflowDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">workflowOrder</span><span class="p">))</span>
+    <span class="n">workflowLevelDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">levelWorkflowDict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+
+    <span class="c1"># Filter classifications</span>
+    <span class="c1"># Specific to Gravity Spy based on study done earlier</span>
+    <span class="n">classifications</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">classifications</span><span class="o">.</span><span class="n">links_workflow</span> <span class="o">==</span> <span class="mi">3063</span><span class="p">,</span> <span class="s1">&#39;links_workflow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2360</span>
+
+    <span class="c1"># Make sure classification was done in an actual active workflow</span>
+    <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">classifications</span><span class="o">.</span><span class="n">links_workflow</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">workflowOrder</span><span class="p">)]</span>
+
+    <span class="c1"># Convert workflow ID into &#39;Level&#39;</span>
+    <span class="n">classifications</span><span class="p">[</span><span class="s1">&#39;Level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">links_workflow</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">levelDict</span><span class="p">)</span>
+
+    <span class="c1"># Make sure choice is a valid index</span>
+    <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">classifications</span><span class="o">.</span><span class="n">annotations_value_choiceINT</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Make sure to evaluate only logged in users</span>
+    <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">classifications</span><span class="o">.</span><span class="n">links_user</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Ignore NONEOFTHEABOVE classificatios when constructing confusion matrix</span>
+    <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">classifications</span><span class="o">.</span><span class="n">annotations_value_choiceINT</span> <span class="o">!=</span> <span class="mi">12</span><span class="p">]</span>
+    <span class="c1"># Initialize empty user DB by setting currentworkflow to the maximimum level a user had made a classification in</span>
+    <span class="c1"># (This logic will capture new users not in the DB loaded above)</span>
+    <span class="n">userStatusInit</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;userID&#39;</span> <span class="p">:</span> <span class="n">classifications</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;links_user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Level</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s1">&#39;workflowInit&#39;</span> <span class="p">:</span> <span class="n">classifications</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;links_user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Level</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()})</span>
+
+    <span class="c1"># Retrieve Answers</span>
+    <span class="n">answers</span> <span class="o">=</span> <span class="n">getAnswers</span><span class="p">(</span><span class="s1">&#39;1104&#39;</span><span class="p">)</span>
+    <span class="n">answersDictRev</span> <span class="o">=</span>  <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="mi">2360</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+    <span class="n">answersDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">answersDictRev</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+
+    <span class="c1"># From ansers Dict determine number of classes</span>
+    <span class="n">numClasses</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">answersDict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># merge the golden image DF with th classification (this merge is on links_subject (i.e. the zooID of the image classified)</span>
+    <span class="n">image_and_classification</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">goldenDF</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;links_subjects&#39;</span><span class="p">])</span>
+
+    <span class="c1"># This is where the power of pandas comes in...on the fly in very quick order we can fill all users confusion matrices by smartly chosen groupby</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="n">image_and_classification</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;links_user&#39;</span><span class="p">,</span><span class="s1">&#39;annotations_value_choiceINT&#39;</span><span class="p">,</span><span class="s1">&#39;GoldLabel&#39;</span><span class="p">])</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">links_subjects</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+    <span class="c1"># Create &quot;Sparse Matrices&quot; and perform a normalization task on them. </span>
+    <span class="c1"># Afterwards determine if the users diagonal is above the threshold set above</span>
+    <span class="n">confusion_matrices</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">iUser</span> <span class="ow">in</span> <span class="n">test</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;links_user&#39;</span><span class="p">):</span>
+	<span class="n">columns</span> <span class="o">=</span> <span class="n">iUser</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">annotations_value_choiceINT</span>        
+	<span class="n">rows</span> <span class="o">=</span> <span class="n">iUser</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;GoldLabel&#39;</span><span class="p">]</span>
+	<span class="n">entry</span> <span class="o">=</span> <span class="n">iUser</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;links_subjects&#39;</span><span class="p">]</span>
+	<span class="n">tmp</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">((</span><span class="n">entry</span><span class="p">,(</span><span class="n">rows</span><span class="p">,</span><span class="n">columns</span><span class="p">)),</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">numClasses</span><span class="p">,</span> <span class="n">numClasses</span><span class="p">))</span>
+	<span class="n">conf_divided</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">,</span><span class="n">a3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagflat</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> <span class="n">tmp</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+	<span class="n">confusion_matrices</span> <span class="o">=</span> <span class="n">confusion_matrices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;userID&#39;</span> <span class="p">:</span> <span class="n">iUser</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;conf_matrix&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">conf_divided</span><span class="p">]},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">iUser</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+
+    <span class="k">return</span> <span class="n">confusion_matrices</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Scott Coughlin.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0+untagged.454.g65f3eed.dirty',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

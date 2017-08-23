@@ -6,6 +6,7 @@ Submodules
 
 .. toctree::
 
+   pyomega.API.calcConfMatrix
    pyomega.API.getGoldenImages
    pyomega.API.getLabelDict
    pyomega.API.projectStructure

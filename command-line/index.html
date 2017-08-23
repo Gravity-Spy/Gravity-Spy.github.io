@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Running wscan on the command line &mdash; GravitySpy 0+untagged.443.gd5847c8 documentation</title>
+  <title>Running wscan on the command line &mdash; GravitySpy 0+untagged.454.g65f3eed.dirty documentation</title>
   
 
   
@@ -37,7 +37,8 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.443.gd5847c8 documentation" href="../index.html"/>
+    <link rel="top" title="GravitySpy 0+untagged.454.g65f3eed.dirty documentation" href="../index.html"/>
+        <link rel="next" title="The many DBs of Gravity Spy" href="../DBs/index.html"/>
         <link rel="prev" title="Welcome to GravitySpy’s documentation!" href="../index.html"/> 
 
   
@@ -67,7 +68,7 @@
             
             
               <div class="version">
-                0+untagged.443.gd5847c8
+                0+untagged.454.g65f3eed.dirty
               </div>
             
           
@@ -97,6 +98,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#detailed-instructions">Detailed instructions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
             
@@ -167,30 +169,23 @@
 <h2>Basic instructions<a class="headerlink" href="#basic-instructions" title="Permalink to this headline">¶</a></h2>
 <p>Basic instructions on running <code class="docutils literal"><span class="pre">wscan</span></code> can be gained by looking at the <code class="docutils literal"><span class="pre">--help</span></code> menu:</p>
 <div class="highlight-text"><div class="highlight"><pre><span></span>$ wscan --help
-Using Theano backend.
-[?1034husage: wscan [-h] [-V] --inifile INIFILE --eventTime EVENTTIME [--uniqueID]
-             [--ID ID] [--outDir OUTDIR] [--NSDF] [--pathToModel PATHTOMODEL]
-             [--runML] [--verbose] [--HDF5] [--PostgreSQL]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -V, --version         show program&#39;s version number and exit
-  --inifile INIFILE     Name of ini file of params
-  --eventTime EVENTTIME
-                        Trigger time of the glitch
-  --uniqueID            Is this image being generated for the GravitySpy
-                        project, if so you must assign a uniqueID string to
-                        label the images instead of GPS time
-  --ID ID               The uniqueID string to be supplied with --uniqueID
-  --outDir OUTDIR       Outdir for images
-  --NSDF                If not on LIGO custers you will want to use NSDF
-                        server
-  --pathToModel PATHTOMODEL
-                        Path to folder containing trained model
-  --runML               Run the ML classifer on the omega scans
-  --verbose             Run in Verbose Mode
-  --HDF5                Store triggers in local HDF5 table format
-  --PostgreSQL          Store triggers in a remote PostgreSQL DB
+Using TensorFlow backend.
+[?1034hTraceback (most recent call last):
+  File &quot;/Users/scottcoughlin/anaconda/bin/wscan&quot;, line 49, in &lt;module&gt;
+    import pyomega.ML.make_pickle_for_linux as make_pickle
+  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/pyomega/ML/make_pickle_for_linux.py&quot;, line 2, in &lt;module&gt;
+    from GS_utils import my_read_image, my_save_dataset_test, my_save_dataset, my_read_image2
+  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/pyomega/ML/GS_utils.py&quot;, line 23, in &lt;module&gt;
+    from keras import backend as K
+  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/keras/__init__.py&quot;, line 3, in &lt;module&gt;
+    from . import activations
+  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/keras/activations.py&quot;, line 4, in &lt;module&gt;
+    from . import backend as K
+  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/keras/backend/__init__.py&quot;, line 73, in &lt;module&gt;
+    from .tensorflow_backend import *
+  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/keras/backend/tensorflow_backend.py&quot;, line 1, in &lt;module&gt;
+    import tensorflow as tf
+ImportError: No module named tensorflow
 </pre></div>
 </div>
 </div>
@@ -209,6 +204,8 @@ optional arguments:
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../DBs/index.html" class="btn btn-neutral float-right" title="The many DBs of Gravity Spy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-neutral" title="Welcome to GravitySpy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -242,7 +239,7 @@ optional arguments:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.443.gd5847c8',
+            VERSION:'0+untagged.454.g65f3eed.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
