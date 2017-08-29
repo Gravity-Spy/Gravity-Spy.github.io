@@ -18,6 +18,24 @@ The easiest method to install pyomega is using `pip <https://pip.pypa.io/en/stab
 
    $ pip install git+https://github.com/Gravity-Spy/GravitySpy.git
 
+
+Working with data
+-----------------
+
+**Obtaining Gravity Spy data**
+
+.. toctree::
+   :maxdepth: 2
+
+   examples/index
+
+**Manipulating**
+
+The many databses of GravitySpy
+-------------------------------
+
+For more details see :ref:`DBs`
+
 How to run GravitySpy
 ---------------------
 
@@ -38,11 +56,6 @@ For a full list of command-line argument and options, run
    $ wscan --help
 
 For more details see :ref:`command-line`.
-
-The many databses of GravitySpy
--------------------------------
-
-For more details see :ref:`DBs`
 
 Package documentation
 ---------------------

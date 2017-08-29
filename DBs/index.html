@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>The many DBs of Gravity Spy &mdash; GravitySpy 0+untagged.454.g65f3eed.dirty documentation</title>
+  <title>The many DBs of Gravity Spy &mdash; GravitySpy 0+untagged.455.gebb0fdd.dirty documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.454.g65f3eed.dirty documentation" href="../index.html"/>
-        <link rel="prev" title="Running wscan on the command line" href="../command-line/index.html"/> 
+    <link rel="top" title="GravitySpy 0+untagged.455.gebb0fdd.dirty documentation" href="../index.html"/>
+        <link rel="prev" title="Querying Gravity Spy data" href="../examples/index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0+untagged.454.g65f3eed.dirty
+                0+untagged.455.gebb0fdd.dirty
               </div>
             
           
@@ -93,15 +93,13 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../command-line/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The many DBs of Gravity Spy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#db-overview">DB overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#o1glitchclassificationupdate">O1GlitchClassificationUpdate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#classifications">classifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#classificationsdev">classificationsdev</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#glitches">glitches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#goldenimages">goldenimages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#trainingset">trainingset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#userstatus">userStatus</a></li>
 </ul>
 </li>
 </ul>
@@ -377,264 +375,6 @@ own postgresSQL user privileges. Here we discuss all the possible DBs</p>
 </dl>
 </li>
 <li><cite>Extremely_Loud</cite> : float64</li>
-<li><cite>Filename1</cite> : object</li>
-<li><cite>Filename2</cite> : object</li>
-<li><cite>Filename3</cite> : object</li>
-<li><cite>Filename4</cite> : object</li>
-<li><cite>Helix</cite> : float64</li>
-<li><dl class="first docutils">
-<dt><cite>ImageStatus</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>Retired Testing Training</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>Koi_Fish</cite> : float64</li>
-<li><dl class="first docutils">
-<dt><cite>Label</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>1080Lines 1400Ripples Air_Compressor Blip Chirp Extremely_Loud Helix Koi_Fish Light_Modulation Low_Frequency_Burst Low_Frequency_Lines No_Glitch None_of_the_Above Paired_Doves Power_Line Repeating_Blips Scattered_Light Scratchy Tomte Violin_Mode Wandering_Line Whistle</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>Light_Modulation</cite> : float64</li>
-<li><cite>Low_Frequency_Burst</cite> : float64</li>
-<li><cite>Low_Frequency_Lines</cite> : float64</li>
-<li><cite>No_Glitch</cite> : float64</li>
-<li><cite>None_of_the_Above</cite> : float64</li>
-<li><cite>Paired_Doves</cite> : float64</li>
-<li><cite>Power_Line</cite> : float64</li>
-<li><cite>Repeating_Blips</cite> : float64</li>
-<li><cite>Scattered_Light</cite> : float64</li>
-<li><cite>Scratchy</cite> : float64</li>
-<li><cite>Tomte</cite> : float64</li>
-<li><cite>UploadFlag</cite> : float64</li>
-<li><cite>Violin_Mode</cite> : float64</li>
-<li><cite>Wandering_Line</cite> : float64</li>
-<li><cite>Whistle</cite> : float64</li>
-<li><cite>amplitude</cite> : float64</li>
-<li><cite>bandwidth</cite> : float64</li>
-<li><cite>central_freq</cite> : float64</li>
-<li><dl class="first docutils">
-<dt><cite>channel</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>GDS-CALIB_STRAIN</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>chisq</cite> : int64</li>
-<li><cite>chisq_dof</cite> : int64</li>
-<li><cite>citizenScore</cite> : object</li>
-<li><cite>confidence</cite> : int64</li>
-<li><cite>duration</cite> : float64</li>
-<li><cite>event_id</cite> : int64</li>
-<li><dl class="first docutils">
-<dt><cite>ifo</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>H1 L1</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt><cite>param_one_name</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>phase</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>param_one_value</cite> : float64</li>
-<li><cite>peakGPS</cite> : float64</li>
-<li><cite>peak_frequency</cite> : float64</li>
-<li><cite>peak_time</cite> : int64</li>
-<li><cite>peak_time_ns</cite> : int64</li>
-<li><cite>process_id</cite> : int64</li>
-<li><dl class="first docutils">
-<dt><cite>search</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>OMICRON Omicron</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>snr</cite> : float64</li>
-<li><cite>start_time</cite> : int64</li>
-<li><cite>start_time_ns</cite> : int64</li>
-<li><cite>subjectset</cite> : float64</li>
-<li><cite>uniqueID</cite> : object</li>
-<li><cite>workflow</cite> : float64</li>
-</ul>
-</div>
-<div class="section" id="goldenimages">
-<h2>goldenimages<a class="headerlink" href="#goldenimages" title="Permalink to this headline">¶</a></h2>
-<p>This table contains information about which subjects are considered golden and there assosciated label</p>
-<ul class="simple">
-<li><cite>GoldLabel</cite> : int64</li>
-<li><cite>links_subjects</cite> : int64</li>
-<li><cite>uniqueID</cite> : object</li>
-</ul>
-</div>
-<div class="section" id="trainingset">
-<h2>trainingset<a class="headerlink" href="#trainingset" title="Permalink to this headline">¶</a></h2>
-<p>In order to obtain the training set described here: <a class="reference external" href="https://dcc.ligo.org/LIGO-P1700227">https://dcc.ligo.org/LIGO-P1700227</a></p>
-<p>There are three ways.</p>
-<ul>
-<li><p class="first">you can go here: <a class="reference external" href="https://ldvw.ligo.caltech.edu/ldvw/gspySearch">https://ldvw.ligo.caltech.edu/ldvw/gspySearch</a></p>
-<blockquote>
-<div><ul class="simple">
-<li>Under Pipeline select gravityspy and under Status select Training. After this, select csv download. Unfortunately this will only get you the metadata for the training set but will eventually provide that information so I wanted to point it out. It is aesthetically the best way to access Gravity Spy data in general. You can also perform a search and look at the images themselves instead of downloading a csv file.</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Second, using gwpy <a class="reference external" href="https://gwpy.github.io/">https://gwpy.github.io/</a>, the preferred detchar software utility.</p>
-</li>
-</ul>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install gwpy sqlalchemy psycopg2 pandas git+https://github.com/duncanmmacleod/ligo.org.git
-$ ipython
-
- &gt;&gt;&gt; from gwpy.table import EventTable
- &gt;&gt;&gt; <span class="nv">trainingset</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>,<span class="s1">&#39;trainingset&#39;</span><span class="o">)</span>
- &gt;&gt;&gt; trainingset.download<span class="o">(</span><span class="nv">nproc</span><span class="o">=</span><span class="m">8</span>, <span class="nv">TrainingSet</span><span class="o">=</span><span class="m">1</span>, <span class="nv">LabelledSamples</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><dl class="first docutils">
-<dt>Third, copying the path laid out here &#64; LHO cluster</dt>
-<dd><ul class="first last">
-<li><cite>/home/scott.coughlin/public_html/GravitySpy/TrainingSet2/H1L1</cite>. I recommend this only in the short term because it will be deprecated very soon and the preferred way will be using the software above because it is robust, has correctly labelled samples, and will be automatically updated to reflect when the trainingset changes/improves. In this folder there are 22 folders that all contain the images for that class.</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>1080Lines</cite> : float64</li>
-<li><cite>1400Ripples</cite> : float64</li>
-<li><cite>Air_Compressor</cite> : float64</li>
-<li><cite>Blip</cite> : float64</li>
-<li><cite>Chirp</cite> : float64</li>
-<li><dl class="first docutils">
-<dt><cite>DQFlag</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>H1:DCH-ASC_AS_B_RF36_GLITCHING:1 H1:DCH-BAD_CALIBRATION_COIL_DRIVER:1 H1:DCH-ETMY_ELECTRONICS_GLITCHING:1 H1:DCH-ETMY_SATURATION:2 H1:DCH-ETMY_SATURATION_SNR200:1 H1:DCH-ETMY_VIOLIN_MODE_2NDHARMONIC_RINGING:1 H1:DCH-MISSING_H1_HOFT_C00:2 H1:DCH-OMC_DCPD_A_SATURATION:1 H1:DCH-RF45_AM_STABILIZATION:4 H1:DCH-RF45_SEVERE_GLITCHING:2 H1:DCH-SNOW_PLOW:2 H1:DMT-ANY_PI_HIGH_RMS:1 H1:DMT-ETMY_ESD_DAC_OVERFLOW:1 H1:DMT-OMC_DCPD_ADC_OVERFLOW:1 H1:DMT-PRE_LOCKLOSS_4:1 H1:ODC-INJECTION_BURST:2 H1:ODC-INJECTION_CBC:2 L1:DCH-BAD_VCO_OFFSET:2 L1:DCH-ETMY_SATURATION:1 L1:DCH-ETMY_SATURATION_SNR200:1 L1:DCH-PCAL_GLITCHES_GT_20P:1 L1:DCH-SEVERE_60_200_HZ_NOISE:1 L1:DMT-ETMY_ESD_DAC_OVERFLOW:1 L1:DMT-OMC_DCPD_ADC_OVERFLOW:1 L1:DMT-PRE_LOCKLOSS_4:1 L1:ODC-INJECTION_BURST:2 L1:ODC-INJECTION_CBC:2 NoFlag</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>Extremely_Loud</cite> : float64</li>
-<li><cite>Filename1</cite> : object</li>
-<li><cite>Filename2</cite> : object</li>
-<li><cite>Filename3</cite> : object</li>
-<li><cite>Filename4</cite> : object</li>
-<li><cite>Helix</cite> : float64</li>
-<li><dl class="first docutils">
-<dt><cite>ImageStatus</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>Training</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>Koi_Fish</cite> : float64</li>
-<li><dl class="first docutils">
-<dt><cite>Label</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>1080Lines 1400Ripples Air_Compressor Blip Chirp Extremely_Loud Helix Koi_Fish Light_Modulation Low_Frequency_Burst Low_Frequency_Lines No_Glitch None_of_the_Above Paired_Doves Power_Line Repeating_Blips Scattered_Light Scratchy Tomte Violin_Mode Wandering_Line Whistle</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>Light_Modulation</cite> : float64</li>
-<li><cite>Low_Frequency_Burst</cite> : float64</li>
-<li><cite>Low_Frequency_Lines</cite> : float64</li>
-<li><cite>No_Glitch</cite> : float64</li>
-<li><cite>None_of_the_Above</cite> : float64</li>
-<li><cite>Paired_Doves</cite> : float64</li>
-<li><cite>Power_Line</cite> : float64</li>
-<li><cite>Repeating_Blips</cite> : float64</li>
-<li><dl class="first docutils">
-<dt><cite>SampleType</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>Testing Training Validation</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>Scattered_Light</cite> : float64</li>
-<li><cite>Scratchy</cite> : float64</li>
-<li><cite>Tomte</cite> : float64</li>
-<li><cite>UploadFlag</cite> : float64</li>
-<li><cite>Violin_Mode</cite> : float64</li>
-<li><cite>Wandering_Line</cite> : float64</li>
-<li><cite>Whistle</cite> : float64</li>
-<li><cite>amplitude</cite> : float64</li>
-<li><cite>bandwidth</cite> : float64</li>
-<li><cite>central_freq</cite> : float64</li>
-<li><dl class="first docutils">
-<dt><cite>channel</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>GDS-CALIB_STRAIN</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>chisq</cite> : int64</li>
-<li><cite>chisq_dof</cite> : int64</li>
-<li><cite>confidence</cite> : int64</li>
-<li><cite>duration</cite> : float64</li>
-<li><cite>event_id</cite> : int64</li>
-<li><dl class="first docutils">
-<dt><cite>ifo</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>H1 L1</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>imgUrl1</cite> : object</li>
-<li><cite>imgUrl2</cite> : object</li>
-<li><cite>imgUrl3</cite> : object</li>
-<li><cite>imgUrl4</cite> : object</li>
-<li><dl class="first docutils">
-<dt><cite>param_one_name</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>phase</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>param_one_value</cite> : float64</li>
-<li><cite>peakGPS</cite> : float64</li>
-<li><cite>peak_frequency</cite> : float64</li>
-<li><cite>peak_time</cite> : int64</li>
-<li><cite>peak_time_ns</cite> : int64</li>
-<li><cite>process_id</cite> : int64</li>
-<li><dl class="first docutils">
-<dt><cite>search</cite> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><ul class="first last">
-<li>OMICRON Omicron</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><cite>snr</cite> : float64</li>
-<li><cite>start_time</cite> : int64</li>
-<li><cite>start_time_ns</cite> : int64</li>
-<li><cite>subjectset</cite> : float64</li>
-<li><cite>tsne_x</cite> : float64</li>
-<li><cite>tsne_y</cite> : float64</li>
-<li><cite>uniqueID</cite> : object</li>
-<li><cite>workflow</cite> : float64</li>
-</ul>
-</div>
-<div class="section" id="userstatus">
-<h2>userStatus<a class="headerlink" href="#userstatus" title="Permalink to this headline">¶</a></h2>
-<p>This table contains information about what level agiven user should be on.</p>
-<ul class="simple">
-<li><cite>userID</cite> : int64</li>
-<li><cite>workflowDB</cite> : int64</li>
 </ul>
 </div>
 </div>
@@ -650,7 +390,7 @@ $ ipython
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="../command-line/index.html" class="btn btn-neutral" title="Running wscan on the command line" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../examples/index.html" class="btn btn-neutral" title="Querying Gravity Spy data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -681,7 +421,7 @@ $ ipython
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.454.g65f3eed.dirty',
+            VERSION:'0+untagged.455.gebb0fdd.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
