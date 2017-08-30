@@ -98,6 +98,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pre-existing-virtualenv">Pre-Existing VirtualEnv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-glitches-database">The <cite>glitches</cite> database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilizing-gwpy-eventtable">Utilizing <cite>gwpy</cite> <cite>EventTable</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilizing-hveto-and-soon-karoo-gp">Utilizing <cite>hveto</cite> (and soon Karoo GP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-trainingset-database">The <cite>trainingset</cite> database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#training-a-model">Training a model</a></li>
 </ul>
 </li>
@@ -172,7 +175,7 @@
 <span id="examples"></span><h1>Querying Gravity Spy data<a class="headerlink" href="#querying-gravity-spy-data" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>We will use <a class="reference external" href="https://gwpy.github.io/">gwpy</a>, the preferred detchar software utility.</p>
+<p>We will use <a class="reference external" href="https://gwpy.github.io/">gwpy</a>, the preferred detchar software utility curated by Duncan Macleod.</p>
 <p>The method of note is <a class="reference external" href="https://gwpy.github.io/docs/latest/api/gwpy.table.EventTable.html#gwpy.table.EventTable.fetch">gwpy.table.EventTable.fetch</a></p>
 <p>The following example will although you to query the entire gravity spy trianingset. You do <em>not</em> need to be on CIT <em>but</em> if you do not have lal installed locally it is suggested that you do this on CIT.</p>
 <p>Ahead of time, it is encourage to set up your user environment. For LIGO users please see <a class="reference external" href="https://secrets.ligo.org/secrets/144/">Gravity Spy Authentication</a> for information concerning authentication to access certain Gravity Spy DBs.</p>
@@ -200,6 +203,51 @@ $ pip install gwpy sqlalchemy psycopg2 pandas git+https://github.com/duncanmmacl
 $ ipython
 
  &gt;&gt;&gt; from gwpy.table import EventTable
+ &gt;&gt;&gt; <span class="nv">blips_O1</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>,<span class="s1">&#39;glitches&#39;</span>,selection<span class="o">=</span><span class="s1">&#39;&quot;Label&quot;=&quot;Blip&quot; &amp; 1137250000 &gt; &quot;peakGPS&quot; &gt; 1126400000 &amp; &quot;ImageStatus&quot; = &quot;Retired&quot;&#39;</span><span class="o">)</span>
+ &gt;&gt;&gt; <span class="nv">koi_fish_O1</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>,<span class="s1">&#39;glitches&#39;</span>,selection<span class="o">=</span><span class="s1">&#39;&quot;Label&quot;=&quot;Koi_Fish&quot; &amp; 1137250000 &gt; &quot;peakGPS&quot; &gt; 1126400000 &amp; &quot;ImageStatus&quot; = &quot;Retired&quot;&#39;</span><span class="o">)</span>
+ &gt;&gt;&gt; <span class="nv">whistle_O1</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>,<span class="s1">&#39;glitches&#39;</span>,selection<span class="o">=</span><span class="s1">&#39;&quot;Label&quot;=&quot;Whistle&quot; &amp; 1137250000 &gt; &quot;peakGPS&quot; &gt; 1126400000 &amp; &quot;ImageStatus&quot; = &quot;Retired&quot; &amp; &quot;ifo&quot; = &quot;L1&quot;&#39;</span><span class="o">)</span>
+ &gt;&gt;&gt; koi_fish_O1.write<span class="o">(</span><span class="s1">&#39;O1_Koi_Fish.csv&#39;</span><span class="o">)</span>
+ &gt;&gt;&gt; blips_O1.write<span class="o">(</span><span class="s1">&#39;O1_Blips.csv&#39;</span><span class="o">)</span>
+ &gt;&gt;&gt; whistle_O1<span class="o">[</span><span class="s2">&quot;peakGPS&quot;</span>,<span class="s2">&quot;peak_frequency&quot;</span>, <span class="s2">&quot;snr&quot;</span><span class="o">]</span>.write<span class="o">(</span><span class="s1">&#39;{0}-triggers-{1}-{2}.csv&#39;</span>.format<span class="o">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="utilizing-gwpy-eventtable">
+<h2>Utilizing <cite>gwpy</cite> <cite>EventTable</cite><a class="headerlink" href="#utilizing-gwpy-eventtable" title="Permalink to this headline">¶</a></h2>
+<p>There are so many great ways to use <a class="reference external" href="https://gwpy.github.io/docs/latest/api/gwpy.table.EventTable.html#gwpy.table.EventTable">EventTable</a> to make plotting
+publication quality plots easy.</p>
+<p>Here we mimic the <a class="reference external" href="https://gwpy.github.io/docs/latest/examples/table/histogram.html?highlight=hist">histogram</a> functionality</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ ipython
+&gt;&gt;&gt; <span class="nv">plot</span> <span class="o">=</span> blips_O1.hist<span class="o">(</span><span class="s1">&#39;snr&#39;</span>, <span class="nv">weights</span><span class="o">=</span><span class="m">1</span>/10., <span class="nv">logbins</span><span class="o">=</span>True, <span class="nv">bins</span><span class="o">=</span><span class="m">50</span>, <span class="nv">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; <span class="nv">ax</span> <span class="o">=</span> plot.gca<span class="o">()</span>
+&gt;&gt;&gt; ax.hist<span class="o">(</span>koi_fish_O1<span class="o">[</span><span class="s1">&#39;snr&#39;</span><span class="o">]</span>, <span class="nv">weights</span><span class="o">=</span><span class="m">1</span>/10., <span class="nv">logbins</span><span class="o">=</span>True, <span class="nv">bins</span><span class="o">=</span><span class="m">50</span>, <span class="nv">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; ax.set_xlabel<span class="o">(</span><span class="s1">&#39;Signal-to-noise ratio (SNR)&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; ax.set_ylabel<span class="o">(</span><span class="s1">&#39;Rate [Hz]&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; ax.set_title<span class="o">(</span><span class="s1">&#39;Blips and Koi Fish in O1 Retired by citizens&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; ax.autoscale<span class="o">(</span><span class="nv">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span>, <span class="nv">tight</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; plot.show<span class="o">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="utilizing-hveto-and-soon-karoo-gp">
+<h2>Utilizing <cite>hveto</cite> (and soon Karoo GP)<a class="headerlink" href="#utilizing-hveto-and-soon-karoo-gp" title="Permalink to this headline">¶</a></h2>
+<p>One thing you may think to do with this information is to feed them into tools designed to make statements about correlations/couplings with auxiliary channel data. hVeto is one such software.
+<a class="reference external" href="https://ldas-jobs.ligo.caltech.edu/~duncan.macleod/hveto/latest/">hVeto Documenation</a></p>
+<p>Go to LLO</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ . /home/scoughlin/Project/opt/GravitySpy/bin/activate
+$ ligo-proxy-init albert.einstein@LIGO.ORG
+$ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137250000</span>
+</pre></div>
+</div>
+<p>Coming soon …
+<a class="reference external" href="http://kstaats.github.io/karoo_gp/">Karoo GP</a></p>
+</div>
+<div class="section" id="the-trainingset-database">
+<h2>The <cite>trainingset</cite> database<a class="headerlink" href="#the-trainingset-database" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ kinit albert.einstein
+$ ipython
+
+ &gt;&gt;&gt; from gwpy.table import EventTable
  &gt;&gt;&gt; <span class="nv">trainingset</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>,<span class="s1">&#39;trainingset&#39;</span><span class="o">)</span>
  &gt;&gt;&gt; trainingset.download<span class="o">(</span><span class="nv">nproc</span><span class="o">=</span><span class="m">8</span>, <span class="nv">TrainingSet</span><span class="o">=</span><span class="m">1</span>, <span class="nv">LabelledSamples</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
 </pre></div>
@@ -208,17 +256,24 @@ $ ipython
 <div class="section" id="training-a-model">
 <h2>Training a model<a class="headerlink" href="#training-a-model" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ ipython
-
- $ kinit albert.einstein
- &gt;&gt;&gt; from gwpy.table import EventTable
- &gt;&gt;&gt; from astropy.table import vstack
- &gt;&gt;&gt; <span class="nv">blips</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>, <span class="s1">&#39;trainingset&#39;</span>, <span class="nv">selection</span><span class="o">=</span><span class="s1">&#39;Label=Blip&#39;</span><span class="o">)</span>
- &gt;&gt;&gt; <span class="nv">whistle</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>, <span class="s1">&#39;trainingset&#39;</span>, <span class="nv">selection</span><span class="o">=</span><span class="s1">&#39;Label=Whistle&#39;</span><span class="o">)</span>
- &gt;&gt;&gt; <span class="c1"># Downselect to 100 samples (otherwise the download takes too long)</span>
- &gt;&gt;&gt; <span class="nv">blips</span> <span class="o">=</span> blips<span class="o">[</span><span class="m">0</span>:100<span class="o">]</span>
- &gt;&gt;&gt; <span class="nv">whistle</span> <span class="o">=</span> whistle<span class="o">[</span><span class="m">0</span>:100<span class="o">]</span>
- &gt;&gt;&gt; <span class="nv">trainingset</span> <span class="o">=</span> vstack<span class="o">([</span>whistle, blips<span class="o">])</span>
- &gt;&gt;&gt; trainingset.download<span class="o">(</span><span class="nv">nproc</span><span class="o">=</span><span class="m">4</span>, <span class="nv">TrainingSet</span><span class="o">=</span><span class="m">1</span>, <span class="nv">LabelledSamples</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
+$ kinit albert.einstein
+&gt;&gt;&gt; from gwpy.table import EventTable
+&gt;&gt;&gt; from astropy.table import vstack
+&gt;&gt;&gt; <span class="nv">blips</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>, <span class="s1">&#39;trainingset&#39;</span>, <span class="nv">selection</span><span class="o">=</span><span class="s1">&#39;Label=Blip&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; <span class="nv">whistle</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>, <span class="s1">&#39;trainingset&#39;</span>, <span class="nv">selection</span><span class="o">=</span><span class="s1">&#39;Label=Whistle&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; <span class="c1"># Downselect to 100 samples (otherwise the download takes too long)</span>
+&gt;&gt;&gt; <span class="nv">blips</span> <span class="o">=</span> blips<span class="o">[</span><span class="m">0</span>:100<span class="o">]</span>
+&gt;&gt;&gt; <span class="nv">whistle</span> <span class="o">=</span> whistle<span class="o">[</span><span class="m">0</span>:100<span class="o">]</span>
+&gt;&gt;&gt; <span class="nv">trainingset</span> <span class="o">=</span> vstack<span class="o">([</span>whistle, blips<span class="o">])</span>
+&gt;&gt;&gt; trainingset.download<span class="o">(</span><span class="nv">nproc</span><span class="o">=</span><span class="m">4</span>, <span class="nv">TrainingSet</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The download script utilize <cite>gwpy</cite> very nice <a class="reference external" href="https://github.com/gwpy/gwpy/blob/develop/gwpy/utils/mp.py">Multi-Processing Tool</a>. This tool is also currently being used to help speed up the creation of omega scans and turn things into a pythonic only <a class="reference external" href="https://github.com/scottcoughlin2014/PyOmega">Omega Scan</a>. This Pythonic omega scan utilizes the gwpy implementation of <a class="reference external" href="https://gwpy.github.io/docs/latest/examples/timeseries/qscan.html?highlight=q_transform">q_transform</a></p>
+<p>At this point we have a folder with Training data. Let’s train a model using a GPU and some in house python software <a class="reference external" href="http://www.deeplearning.net/software/theano/">Theano</a> and <a class="reference external" href="https://keras.io/">keras</a></p>
+<p>You can also use <a class="reference external" href="https://www.tensorflow.org/">tensorflow</a> backend when using <cite>keras</cite> you control this via the <cite>KERAS_BACKEND</cite> environmental variable.</p>
+<p>LSC has some great hardware resources. Marco Cavaglia and Stuart Anderson have placed some useful hardware information (for LIGO members) here: <a class="reference external" href="https://wiki.ligo.org/MLA/LV_computing_resources">LIGO GPU Info</a></p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">KERAS_BACKEND</span><span class="o">=</span>theano
+$ <span class="nv">THEANO_FLAGS</span><span class="o">=</span><span class="nv">mode</span><span class="o">=</span>FAST_RUN,device<span class="o">=</span>gpu,floatX<span class="o">=</span>float32 trainmodel --path-to-golden /home/gravityspy/LAAC/TrainingSet/ --path-to-pickle ./pickleddata/ --path-to-trained-model ./model --number-of-classes <span class="m">2</span> --batch-size <span class="m">50</span>
 </pre></div>
 </div>
 </div>

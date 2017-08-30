@@ -8,7 +8,7 @@ Querying Gravity Spy data
 Introduction
 ============
 
-We will use `gwpy <https://gwpy.github.io/>`_, the preferred detchar software utility.
+We will use `gwpy <https://gwpy.github.io/>`_, the preferred detchar software utility curated by Duncan Macleod.
 
 The method of note is `gwpy.table.EventTable.fetch <https://gwpy.github.io/docs/latest/api/gwpy.table.EventTable.html#gwpy.table.EventTable.fetch>`_
 
@@ -49,6 +49,65 @@ The `glitches` database
    $ ipython
 
     >>> from gwpy.table import EventTable
+    >>> blips_O1 = EventTable.fetch('gravityspy','glitches',selection='"Label"="Blip" & 1137250000 > "peakGPS" > 1126400000 & "ImageStatus" = "Retired"') 
+    >>> koi_fish_O1 = EventTable.fetch('gravityspy','glitches',selection='"Label"="Koi_Fish" & 1137250000 > "peakGPS" > 1126400000 & "ImageStatus" = "Retired"') 
+    >>> whistle_O1 = EventTable.fetch('gravityspy','glitches',selection='"Label"="Whistle" & 1137250000 > "peakGPS" > 1126400000 & "ImageStatus" = "Retired" & "ifo" = "L1"')
+    >>> koi_fish_O1.write('O1_Koi_Fish.csv')
+    >>> blips_O1.write('O1_Blips.csv')
+    >>> whistle_O1["peakGPS","peak_frequency", "snr"].write('{0}-triggers-{1}-{2}.csv'.format()) 
+
+
+
+=============================
+Utilizing `gwpy` `EventTable`
+=============================
+
+There are so many great ways to use `EventTable <https://gwpy.github.io/docs/latest/api/gwpy.table.EventTable.html#gwpy.table.EventTable>`_ to make plotting
+publication quality plots easy.
+
+Here we mimic the `histogram <https://gwpy.github.io/docs/latest/examples/table/histogram.html?highlight=hist>`_ functionality
+
+.. code-block:: bash
+
+    $ ipython
+    >>> plot = blips_O1.hist('snr', weights=1/10., logbins=True, bins=50, histtype='stepfilled')
+    >>> ax = plot.gca()
+    >>> ax.hist(koi_fish_O1['snr'], weights=1/10., logbins=True, bins=50, histtype='stepfilled')
+    >>> ax.set_xlabel('Signal-to-noise ratio (SNR)')
+    >>> ax.set_ylabel('Rate [Hz]')
+    >>> ax.set_title('Blips and Koi Fish in O1 Retired by citizens')
+    >>> ax.autoscale(axis='x', tight=True)
+    >>> plot.show()
+
+=====================================
+Utilizing `hveto` (and soon Karoo GP)
+=====================================
+
+One thing you may think to do with this information is to feed them into tools designed to make statements about correlations/couplings with auxiliary channel data. hVeto is one such software.
+`hVeto Documenation <https://ldas-jobs.ligo.caltech.edu/~duncan.macleod/hveto/latest/>`_
+
+Go to LLO
+
+.. code-block:: bash
+
+    $ . /home/scoughlin/Project/opt/GravitySpy/bin/activate
+    $ ligo-proxy-init albert.einstein@LIGO.ORG
+    $ run_hveto.sh L1 Whistle 1126400000 1137250000 
+
+
+Coming soon ...
+`Karoo GP <http://kstaats.github.io/karoo_gp/>`_
+
+==========================
+The `trainingset` database
+==========================
+
+.. code-block:: bash
+
+   $ kinit albert.einstein
+   $ ipython
+
+    >>> from gwpy.table import EventTable
     >>> trainingset = EventTable.fetch('gravityspy','trainingset')
     >>> trainingset.download(nproc=8, TrainingSet=1, LabelledSamples=1)
 
@@ -58,8 +117,7 @@ Training a model
 
 .. code-block:: bash
 
-   $ ipython
-
+    $ ipython
     $ kinit albert.einstein
     >>> from gwpy.table import EventTable
     >>> from astropy.table import vstack
@@ -69,4 +127,17 @@ Training a model
     >>> blips = blips[0:100]
     >>> whistle = whistle[0:100]
     >>> trainingset = vstack([whistle, blips])
-    >>> trainingset.download(nproc=4, TrainingSet=1, LabelledSamples=1)
+    >>> trainingset.download(nproc=4, TrainingSet=1)
+
+The download script utilize `gwpy` very nice `Multi-Processing Tool <https://github.com/gwpy/gwpy/blob/develop/gwpy/utils/mp.py>`_. This tool is also currently being used to help speed up the creation of omega scans and turn things into a pythonic only `Omega Scan <https://github.com/scottcoughlin2014/PyOmega>`_. This Pythonic omega scan utilizes the gwpy implementation of `q_transform <https://gwpy.github.io/docs/latest/examples/timeseries/qscan.html?highlight=q_transform>`_ 
+
+At this point we have a folder with Training data. Let's train a model using a GPU and some in house python software `Theano <http://www.deeplearning.net/software/theano/>`_ and `keras <https://keras.io/>`_
+
+You can also use `tensorflow <https://www.tensorflow.org/>`_ backend when using `keras` you control this via the `KERAS_BACKEND` environmental variable.
+
+LSC has some great hardware resources. Marco Cavaglia and Stuart Anderson have placed some useful hardware information (for LIGO members) here: `LIGO GPU Info <https://wiki.ligo.org/MLA/LV_computing_resources>`_
+
+.. code-block:: bash
+
+    $ export KERAS_BACKEND=theano
+    $ THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 trainmodel --path-to-golden /home/gravityspy/LAAC/TrainingSet/ --path-to-pickle ./pickleddata/ --path-to-trained-model ./model --number-of-classes 2 --batch-size 50
