@@ -38,8 +38,8 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="GravitySpy 0+untagged.455.gebb0fdd.dirty documentation" href="../index.html"/>
-        <link rel="next" title="Querying Gravity Spy data" href="../examples/index.html"/>
-        <link rel="prev" title="&lt;no title&gt;" href="../glitches/index.html"/> 
+        <link rel="next" title="The many DBs of Gravity Spy" href="../DBs/index.html"/>
+        <link rel="prev" title="Querying Gravity Spy data" href="../examples/index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -92,13 +92,15 @@
               
             
             
-              <ul class="current">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
+</ul>
+<ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-instructions">Basic instructions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#detailed-instructions">Detailed instructions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -172,11 +174,13 @@
 <div class="highlight-text"><div class="highlight"><pre><span></span>$ wscan --help
 Using TensorFlow backend.
 [?1034hTraceback (most recent call last):
-  File &quot;/Users/scottcoughlin/anaconda/bin/wscan&quot;, line 49, in &lt;module&gt;
+  File &quot;/Users/scottcoughlin/anaconda/bin/wscan&quot;, line 6, in &lt;module&gt;
+    exec(compile(open(__file__).read(), __file__, &#39;exec&#39;))
+  File &quot;/Users/scottcoughlin/Documents/GitHub/GravitySpy/bin/wscan&quot;, line 49, in &lt;module&gt;
     import pyomega.ML.make_pickle_for_linux as make_pickle
-  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/pyomega/ML/make_pickle_for_linux.py&quot;, line 2, in &lt;module&gt;
+  File &quot;/Users/scottcoughlin/Documents/GitHub/GravitySpy/pyomega/ML/make_pickle_for_linux.py&quot;, line 2, in &lt;module&gt;
     from GS_utils import my_read_image, my_save_dataset_test, my_save_dataset, my_read_image2
-  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/pyomega/ML/GS_utils.py&quot;, line 23, in &lt;module&gt;
+  File &quot;/Users/scottcoughlin/Documents/GitHub/GravitySpy/pyomega/ML/GS_utils.py&quot;, line 23, in &lt;module&gt;
     from keras import backend as K
   File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/keras/__init__.py&quot;, line 3, in &lt;module&gt;
     from . import activations
@@ -206,10 +210,10 @@ ImportError: No module named tensorflow
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../examples/index.html" class="btn btn-neutral float-right" title="Querying Gravity Spy data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../DBs/index.html" class="btn btn-neutral float-right" title="The many DBs of Gravity Spy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../glitches/index.html" class="btn btn-neutral" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../examples/index.html" class="btn btn-neutral" title="Querying Gravity Spy data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
