@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to GravitySpy’s documentation! &mdash; GravitySpy 0+untagged.455.gebb0fdd.dirty documentation</title>
+  <title>Welcome to GravitySpy’s documentation! &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.455.gebb0fdd.dirty documentation" href="#"/>
-        <link rel="next" title="Querying Gravity Spy data" href="examples/index.html"/> 
+    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="#"/>
+        <link rel="next" title="Running wscan on the command line" href="command-line/index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0+untagged.455.gebb0fdd.dirty
+                0+untagged.475.g33255d3.dirty
               </div>
             
           
@@ -92,10 +92,7 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="command-line/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -166,55 +163,35 @@
 For full details see <a class="reference external" href="https://iopscience.iop.org/article/10.1088/1361-6382/aa5cea">Zevin et al. (Classical and Quantum Gravity, 2016)</a></p>
 <div class="section" id="installing-gravityspy">
 <h2>Installing GravitySpy<a class="headerlink" href="#installing-gravityspy" title="Permalink to this headline">¶</a></h2>
-<p>The easiest method to install pyomega is using <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> directly from the <a class="reference external" href="https://github.com/Gravity-Spy/GravitySpy.git">GitHub repository</a>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/Gravity-Spy/GravitySpy.git
+<p>The easiest method to install gravityspy is using <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> directly from the <a class="reference external" href="https://github.com/Gravity-Spy/GravitySpy.git">GitHub repository</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/Gravity-Spy/GravitySpy.git
 </pre></div>
 </div>
-</div>
-<div class="section" id="working-with-data">
-<h2>Working with data<a class="headerlink" href="#working-with-data" title="Permalink to this headline">¶</a></h2>
-<p><strong>Obtaining Gravity Spy data</strong></p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/index.html#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/index.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/index.html#pre-existing-virtualenv">Pre-Existing VirtualEnv</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/index.html#the-glitches-database">The <cite>glitches</cite> database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/index.html#utilizing-gwpy-eventtable">Utilizing <cite>gwpy</cite> <cite>EventTable</cite></a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/index.html#utilizing-hveto-and-soon-karoo-gp">Utilizing <cite>hveto</cite> (and soon Karoo GP)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/index.html#the-trainingset-database">The <cite>trainingset</cite> database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/index.html#training-a-model">Training a model</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<p><strong>Manipulating</strong></p>
-</div>
-<div class="section" id="the-many-databses-of-gravityspy">
-<h2>The many databses of GravitySpy<a class="headerlink" href="#the-many-databses-of-gravityspy" title="Permalink to this headline">¶</a></h2>
-<p>For more details see <a class="reference internal" href="DBs/index.html#dbs"><span class="std std-ref">The many DBs of Gravity Spy</span></a></p>
 </div>
 <div class="section" id="how-to-run-gravityspy">
 <h2>How to run GravitySpy<a class="headerlink" href="#how-to-run-gravityspy" title="Permalink to this headline">¶</a></h2>
 <p>The main product of this package is the command-line executable <cite>wscan</cite>, which runs an end-to-end search for statistical coincidences, and produces a list of viable data-quality flags that can be used as vetoes in a search, as well as an HTML summary.</p>
 <p>To run an analysis:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ wscan --inifile my-wini-config-file.ini --eventTime &lt;eventTime&gt; --outDir . --uniqueID --ID 123abc1234 --HDF5 --runML
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wscan --inifile my-wini-config-file.ini --eventTime &lt;eventTime&gt; --outDir . --uniqueID --ID 123abc1234 --HDF5 --runML
 </pre></div>
 </div>
-<p>where <code class="docutils literal"><span class="pre">&lt;eventtime&gt;</span></code> is the GPS tiem stamp assosciated with an Omicron trigger, and <code class="docutils literal"><span class="pre">./my-wini-config-file.ini</span></code> is the path of your configuration file.</p>
+<p>where <code class="docutils literal notranslate"><span class="pre">&lt;eventtime&gt;</span></code> is the GPS tiem stamp assosciated with an Omicron trigger, and <code class="docutils literal notranslate"><span class="pre">./my-wini-config-file.ini</span></code> is the path of your configuration file.</p>
 <p>For a full list of command-line argument and options, run</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ wscan --help
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wscan --help
 </pre></div>
 </div>
 <p>For more details see <a class="reference internal" href="command-line/index.html#command-line"><span class="std std-ref">Running wscan on the command line</span></a>.</p>
+</div>
+<div class="section" id="the-many-databses-of-gravityspy">
+<h2>The many databses of GravitySpy<a class="headerlink" href="#the-many-databses-of-gravityspy" title="Permalink to this headline">¶</a></h2>
+<p>For more details see <a class="reference internal" href="DBs/index.html#dbs"><span class="std std-ref">The many DBs of Gravity Spy</span></a></p>
 </div>
 <div class="section" id="package-documentation">
 <h2>Package documentation<a class="headerlink" href="#package-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Please consult these pages for more details on using GravitySpy:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="command-line/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 </div>
@@ -239,7 +216,7 @@ For full details see <a class="reference external" href="https://iopscience.iop.
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="examples/index.html" class="btn btn-neutral float-right" title="Querying Gravity Spy data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="command-line/index.html" class="btn btn-neutral float-right" title="Running wscan on the command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -271,7 +248,7 @@ For full details see <a class="reference external" href="https://iopscience.iop.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0+untagged.455.gebb0fdd.dirty',
+            VERSION:'0+untagged.475.g33255d3.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

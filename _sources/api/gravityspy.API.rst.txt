@@ -1,0 +1,20 @@
+gravityspy.API package
+======================
+
+Submodules
+----------
+
+.. toctree::
+
+   gravityspy.API.calcConfMatrix
+   gravityspy.API.getLabelDict
+   gravityspy.API.project
+   gravityspy.API.projectStructure
+
+Module contents
+---------------
+
+.. automodule:: gravityspy.API
+    :members:
+    :undoc-members:
+    :show-inheritance:

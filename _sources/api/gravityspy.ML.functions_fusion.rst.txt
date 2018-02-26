@@ -1,0 +1,4 @@
+.. automodule:: gravityspy.ML.functions_fusion
+    :members:
+    :undoc-members:
+    :show-inheritance:

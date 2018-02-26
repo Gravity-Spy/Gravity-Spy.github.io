@@ -1,0 +1,4 @@
+.. automodule:: gravityspy.ML.train_classifier
+    :members:
+    :undoc-members:
+    :show-inheritance:

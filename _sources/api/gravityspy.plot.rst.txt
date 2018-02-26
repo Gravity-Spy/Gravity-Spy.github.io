@@ -1,0 +1,17 @@
+gravityspy.plot package
+=======================
+
+Submodules
+----------
+
+.. toctree::
+
+   gravityspy.plot.plot
+
+Module contents
+---------------
+
+.. automodule:: gravityspy.plot
+    :members:
+    :undoc-members:
+    :show-inheritance:

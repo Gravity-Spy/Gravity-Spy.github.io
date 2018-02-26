@@ -1,4 +1,0 @@
-.. automodule:: pyomega.API.calcConfMatrix
-    :members:
-    :undoc-members:
-    :show-inheritance:

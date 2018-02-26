@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Running wscan on the command line &mdash; GravitySpy 0+untagged.455.gebb0fdd.dirty documentation</title>
+  <title>Running wscan on the command line &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
   
 
   
@@ -37,9 +37,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.455.gebb0fdd.dirty documentation" href="../index.html"/>
+    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="../index.html"/>
         <link rel="next" title="The many DBs of Gravity Spy" href="../DBs/index.html"/>
-        <link rel="prev" title="Querying Gravity Spy data" href="../examples/index.html"/> 
+        <link rel="prev" title="Welcome to GravitySpy’s documentation!" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0+untagged.455.gebb0fdd.dirty
+                0+untagged.475.g33255d3.dirty
               </div>
             
           
@@ -92,11 +92,8 @@
               
             
             
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
-</ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a><ul>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-instructions">Basic instructions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#detailed-instructions">Detailed instructions</a></li>
 </ul>
@@ -146,7 +143,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</li>
+      <li>Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -166,31 +163,36 @@
            <div itemprop="articleBody">
             
   <div class="section" id="running-wscan-on-the-command-line">
-<span id="command-line"></span><h1>Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line<a class="headerlink" href="#running-wscan-on-the-command-line" title="Permalink to this headline">¶</a></h1>
-<p>As described on the home page, the main interface to the wscan algorithm is the command-line executable <code class="docutils literal"><span class="pre">wscan</span></code>.</p>
+<span id="command-line"></span><h1>Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line<a class="headerlink" href="#running-wscan-on-the-command-line" title="Permalink to this headline">¶</a></h1>
+<p>As described on the home page, the main interface to the wscan algorithm is the command-line executable <code class="docutils literal notranslate"><span class="pre">wscan</span></code>.</p>
 <div class="section" id="basic-instructions">
 <h2>Basic instructions<a class="headerlink" href="#basic-instructions" title="Permalink to this headline">¶</a></h2>
-<p>Basic instructions on running <code class="docutils literal"><span class="pre">wscan</span></code> can be gained by looking at the <code class="docutils literal"><span class="pre">--help</span></code> menu:</p>
-<div class="highlight-text"><div class="highlight"><pre><span></span>$ wscan --help
-Using TensorFlow backend.
-[?1034hTraceback (most recent call last):
-  File &quot;/Users/scottcoughlin/anaconda/bin/wscan&quot;, line 6, in &lt;module&gt;
-    exec(compile(open(__file__).read(), __file__, &#39;exec&#39;))
-  File &quot;/Users/scottcoughlin/Documents/GitHub/GravitySpy/bin/wscan&quot;, line 49, in &lt;module&gt;
-    import pyomega.ML.make_pickle_for_linux as make_pickle
-  File &quot;/Users/scottcoughlin/Documents/GitHub/GravitySpy/pyomega/ML/make_pickle_for_linux.py&quot;, line 2, in &lt;module&gt;
-    from GS_utils import my_read_image, my_save_dataset_test, my_save_dataset, my_read_image2
-  File &quot;/Users/scottcoughlin/Documents/GitHub/GravitySpy/pyomega/ML/GS_utils.py&quot;, line 23, in &lt;module&gt;
-    from keras import backend as K
-  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/keras/__init__.py&quot;, line 3, in &lt;module&gt;
-    from . import activations
-  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/keras/activations.py&quot;, line 4, in &lt;module&gt;
-    from . import backend as K
-  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/keras/backend/__init__.py&quot;, line 73, in &lt;module&gt;
-    from .tensorflow_backend import *
-  File &quot;/Users/scottcoughlin/anaconda/lib/python2.7/site-packages/keras/backend/tensorflow_backend.py&quot;, line 1, in &lt;module&gt;
-    import tensorflow as tf
-ImportError: No module named tensorflow
+<p>Basic instructions on running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> can be gained by looking at the <code class="docutils literal notranslate"><span class="pre">--help</span></code> menu:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ wscan --help
+/Users/scottcoughlin/Documents/virtualenvs/GravitySpy-py27/lib/python2.7/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Using Theano backend.
+usage: wscan [-h] [-V] --inifile INIFILE --eventTime EVENTTIME [--uniqueID]
+             [--ID ID] [--outDir OUTDIR] [--pathToModel PATHTOMODEL] [--runML]
+             [--verbose] [--HDF5] [--PostgreSQL]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -V, --version         show program&#39;s version number and exit
+  --inifile INIFILE     Name of ini file of params
+  --eventTime EVENTTIME
+                        Trigger time of the glitch
+  --uniqueID            Is this image being generated for the GravitySpy
+                        project, if so you must assign a uniqueID string to
+                        label the images instead of GPS time
+  --ID ID               The uniqueID string to be supplied with --uniqueID
+  --outDir OUTDIR       Outdir for images
+  --pathToModel PATHTOMODEL
+                        Path to folder containing trained model
+  --runML               Run the ML classifer on the omega scans
+  --verbose             Run in Verbose Mode
+  --HDF5                Store triggers in local HDF5 table format
+  --PostgreSQL          Store triggers in a remote PostgreSQL DB
 </pre></div>
 </div>
 </div>
@@ -213,7 +215,7 @@ ImportError: No module named tensorflow
         <a href="../DBs/index.html" class="btn btn-neutral float-right" title="The many DBs of Gravity Spy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../examples/index.html" class="btn btn-neutral" title="Querying Gravity Spy data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral" title="Welcome to GravitySpy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -244,7 +246,7 @@ ImportError: No module named tensorflow
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.455.gebb0fdd.dirty',
+            VERSION:'0+untagged.475.g33255d3.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

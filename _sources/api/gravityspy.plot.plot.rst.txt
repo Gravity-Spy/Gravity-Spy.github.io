@@ -1,0 +1,4 @@
+.. automodule:: gravityspy.plot.plot
+    :members:
+    :undoc-members:
+    :show-inheritance:

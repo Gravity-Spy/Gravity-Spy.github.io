@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Querying Gravity Spy data &mdash; GravitySpy 0+untagged.455.gebb0fdd.dirty documentation</title>
+  <title>Querying Gravity Spy data &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
   
 
   
@@ -37,9 +37,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.455.gebb0fdd.dirty documentation" href="../index.html"/>
-        <link rel="next" title="Running wscan on the command line" href="../command-line/index.html"/>
-        <link rel="prev" title="Welcome to GravitySpy’s documentation!" href="../index.html"/> 
+    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -68,7 +66,7 @@
             
             
               <div class="version">
-                0+untagged.455.gebb0fdd.dirty
+                0+untagged.475.g33255d3.dirty
               </div>
             
           
@@ -92,21 +90,8 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Querying Gravity Spy data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pre-existing-virtualenv">Pre-Existing VirtualEnv</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#the-glitches-database">The <cite>glitches</cite> database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#utilizing-gwpy-eventtable">Utilizing <cite>gwpy</cite> <cite>EventTable</cite></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#utilizing-hveto-and-soon-karoo-gp">Utilizing <cite>hveto</cite> (and soon Karoo GP)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#the-trainingset-database">The <cite>trainingset</cite> database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#training-a-model">Training a model</a></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../command-line/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -183,7 +168,7 @@
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>Very brief installation! Create a virtualenv on the clusters and <cite>pip install</cite></p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ virtualenv --system-site-packages ~/LAAC/opt/
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ virtualenv --system-site-packages ~/LAAC/opt/
 $ . ~/LAAC/opt/bin/activate
 $ pip install --upgrade pip
 $ pip install gwpy sqlalchemy psycopg2 pandas git+https://github.com/duncanmmacleod/ligo.org.git
@@ -193,13 +178,13 @@ $ pip install gwpy sqlalchemy psycopg2 pandas git+https://github.com/duncanmmacl
 <div class="section" id="pre-existing-virtualenv">
 <h2>Pre-Existing VirtualEnv<a class="headerlink" href="#pre-existing-virtualenv" title="Permalink to this headline">¶</a></h2>
 <p>On CIT</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ . /home/gravityspy/opt/GravitySpy/bin/activate
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ . /home/gravityspy/opt/GravitySpy/bin/activate
 </pre></div>
 </div>
 </div>
 <div class="section" id="the-glitches-database">
 <h2>The <cite>glitches</cite> database<a class="headerlink" href="#the-glitches-database" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ kinit albert.einstein
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ kinit albert.einstein
 $ ipython
 
  &gt;&gt;&gt; from gwpy.table import EventTable
@@ -217,41 +202,13 @@ $ ipython
 <p>There are so many great ways to use <a class="reference external" href="https://gwpy.github.io/docs/latest/api/gwpy.table.EventTable.html#gwpy.table.EventTable">EventTable</a> to make plotting
 publication quality plots easy.</p>
 <p>Here we mimic the <a class="reference external" href="https://gwpy.github.io/docs/latest/examples/table/histogram.html?highlight=hist">histogram</a> functionality</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gwpy.table</span> <span class="k">import</span> <span class="n">EventTable</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gwpy.segments</span> <span class="k">import</span> <span class="n">DataQualityFlag</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aftercommissionseg_l1</span> <span class="o">=</span> <span class="n">DataQualityFlag</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;H1:DMT-ANALYSIS_READY:1&#39;</span><span class="p">,</span><span class="mi">1178841618</span><span class="p">,</span> <span class="mi">1186963218</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">beforecommissionseg_l1</span> <span class="o">=</span> <span class="n">DataQualityFlag</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;H1:DMT-ANALYSIS_READY:1&#39;</span><span class="p">,</span> <span class="s1">&#39;2016-11-30&#39;</span><span class="p">,</span> <span class="mi">1178841618</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">blips_O2</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span><span class="s1">&#39;glitches&#39;</span><span class="p">,</span><span class="n">selection</span><span class="o">=</span><span class="s1">&#39;&quot;Label &quot;=&quot;Blip&quot; &amp; &quot;peakGPS&quot; &gt; 1137250000 &amp; &quot;Blip&quot; &gt; 0.95&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">koi_O2</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span><span class="s1">&#39;glitches&#39;</span><span class="p">,</span><span class="n">selection</span><span class="o">=</span><span class="s1">&#39;&quot;Label &quot;=&quot;Koi_Fish&quot; &amp; &quot;peakGPS&quot; &gt; 1137250000 &amp; &quot;Koi_Fish&quot; &gt; 0.95&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aftercomiss_koi_l1</span> <span class="o">=</span> <span class="n">koi_O2</span><span class="p">[(</span><span class="n">koi_O2</span><span class="p">[</span><span class="s1">&#39;peakGPS&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1178841618</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">koi_O2</span><span class="p">[</span><span class="s1">&#39;ifo&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;L1&#39;</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">beforecomiss_koi_l1</span> <span class="o">=</span> <span class="n">koi_O2</span><span class="p">[(</span><span class="n">koi_O2</span><span class="p">[</span><span class="s1">&#39;peakGPS&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">1178841618</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">koi_O2</span><span class="p">[</span><span class="s1">&#39;ifo&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;L1&#39;</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">beforecomiss_blips_l1</span> <span class="o">=</span> <span class="n">blips_O2</span><span class="p">[(</span><span class="n">blips_O2</span><span class="p">[</span><span class="s1">&#39;peakGPS&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">1178841618</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">blips_O2</span><span class="p">[</span><span class="s1">&#39;ifo&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;L1&#39;</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aftercomiss_blips_l1</span> <span class="o">=</span> <span class="n">blips_O2</span><span class="p">[(</span><span class="n">blips_O2</span><span class="p">[</span><span class="s1">&#39;peakGPS&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1178841618</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">blips_O2</span><span class="p">[</span><span class="s1">&#39;ifo&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;L1&#39;</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span> <span class="o">=</span> <span class="n">aftercomiss_blips_l1</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="s1">&#39;snr&#39;</span><span class="p">,</span> <span class="n">logbins</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;After Commissioning&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">aftercomiss_koi_l1</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">],</span> <span class="n">logbins</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;After Commissioning Koi&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">beforecomiss_blips_l1</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">aftercommissionseg_l1</span><span class="o">.</span><span class="n">active</span><span class="p">)</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">beforecommissionseg_l1</span><span class="o">.</span><span class="n">active</span><span class="p">)),</span> <span class="n">logbins</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Before Commissioning&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">beforecomiss_koi_l1</span><span class="p">[</span><span class="s1">&#39;snr&#39;</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">aftercommissionseg_l1</span><span class="o">.</span><span class="n">active</span><span class="p">)</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">beforecommissionseg_l1</span><span class="o">.</span><span class="n">active</span><span class="p">)),</span> <span class="n">logbins</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;stepfilled&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Before Commissioning Koi&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Signal-to-noise ratio (SNR)&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Rate&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Blips and Kois before and after comissioning L1&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">autoscale</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">tight</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span><span class="o">.</span><span class="n">add_legend</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>(<a class="reference external" href="../examples/index-1.py">Source code</a>, <a class="reference external" href="../examples/index-1.png">png</a>, <a class="reference external" href="../examples/index-1.hires.png">hires.png</a>, <a class="reference external" href="../examples/index-1.pdf">pdf</a>)</p>
-<div class="figure">
-<img alt="../_images/index-1.png" src="../_images/index-1.png" />
-</div>
 </div>
 <div class="section" id="utilizing-hveto-and-soon-karoo-gp">
 <h2>Utilizing <cite>hveto</cite> (and soon Karoo GP)<a class="headerlink" href="#utilizing-hveto-and-soon-karoo-gp" title="Permalink to this headline">¶</a></h2>
 <p>One thing you may think to do with this information is to feed them into tools designed to make statements about correlations/couplings with auxiliary channel data. hVeto is one such software.
 <a class="reference external" href="https://ldas-jobs.ligo.caltech.edu/~duncan.macleod/hveto/latest/">hVeto Documenation</a></p>
 <p>Go to LLO</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ . /home/scoughlin/Project/opt/GravitySpy/bin/activate
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ . /home/scoughlin/Project/opt/GravitySpy/bin/activate
 $ ligo-proxy-init albert.einstein@LIGO.ORG
 $ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137250000</span>
 </pre></div>
@@ -261,7 +218,7 @@ $ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137
 </div>
 <div class="section" id="the-trainingset-database">
 <h2>The <cite>trainingset</cite> database<a class="headerlink" href="#the-trainingset-database" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ kinit albert.einstein
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ kinit albert.einstein
 $ ipython
 
  &gt;&gt;&gt; from gwpy.table import EventTable
@@ -272,7 +229,7 @@ $ ipython
 </div>
 <div class="section" id="training-a-model">
 <h2>Training a model<a class="headerlink" href="#training-a-model" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ ipython
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ipython
 $ kinit albert.einstein
 &gt;&gt;&gt; from gwpy.table import EventTable
 &gt;&gt;&gt; from astropy.table import vstack
@@ -289,7 +246,7 @@ $ kinit albert.einstein
 <p>At this point we have a folder with Training data. Let’s train a model using a GPU and some in house python software <a class="reference external" href="http://www.deeplearning.net/software/theano/">Theano</a> and <a class="reference external" href="https://keras.io/">keras</a></p>
 <p>You can also use <a class="reference external" href="https://www.tensorflow.org/">tensorflow</a> backend when using <cite>keras</cite> you control this via the <cite>KERAS_BACKEND</cite> environmental variable.</p>
 <p>LSC has some great hardware resources. Marco Cavaglia and Stuart Anderson have placed some useful hardware information (for LIGO members) here: <a class="reference external" href="https://wiki.ligo.org/MLA/LV_computing_resources">LIGO GPU Info</a></p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">KERAS_BACKEND</span><span class="o">=</span>theano
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">KERAS_BACKEND</span><span class="o">=</span>theano
 $ <span class="nv">THEANO_FLAGS</span><span class="o">=</span><span class="nv">mode</span><span class="o">=</span>FAST_RUN,device<span class="o">=</span>gpu,floatX<span class="o">=</span>float32 trainmodel --path-to-golden /home/gravityspy/LAAC/TrainingSet/ --path-to-pickle ./pickleddata/ --path-to-trained-model ./model --number-of-classes <span class="m">2</span> --batch-size <span class="m">50</span>
 </pre></div>
 </div>
@@ -303,15 +260,6 @@ $ <span class="nv">THEANO_FLAGS</span><span class="o">=</span><span class="nv">m
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../command-line/index.html" class="btn btn-neutral float-right" title="Running wscan on the command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../index.html" class="btn btn-neutral" title="Welcome to GravitySpy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
@@ -340,7 +288,7 @@ $ <span class="nv">THEANO_FLAGS</span><span class="o">=</span><span class="nv">m
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.455.gebb0fdd.dirty',
+            VERSION:'0+untagged.475.g33255d3.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -1,4 +1,0 @@
-.. automodule:: pyomega.API.getGoldenImages
-    :members:
-    :undoc-members:
-    :show-inheritance:

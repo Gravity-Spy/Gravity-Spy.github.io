@@ -1,4 +1,0 @@
-.. automodule:: pyomega.ML.labelling_test_glitches
-    :members:
-    :undoc-members:
-    :show-inheritance:

@@ -1,4 +1,0 @@
-.. automodule:: pyomega.ML.make_pickle
-    :members:
-    :undoc-members:
-    :show-inheritance:

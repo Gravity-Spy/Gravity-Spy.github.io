@@ -1,4 +1,0 @@
-.. automodule:: pyomega.API.getLabelDict
-    :members:
-    :undoc-members:
-    :show-inheritance:
