@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="../index.html"/> 
+    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0+untagged.475.g33255d3.dirty
+                0+untagged.509.g048e498.dirty
               </div>
             
           
@@ -92,6 +92,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -158,65 +160,27 @@
             
   <span class="target" id="module-gravityspy.API.project"></span><dl class="class">
 <dt id="gravityspy.API.project.ZooProject">
-<em class="property">class </em><code class="descclassname">gravityspy.API.project.</code><code class="descname">ZooProject</code><span class="sig-paren">(</span><em>zoo_project_id</em>, <em>cache_zoo_project=False</em>, <em>load_zoo_project_from_cache=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">gravityspy.API.project.</code><code class="descname">ZooProject</code><span class="sig-paren">(</span><em>zoo_project_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p><cite>ZooProject</cite> inherits from the Project class
 from the panoptes client and adds some
 wrapper functions to extracts helpful
 project information.</p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#gravityspy.API.project.ZooProject.get_answers" title="gravityspy.API.project.ZooProject.get_answers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_answers</span></code></a>([workflow])</td>
-<td><table class="docutils field-list" frame="void" rules="none">
+<dl class="method">
+<dt id="gravityspy.API.project.ZooProject.cache_project">
+<code class="descname">cache_project</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.cache_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.cache_project" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#gravityspy.API.project.ZooProject.get_golden_images" title="gravityspy.API.project.ZooProject.get_golden_images"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_golden_images</span></code></a>()</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#gravityspy.API.project.ZooProject.get_golden_subject_sets" title="gravityspy.API.project.ZooProject.get_golden_subject_sets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_golden_subject_sets</span></code></a>()</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#gravityspy.API.project.ZooProject.get_subject_sets_per_workflow" title="gravityspy.API.project.ZooProject.get_subject_sets_per_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_subject_sets_per_workflow</span></code></a>([workflow])</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dict with keys of workflow IDs and values list</p>
+<p class="last">of golden sets associated with that workflow</p>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
 <dl class="method">
 <dt id="gravityspy.API.project.ZooProject.get_answers">
 <code class="descname">get_answers</code><span class="sig-paren">(</span><em>workflow=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.get_answers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.get_answers" title="Permalink to this definition">¶</a></dt>
@@ -237,7 +201,7 @@ project information.</p>
 
 <dl class="method">
 <dt id="gravityspy.API.project.ZooProject.get_golden_images">
-<code class="descname">get_golden_images</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.get_golden_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.get_golden_images" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_golden_images</code><span class="sig-paren">(</span><em>workflow=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.get_golden_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.get_golden_images" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -283,6 +247,24 @@ project information.</p>
 </table>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="gravityspy.API.project.ZooProject.load_project_from_cache">
+<em class="property">classmethod </em><code class="descname">load_project_from_cache</code><span class="sig-paren">(</span><em>cache_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.load_project_from_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.load_project_from_cache" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cache_file</strong> : <cite>str</cite> needs a ‘.pkl’ extension</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dict with keys of workflow IDs and values list</p>
+<p class="last">of golden sets associated with that workflow</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="function">
@@ -292,88 +274,10 @@ project information.</p>
 
 <dl class="class">
 <dt id="gravityspy.API.project.GravitySpyProject">
-<em class="property">class </em><code class="descclassname">gravityspy.API.project.</code><code class="descname">GravitySpyProject</code><span class="sig-paren">(</span><em>zoo_project_id</em>, <em>cache_zoo_project=False</em>, <em>load_zoo_project_from_cache=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">gravityspy.API.project.</code><code class="descname">GravitySpyProject</code><span class="sig-paren">(</span><em>zoo_project_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#gravityspy.API.project.ZooProject" title="gravityspy.API.project.ZooProject"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravityspy.API.project.ZooProject</span></code></a></p>
 <p><cite>GravitySpyProject</cite> inherits from the <cite>ZooProject</cite> class
 and adds some GravitySpy specific wrapper functions</p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices" title="gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_confusion_matrices</span></code></a>()</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#gravityspy.API.project.GravitySpyProject.determine_level" title="gravityspy.API.project.GravitySpyProject.determine_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_level</span></code></a>([alpha])</td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_answers</span></code>([workflow])</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_golden_images</span></code>()</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_golden_subject_sets</span></code>()</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#gravityspy.API.project.GravitySpyProject.get_level_structure" title="gravityspy.API.project.GravitySpyProject.get_level_structure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_level_structure</span></code></a>([workflow,&nbsp;IDfilter])</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_subject_sets_per_workflow</span></code>([workflow])</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices">
 <code class="descname">calculate_confusion_matrices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject.calculate_confusion_matrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices" title="Permalink to this definition">¶</a></dt>
@@ -390,9 +294,28 @@ and adds some GravitySpy specific wrapper functions</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gravityspy.API.project.GravitySpyProject.determine_level">
-<code class="descname">determine_level</code><span class="sig-paren">(</span><em>alpha=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject.determine_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject.determine_level" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.API.project.GravitySpyProject.check_level_by_classification">
+<code class="descname">check_level_by_classification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject.check_level_by_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject.check_level_by_classification" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="gravityspy.API.project.GravitySpyProject.determine_level">
+<code class="descname">determine_level</code><span class="sig-paren">(</span><em>alpha</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject.determine_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject.determine_level" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>alpha = 1xN vector of proficiency scores</strong></p>
+<p><strong>where N is the number of glitch classes</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dict with keys of workflow IDs and values list</p>
+<p class="last">of golden sets associated with that workflow</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="gravityspy.API.project.GravitySpyProject.get_level_structure">
@@ -414,6 +337,11 @@ and adds some GravitySpy specific wrapper functions</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="function">
+<dt id="gravityspy.API.project.workflow_with_most_answers">
+<code class="descclassname">gravityspy.API.project.</code><code class="descname">workflow_with_most_answers</code><span class="sig-paren">(</span><em>db</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#workflow_with_most_answers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.workflow_with_most_answers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 
 
@@ -451,7 +379,7 @@ and adds some GravitySpy specific wrapper functions</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.475.g33255d3.dirty',
+            VERSION:'0+untagged.509.g048e498.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

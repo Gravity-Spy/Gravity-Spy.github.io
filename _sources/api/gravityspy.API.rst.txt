@@ -6,10 +6,7 @@ Submodules
 
 .. toctree::
 
-   gravityspy.API.calcConfMatrix
-   gravityspy.API.getLabelDict
    gravityspy.API.project
-   gravityspy.API.projectStructure
 
 Module contents
 ---------------

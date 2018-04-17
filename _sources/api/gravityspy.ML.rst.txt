@@ -7,7 +7,6 @@ Submodules
 .. toctree::
 
    gravityspy.ML.GS_utils
-   gravityspy.ML.functions_fusion
    gravityspy.ML.labelling_test_glitches
    gravityspy.ML.make_pickle_for_linux
    gravityspy.ML.train_classifier

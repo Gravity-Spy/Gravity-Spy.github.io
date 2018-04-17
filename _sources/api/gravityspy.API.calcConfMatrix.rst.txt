@@ -1,4 +1,0 @@
-.. automodule:: gravityspy.API.calcConfMatrix
-    :members:
-    :undoc-members:
-    :show-inheritance:

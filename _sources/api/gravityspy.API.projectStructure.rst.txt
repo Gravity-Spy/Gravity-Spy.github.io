@@ -1,4 +1,0 @@
-.. automodule:: gravityspy.API.projectStructure
-    :members:
-    :undoc-members:
-    :show-inheritance:

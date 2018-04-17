@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="../index.html"/> 
+    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0+untagged.475.g33255d3.dirty
+                0+untagged.509.g048e498.dirty
               </div>
             
           
@@ -92,6 +92,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -158,8 +160,29 @@
             
   <span class="target" id="module-gravityspy.ML.make_pickle_for_linux"></span><dl class="function">
 <dt id="gravityspy.ML.make_pickle_for_linux.main">
-<code class="descclassname">gravityspy.ML.make_pickle_for_linux.</code><code class="descname">main</code><span class="sig-paren">(</span><em>filename</em>, <em>resolution=0.3</em>, <em>normalization_factor=255.0</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/make_pickle_for_linux.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.make_pickle_for_linux.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">gravityspy.ML.make_pickle_for_linux.</code><code class="descname">main</code><span class="sig-paren">(</span><em>filename</em>, <em>resolution=0.3</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/make_pickle_for_linux.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.make_pickle_for_linux.main" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename</strong> : <cite>str</cite>,</p>
+<blockquote>
+<div><p>the file you would like to pixelize</p>
+</div></blockquote>
+<p><strong>resolution</strong> : <cite>float</cite>, optional, default: 0.3</p>
+<p><strong>verbose</strong> : <cite>bool</cite>, optional, default: False</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>image_data</strong> : <cite>np.array</cite></p>
+<blockquote class="last">
+<div><p>this images is taken from rgb to gray scale
+and then downsampled by the resolution.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 
 
@@ -197,7 +220,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.475.g33255d3.dirty',
+            VERSION:'0+untagged.509.g048e498.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

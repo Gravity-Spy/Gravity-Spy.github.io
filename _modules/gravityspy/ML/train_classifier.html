@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ML.train_classifier &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
+  <title>gravityspy.ML.train_classifier &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="../../../index.html"/>
+    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0+untagged.475.g33255d3.dirty
+                0+untagged.509.g048e498.dirty
               </div>
             
           
@@ -93,6 +93,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -159,38 +161,361 @@
             
   <h1>Source code for gravityspy.ML.train_classifier</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">GS_utils</span> <span class="k">import</span> <span class="n">build_cnn</span><span class="p">,</span> <span class="n">my_load_dataset</span>
+<span class="kn">from</span> <span class="nn">GS_utils</span> <span class="k">import</span> <span class="n">create_model_folder</span><span class="p">,</span> <span class="n">concatenate_views</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dense</span>
 <span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">np_utils</span>
 <span class="kn">from</span> <span class="nn">keras.callbacks</span> <span class="k">import</span> <span class="n">ModelCheckpoint</span>
-<span class="kn">from</span> <span class="nn">functions_fusion</span> <span class="k">import</span> <span class="n">square_early_concatenate_feature</span>
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">getopt</span>
 <span class="kn">import</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">cPickle</span>
+<span class="kn">import</span> <span class="nn">make_pickle_for_linux</span> <span class="k">as</span> <span class="nn">make_pickle</span>
+<span class="kn">from</span> <span class="nn">gravityspy.utils</span> <span class="k">import</span> <span class="n">log</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">By Sara Bahaadini and Neda Rohani, IVPL, Northwestern University.</span>
+<span class="sd">By Sara Bahaadini</span>
 <span class="sd">This function reads the  pickle files of golden_set and train a ML classifier</span>
 <span class="sd">and write it into a model folder</span>
-<span class="sd">explanations for options are given in the code</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
+<div class="viewcode-block" id="pickle_trainingset"><a class="viewcode-back" href="../../../api/gravityspy.ML.train_classifier.html#gravityspy.ML.train_classifier.pickle_trainingset">[docs]</a><span class="k">def</span> <span class="nf">pickle_trainingset</span><span class="p">(</span><span class="n">path_to_trainingset</span><span class="p">,</span> <span class="n">save_address</span><span class="o">=</span><span class="s1">&#39;pickleddata&#39;</span><span class="p">,</span>
+                       <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path_to_trainingset : `str` pwd to trainingset</span>
+<span class="sd">                 where format of training set folder</span>
+<span class="sd">                 is &quot;somedirectoryname&quot;/&quot;classname/&quot;images&quot;</span>
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/gravityspy.ML.train_classifier.html#gravityspy.ML.train_classifier.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span><span class="n">nb_epoch</span><span class="p">,</span><span class="n">train_flag</span><span class="p">,</span><span class="n">pickle_adr</span><span class="p">,</span><span class="n">save_address</span><span class="p">,</span><span class="n">number_of_classes</span><span class="p">,</span><span class="n">verbose</span><span class="p">):</span>
+<span class="sd">    save_address : `str` path to folder you would like to save</span>
+<span class="sd">                 the pixelated training data</span>
+<span class="sd">                 optional Default `pickleddata`</span>
 
-    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1986</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
+<span class="sd">    verbose : `boolean`, default False</span>
 
-    <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="mi">47</span><span class="p">,</span> <span class="mi">57</span>
-    <span class="n">nb_classes</span> <span class="o">=</span> <span class="n">number_of_classes</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A pickled `pandas.DataFrame` with rows of samples</span>
+<span class="sd">    and columns containing the pixelated 0.5, 1.0, 2.0,</span>
+<span class="sd">    and 4.0 duration images as well as a column with the True</span>
+<span class="sd">    Label and a column with an ID that uniquely identifies that sample</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span> <span class="s1">&#39;save adress&#39;</span><span class="p">,</span> <span class="n">save_address</span>
-        <span class="nb">print</span> <span class="s1">&#39;train flag&#39;</span><span class="p">,</span> <span class="n">train_flag</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s1">&#39;Gravity Spy: Pickling &#39;</span>
+                        <span class="s1">&#39;Trainingset&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_address</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;making... &#39;</span> <span class="o">+</span> <span class="n">save_address</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;making... &#39;</span> <span class="o">+</span> <span class="n">save_address</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">save_address</span><span class="p">)</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path_to_trainingset</span><span class="p">))</span>
+    <span class="n">nb_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The number of classes are </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nb_classes</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The classes you are pickling are </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="n">classes</span><span class="p">))</span>
+
+    <span class="n">image_dataDF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">iclass</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Converting </span><span class="si">{0}</span><span class="s1"> into b/w info&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iclass</span><span class="p">))</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_to_trainingset</span><span class="p">,</span> <span class="n">iclass</span><span class="p">)))</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">imageidx</span> <span class="k">for</span> <span class="n">imageidx</span> <span class="ow">in</span> <span class="n">images</span> \
+                  <span class="k">if</span> <span class="s1">&#39;L1_&#39;</span> <span class="ow">in</span> <span class="n">imageidx</span> <span class="ow">or</span> <span class="s1">&#39;H1_&#39;</span> <span class="ow">in</span> <span class="n">imageidx</span><span class="p">]</span>
+        <span class="c1"># Group each sample into sets of 4 different durations</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">images</span><span class="p">),)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">isample</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+            <span class="n">tmpDF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">idur</span> <span class="ow">in</span> <span class="n">isample</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Converting </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idur</span><span class="p">))</span>
+                <span class="n">image_data</span> <span class="o">=</span> <span class="n">make_pickle</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_to_trainingset</span><span class="p">,</span> 
+                                              <span class="n">iclass</span><span class="p">,</span> <span class="n">idur</span><span class="p">),</span> <span class="n">resolution</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+                <span class="n">information_on_image</span> <span class="o">=</span> <span class="n">idur</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+                <span class="n">tmpDF</span><span class="p">[</span><span class="n">information_on_image</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">image_data</span><span class="p">]</span>
+            <span class="n">tmpDF</span><span class="p">[</span><span class="s1">&#39;uniqueID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">information_on_image</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">tmpDF</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iclass</span>
+            <span class="n">image_dataDF</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmpDF</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finished converting </span><span class="si">{0}</span><span class="s1"> into b/w info&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iclass</span><span class="p">))</span>
+
+    <span class="n">picklepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_address</span><span class="p">,</span> <span class="s1">&#39;trainingset.pkl&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Saving pickled data to </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">picklepath</span><span class="p">))</span>
+    <span class="n">image_dataDF</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">picklepath</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">image_dataDF</span>
+
+
+<div class="viewcode-block" id="make_model"><a class="viewcode-back" href="../../../api/gravityspy.ML.train_classifier.html#gravityspy.ML.train_classifier.make_model">[docs]</a><span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">model_folder</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+               <span class="n">nb_classes</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">fraction_validation</span><span class="o">=.</span><span class="mi">125</span><span class="p">,</span> <span class="n">fraction_testing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">best_model_based_validset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+               <span class="n">random_seed</span><span class="o">=</span><span class="mi">1986</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : `str` file path to pickled trianing set data</span>
+
+<span class="sd">    model_folder : `str` path to folder you would like to save</span>
+<span class="sd">                 the model</span>
+<span class="sd">                 optional Default `model`</span>
+
+<span class="sd">    batch_size : `int` default 22</span>
+
+<span class="sd">    nb_epoch : `int` default 40</span>
+
+<span class="sd">    nb_classes : `int` default 22</span>
+
+<span class="sd">    fraction_validation : `float` default .125 </span>
+
+<span class="sd">    fraction_testing : `float` default None</span>
+
+<span class="sd">    all_data_for_train_flag : `int` default 1</span>
+
+<span class="sd">    best_model_based_validset : `int` default 0</span>
+
+<span class="sd">    image_size : `int` default [140, 170]</span>
+
+<span class="sd">    random_seed : `int`  default 1986</span>
+
+<span class="sd">    verbose : `boolean`, default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A training Convultional Neural Network</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s1">&#39;Gravity Spy: Training &#39;</span>
+                        <span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Using random seed </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">random_seed</span><span class="p">))</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_seed</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="n">image_dataDF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;You data set contained </span><span class="si">{0}</span><span class="s1"> samples&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">)))</span>
+
+    <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The size of the images being trained </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image_size</span><span class="p">))</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">image_dataDF</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">)</span> <span class="o">!=</span> <span class="n">nb_classes</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Youre supplied data set does not match the number of&#39;</span>
+                         <span class="s1">&#39; classes you said you were training on&#39;</span><span class="p">)</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">classes</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;You have supplied a training set with the following class&#39;</span>
+                <span class="s1">&#39;idx to str label mapping: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;converting string to idx...&#39;</span><span class="p">)</span>
+    <span class="n">image_dataDF</span><span class="o">.</span><span class="n">Label</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">classes</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Selecting samples for validation ...&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;You have selected to set aside </span><span class="si">{0}</span><span class="s1"> percent of &#39;</span>
+                <span class="s1">&#39;images per class for validation.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                       <span class="n">fraction_validation</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+
+    <span class="n">validationDF</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Label&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                       <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="n">fraction_validation</span><span class="p">,</span>
+                       <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span>
+                       <span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Removing validation images from training DF ...&#39;</span><span class="p">)</span>
+
+    <span class="n">image_dataDF</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">image_dataDF</span><span class="o">.</span><span class="n">uniqueID</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+                                    <span class="n">validationDF</span><span class="o">.</span><span class="n">uniqueID</span><span class="p">)]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;There are now </span><span class="si">{0}</span><span class="s1"> samples remaining&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                                       <span class="nb">len</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Selecting samples for testing ...&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;You have selected to set aside </span><span class="si">{0}</span><span class="s1"> percent of &#39;</span> 
+                <span class="s1">&#39;images per class for validation.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+
+                                       <span class="n">fraction_testing</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+        <span class="n">testingDF</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Label&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                   <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="n">fraction_testing</span><span class="p">,</span>
+                             <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span>
+                   <span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Removing testing images from training DF ...&#39;</span><span class="p">)</span>
+        
+        <span class="n">image_dataDF</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">image_dataDF</span><span class="o">.</span><span class="n">uniqueID</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+                                        <span class="n">testingDF</span><span class="o">.</span><span class="n">uniqueID</span><span class="p">)]</span>
+        
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;There are now </span><span class="si">{0}</span><span class="s1"> samples remaining&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                                           <span class="nb">len</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">)))</span>
+
+    <span class="c1"># concatenate the pixels</span>
+    <span class="n">train_set_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+    <span class="n">validation_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+
+    <span class="n">train_set_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+    <span class="n">validation_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+
+    <span class="n">train_set_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+    <span class="n">validation_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+
+    <span class="n">train_set_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+    <span class="n">validation_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+
+    <span class="n">train_set_x_1</span> <span class="o">=</span> <span class="n">train_set_x_1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">validation_x_1</span> <span class="o">=</span> <span class="n">validation_x_1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">train_set_x_2</span> <span class="o">=</span> <span class="n">train_set_x_2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">validation_x_2</span> <span class="o">=</span> <span class="n">validation_x_2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">train_set_x_3</span> <span class="o">=</span> <span class="n">train_set_x_3</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">validation_x_3</span> <span class="o">=</span> <span class="n">validation_x_3</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">train_set_x_4</span> <span class="o">=</span> <span class="n">train_set_x_4</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">validation_x_4</span> <span class="o">=</span> <span class="n">validation_x_4</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">testing_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+        <span class="n">testing_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+        <span class="n">testing_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+        <span class="n">testing_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="c1"># Concatenate the labels</span>
+    <span class="n">trainingset_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+    <span class="n">validation_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">testing_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+
+    <span class="c1"># Concatenate the name</span>
+    <span class="n">trainingset_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">[</span><span class="s1">&#39;uniqueID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+    <span class="n">validation_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;uniqueID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">testing_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;uniqueID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+
+    <span class="c1"># Categorize labels</span>
+    <span class="n">trainingset_labels</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span>
+                                        <span class="n">trainingset_labels</span><span class="p">,</span> <span class="n">nb_classes</span><span class="p">)</span>
+
+    <span class="n">validation_labels</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span>
+                                        <span class="n">validation_labels</span><span class="p">,</span> <span class="n">nb_classes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">testing_labels</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span>
+                                        <span class="n">testing_labels</span><span class="p">,</span> <span class="n">nb_classes</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Concatenating multiple views ...&#39;</span><span class="p">)</span>
+    <span class="n">concat_train</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">train_set_x_1</span><span class="p">,</span> <span class="n">train_set_x_2</span><span class="p">,</span>
+                            <span class="n">train_set_x_3</span><span class="p">,</span> <span class="n">train_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+    <span class="n">concat_valid</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">validation_x_1</span><span class="p">,</span> <span class="n">validation_x_2</span><span class="p">,</span>
+                            <span class="n">validation_x_3</span><span class="p">,</span> <span class="n">validation_x_4</span><span class="p">,</span>
+                            <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">concat_test</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">testing_x_1</span><span class="p">,</span> <span class="n">testing_x_2</span><span class="p">,</span>
+                            <span class="n">testing_x_3</span><span class="p">,</span> <span class="n">testing_x_4</span><span class="p">,</span>
+                            <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+
+    <span class="n">cnn1</span> <span class="o">=</span> <span class="n">build_cnn</span><span class="p">(</span><span class="n">img_rows</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">img_cols</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">final_model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+    <span class="n">final_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cnn1</span><span class="p">)</span>
+    <span class="n">final_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">nb_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+
+    <span class="n">final_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span>
+                  <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adadelta&#39;</span><span class="p">,</span>
+                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">model_folder</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;making... &#39;</span> <span class="o">+</span> <span class="n">model_folder</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">model_folder</span><span class="p">)</span>
+
+    <span class="n">full_model_adr</span> <span class="o">=</span> <span class="n">model_folder</span>
+
+    <span class="n">loss_checker</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_model_adr</span><span class="p">,</span>
+                                                <span class="s2">&quot;best_weights_loss.h5&quot;</span><span class="p">),</span>
+                                   <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_loss&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                   <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+                                   <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">acc_checker</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_model_adr</span><span class="p">,</span>
+                                               <span class="s2">&quot;best_weights_acc.h5&quot;</span><span class="p">),</span>
+                                  <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_acc&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                  <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+                                  <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">best_model_based_validset</span><span class="p">:</span>
+        <span class="n">callbacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">acc_checker</span><span class="p">,</span> <span class="n">loss_checker</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">callbacks</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">final_model_adr</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_model_adr</span><span class="p">,</span> <span class="s1">&#39;final_model&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">final_model_adr</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;making... &#39;</span> <span class="o">+</span> <span class="n">final_model_adr</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_model_adr</span><span class="p">)</span>
+    <span class="n">out_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">final_model_adr</span><span class="p">,</span> <span class="s1">&#39;out.txt&#39;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+    <span class="n">final_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">trainingset_labels</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">nb_epoch</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">validation_labels</span><span class="p">),</span> <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_test</span><span class="p">,</span> <span class="n">testing_labels</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Test accuracy (last): </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> * Test Accuracy (last): </span><span class="si">%0.4f%%</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">score2</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">validation_labels</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;valid accuracy (last): </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score2</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="n">score3</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">trainingset_labels</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Train accuracy (last): </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score3</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">score2</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">validation_labels</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;valid accuracy (last): </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score2</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="n">score3</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">trainingset_labels</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Train accuracy (last): </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score3</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="n">final_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">final_model_adr</span><span class="p">,</span> <span class="s1">&#39;multi_view_classifier.h5&#39;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">best_model_based_validset</span><span class="p">:</span>
+        <span class="n">final_model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">full_model_adr</span> <span class="o">+</span> <span class="s2">&quot;/best_weights_acc.h5&quot;</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_test</span><span class="p">,</span> <span class="n">cat_test_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy (acc):&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> * Test Accuracy (acc): </span><span class="si">%0.4f%%</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">score2</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;valid accuracy (acc):&#39;</span><span class="p">,</span> <span class="n">score2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">score3</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">cat_train_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train accuracy (acc):&#39;</span><span class="p">,</span> <span class="n">score3</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">final_model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">full_model_adr</span> <span class="o">+</span> <span class="s2">&quot;/best_weights_loss.h5&quot;</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_test</span><span class="p">,</span> <span class="n">cat_test_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy (loss):&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> * Test Accuracy (loss): </span><span class="si">%0.4f%%</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">score2</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;valid accuracy (loss):&#39;</span><span class="p">,</span> <span class="n">score2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">score3</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">cat_train_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train accuracy (loss):&#39;</span><span class="p">,</span> <span class="n">score3</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</div>
+        <span class="k">return</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/gravityspy.ML.train_classifier.html#gravityspy.ML.train_classifier.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="p">,</span> <span class="n">all_data_for_train_flag</span><span class="p">,</span> <span class="n">pickle_adr</span><span class="p">,</span> <span class="n">save_address</span><span class="p">,</span>
+         <span class="n">number_of_classes</span><span class="p">,</span> <span class="n">best_model_based_validset</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1986</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
+
+    <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">nb_classes</span> <span class="o">=</span> <span class="n">number_of_classes</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_address</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;making... &#39;</span> <span class="o">+</span> <span class="n">save_address</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">save_address</span><span class="p">)</span>
 
     <span class="n">dataset_name1</span> <span class="o">=</span> <span class="s1">&#39;img_5.0&#39;</span>
@@ -205,15 +530,16 @@
     <span class="n">dataset_name4</span> <span class="o">=</span> <span class="s1">&#39;img_2.0&#39;</span>
     <span class="n">ad4</span> <span class="o">=</span> <span class="n">pickle_adr</span> <span class="o">+</span> <span class="n">dataset_name4</span> <span class="o">+</span> <span class="s1">&#39;_class&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nb_classes</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_norm.pkl.gz&#39;</span>
 
-    <span class="nb">print</span> <span class="s1">&#39;batch size&#39;</span><span class="p">,</span> <span class="n">batch_size</span>
-    <span class="nb">print</span> <span class="s1">&#39;iteration&#39;</span><span class="p">,</span> <span class="n">nb_epoch</span>
-    <span class="nb">print</span> <span class="s1">&#39;flag mode&#39;</span><span class="p">,</span> <span class="n">train_flag</span>
-    <span class="nb">print</span> <span class="s1">&#39;Reading the pickles from: &#39;</span><span class="p">,</span> <span class="n">pickle_adr</span>
-    <span class="nb">print</span> <span class="s1">&#39;pickle_1: &#39;</span><span class="p">,</span> <span class="n">ad1</span>
-    <span class="nb">print</span> <span class="s1">&#39;pickle_2: &#39;</span><span class="p">,</span> <span class="n">ad2</span>
-    <span class="nb">print</span> <span class="s1">&#39;pickle_3: &#39;</span><span class="p">,</span> <span class="n">ad3</span>
-    <span class="nb">print</span> <span class="s1">&#39;pickle_4: &#39;</span><span class="p">,</span> <span class="n">ad4</span>
-    <span class="nb">print</span> <span class="s1">&#39;saving the trained model in: &#39;</span><span class="p">,</span> <span class="n">save_address</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;batch size&#39;</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;iteration&#39;</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;flag mode&#39;</span><span class="p">,</span> <span class="n">all_data_for_train_flag</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Reading the pickles from: &#39;</span><span class="p">,</span> <span class="n">pickle_adr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pickle_1: &#39;</span><span class="p">,</span> <span class="n">ad1</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pickle_2: &#39;</span><span class="p">,</span> <span class="n">ad2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pickle_3: &#39;</span><span class="p">,</span> <span class="n">ad3</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pickle_4: &#39;</span><span class="p">,</span> <span class="n">ad4</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;saving the trained model in: &#39;</span><span class="p">,</span> <span class="n">save_address</span><span class="p">)</span>
 
     <span class="n">datasets1</span> <span class="o">=</span> <span class="n">my_load_dataset</span><span class="p">(</span><span class="n">ad1</span><span class="p">)</span>
     <span class="n">test_set_x_1</span><span class="p">,</span> <span class="n">test_set_y_1</span><span class="p">,</span> <span class="n">test_set_name_1</span> <span class="o">=</span> <span class="n">datasets1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
@@ -248,102 +574,113 @@
     <span class="n">train_set_x_4</span> <span class="o">=</span> <span class="n">train_set_x_4</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
     <span class="n">valid_set_x_4</span> <span class="o">=</span> <span class="n">valid_set_x_4</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="p">(</span><span class="n">test_set_y_2</span> <span class="o">==</span> <span class="n">test_set_y_1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">valid_set_y_2</span> <span class="o">==</span> <span class="n">valid_set_y_1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">train_set_y_2</span> <span class="o">==</span> <span class="n">train_set_y_1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-
-    <span class="k">assert</span> <span class="p">(</span><span class="n">test_set_y_2</span> <span class="o">==</span> <span class="n">test_set_y_3</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">valid_set_y_2</span> <span class="o">==</span> <span class="n">valid_set_y_3</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">train_set_y_2</span> <span class="o">==</span> <span class="n">train_set_y_3</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-
-    <span class="k">assert</span> <span class="p">(</span><span class="n">test_set_y_3</span> <span class="o">==</span> <span class="n">test_set_y_4</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">valid_set_y_3</span> <span class="o">==</span> <span class="n">valid_set_y_4</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">train_set_y_3</span> <span class="o">==</span> <span class="n">train_set_y_4</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-
-    <span class="k">assert</span> <span class="p">(</span><span class="n">test_set_name_1</span> <span class="o">==</span> <span class="n">test_set_name_2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">test_set_name_2</span> <span class="o">==</span> <span class="n">test_set_name_3</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">test_set_name_3</span> <span class="o">==</span> <span class="n">test_set_name_4</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-
-    <span class="k">assert</span> <span class="p">(</span><span class="n">valid_set_name_1</span> <span class="o">==</span> <span class="n">valid_set_name_2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">valid_set_name_2</span> <span class="o">==</span> <span class="n">valid_set_name_3</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">valid_set_name_3</span> <span class="o">==</span> <span class="n">valid_set_name_4</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-
-    <span class="k">assert</span> <span class="p">(</span><span class="n">train_set_name_1</span> <span class="o">==</span> <span class="n">train_set_name_2</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">train_set_name_2</span> <span class="o">==</span> <span class="n">train_set_name_3</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">train_set_name_3</span> <span class="o">==</span> <span class="n">train_set_name_4</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-
     <span class="n">cat_train_set_y_1</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">train_set_y_1</span><span class="p">,</span> <span class="n">nb_classes</span><span class="p">)</span>
     <span class="n">cat_valid_set_y_1</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">valid_set_y_1</span><span class="p">,</span> <span class="n">nb_classes</span><span class="p">)</span>
     <span class="n">cat_test_set_y_1</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">test_set_y_1</span><span class="p">,</span> <span class="n">nb_classes</span><span class="p">)</span>
 
-
-
-    <span class="n">concat_train</span> <span class="o">=</span> <span class="n">square_early_concatenate_feature</span><span class="p">(</span><span class="n">train_set_x_1</span><span class="p">,</span> <span class="n">train_set_x_2</span><span class="p">,</span><span class="n">train_set_x_3</span><span class="p">,</span> <span class="n">train_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
-    <span class="n">concat_test</span> <span class="o">=</span> <span class="n">square_early_concatenate_feature</span><span class="p">(</span><span class="n">test_set_x_1</span><span class="p">,</span> <span class="n">test_set_x_2</span><span class="p">,</span> <span class="n">test_set_x_3</span><span class="p">,</span> <span class="n">test_set_x_4</span><span class="p">,[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
-    <span class="n">concat_valid</span> <span class="o">=</span> <span class="n">square_early_concatenate_feature</span><span class="p">(</span><span class="n">valid_set_x_1</span><span class="p">,</span> <span class="n">valid_set_x_2</span><span class="p">,</span> <span class="n">valid_set_x_3</span><span class="p">,</span> <span class="n">valid_set_x_4</span><span class="p">,[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
-
+    <span class="n">concat_train</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">train_set_x_1</span><span class="p">,</span> <span class="n">train_set_x_2</span><span class="p">,</span><span class="n">train_set_x_3</span><span class="p">,</span> <span class="n">train_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+    <span class="n">concat_test</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">test_set_x_1</span><span class="p">,</span> <span class="n">test_set_x_2</span><span class="p">,</span> <span class="n">test_set_x_3</span><span class="p">,</span> <span class="n">test_set_x_4</span><span class="p">,[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+    <span class="n">concat_valid</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">valid_set_x_1</span><span class="p">,</span> <span class="n">valid_set_x_2</span><span class="p">,</span> <span class="n">valid_set_x_3</span><span class="p">,</span> <span class="n">valid_set_x_4</span><span class="p">,[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
 
     <span class="n">cnn1</span> <span class="o">=</span> <span class="n">build_cnn</span><span class="p">(</span><span class="n">img_rows</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">img_cols</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">final_model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="n">final_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cnn1</span><span class="p">)</span>
     <span class="n">final_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">nb_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
 
-    <span class="c1">#model_optimizer = RMSprop(lr=0.1)</span>
     <span class="n">final_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span>
                   <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adadelta&#39;</span><span class="p">,</span>
-                  <span class="c1"># optimizer=model_optimizer,</span>
                   <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
 
-    <span class="n">model_adr</span> <span class="o">=</span> <span class="n">save_address</span> <span class="o">+</span> <span class="s1">&#39;/models/&#39;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">model_adr</span><span class="p">):</span>
-        <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;making models address ... &#39;</span> <span class="o">+</span> <span class="n">model_adr</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">model_adr</span><span class="p">)</span>
+    <span class="n">full_model_adr</span> <span class="o">=</span> <span class="n">create_model_folder</span><span class="p">(</span><span class="vm">__file__</span><span class="p">,</span> <span class="n">save_address</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
 
-    <span class="n">acc_checker</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">model_adr</span> <span class="o">+</span> <span class="s2">&quot;/best_weights.h5&quot;</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_acc&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                                  <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">loss_checker</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">full_model_adr</span> <span class="o">+</span> <span class="s2">&quot;/best_weights_loss.h5&quot;</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_loss&#39;</span><span class="p">,</span>
+                                   <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">acc_checker</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">full_model_adr</span> <span class="o">+</span> <span class="s2">&quot;/best_weights_acc.h5&quot;</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_acc&#39;</span><span class="p">,</span>
+                                  <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">train_flag</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">best_model_based_validset</span><span class="p">:</span>
+        <span class="n">callbacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">acc_checker</span><span class="p">,</span> <span class="n">loss_checker</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">callbacks</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">final_model_adr</span> <span class="o">=</span> <span class="n">full_model_adr</span> <span class="o">+</span> <span class="s1">&#39;/final_model/&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">final_model_adr</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;making... &#39;</span> <span class="o">+</span> <span class="n">final_model_adr</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_model_adr</span><span class="p">)</span>
+    <span class="n">out_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">final_model_adr</span> <span class="o">+</span> <span class="s1">&#39;/out.txt&#39;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pickle_adr</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">all_data_for_train_flag</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">concat_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;train samples&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">concat_valid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;validation samples&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">concat_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;test samples&#39;</span><span class="p">)</span>
 
-        <span class="n">final_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">cat_train_set_y_1</span><span class="p">,</span>
-                            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">nb_epoch</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                            <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">),</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">acc_checker</span><span class="p">])</span>
+        <span class="n">all_data_for_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">concat_valid</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">all_data_for_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">all_data_for_train</span><span class="p">,</span> <span class="n">concat_test</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">all_label_for_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">cat_train_set_y_1</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">all_label_for_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">all_label_for_train</span><span class="p">,</span> <span class="n">cat_test_set_y_1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">final_model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">model_adr</span> <span class="o">+</span> <span class="s2">&quot;/best_weights.h5&quot;</span><span class="p">)</span>
-        <span class="n">score</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_test</span><span class="p">,</span> <span class="n">cat_test_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test score:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-        <span class="c1">#print final_model.summary()</span>
-        <span class="nb">print</span> <span class="s1">&#39;done&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">all_data_for_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">concat_valid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">all_data_for_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">all_data_for_train</span><span class="p">,</span> <span class="n">concat_test</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">all_label_for_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cat_train_set_y_1</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">all_label_for_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">all_label_for_train</span><span class="p">,</span> <span class="n">cat_test_set_y_1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of training samples:&#39;</span><span class="p">,</span> <span class="n">all_data_for_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">final_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">all_data_for_train</span><span class="p">,</span> <span class="n">all_label_for_train</span><span class="p">,</span>
-                    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">nb_epoch</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">),</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">acc_checker</span><span class="p">])</span>
-        <span class="n">final_model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">model_adr</span> <span class="o">+</span> <span class="s2">&quot;/best_weights.h5&quot;</span><span class="p">)</span>
+                        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">nb_epoch</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">),</span> <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_test</span><span class="p">,</span> <span class="n">cat_test_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy (last):&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> * Test Accuracy (last): </span><span class="si">%0.4f%%</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="c1"># save model and weights</span>
-    <span class="n">json_string</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">save_address</span> <span class="o">+</span> <span class="s1">&#39;/model.pklz&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
-    <span class="n">cPickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">json_string</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">cPickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
-    <span class="n">final_model</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">save_address</span> <span class="o">+</span> <span class="s1">&#39;/model_weights.h5&#39;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">score2</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;valid accuracy (last):&#39;</span><span class="p">,</span> <span class="n">score2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">score3</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">cat_train_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train accuracy (last):&#39;</span><span class="p">,</span> <span class="n">score3</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">final_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">final_model_adr</span> <span class="o">+</span> <span class="s1">&#39;/multi_view_classifier.h5&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">best_model_based_validset</span><span class="p">:</span>
+        <span class="n">final_model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">full_model_adr</span> <span class="o">+</span> <span class="s2">&quot;/best_weights_acc.h5&quot;</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_test</span><span class="p">,</span> <span class="n">cat_test_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy (acc):&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> * Test Accuracy (acc): </span><span class="si">%0.4f%%</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">score2</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;valid accuracy (acc):&#39;</span><span class="p">,</span> <span class="n">score2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">score3</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">cat_train_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train accuracy (acc):&#39;</span><span class="p">,</span> <span class="n">score3</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">final_model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">full_model_adr</span> <span class="o">+</span> <span class="s2">&quot;/best_weights_loss.h5&quot;</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_test</span><span class="p">,</span> <span class="n">cat_test_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy (loss):&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> * Test Accuracy (loss): </span><span class="si">%0.4f%%</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">score2</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_valid</span><span class="p">,</span> <span class="n">cat_valid_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;valid accuracy (loss):&#39;</span><span class="p">,</span> <span class="n">score2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">score3</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">concat_train</span><span class="p">,</span> <span class="n">cat_train_set_y_1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train accuracy (loss):&#39;</span><span class="p">,</span> <span class="n">score3</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-   <span class="nb">print</span> <span class="s1">&#39;Start ...&#39;</span>
-   <span class="n">main</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span><span class="n">nb_epoch</span><span class="p">,</span><span class="n">train_flag</span><span class="p">,</span><span class="n">pickle_adr</span><span class="p">,</span><span class="n">save_address</span><span class="p">,</span><span class="n">number_of_classes</span><span class="p">,</span><span class="n">verbose</span><span class="p">)</span>
-   <span class="nb">print</span> <span class="s1">&#39;Done!&#39;</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Start ...&#39;</span><span class="p">)</span>
+   <span class="n">nb_classes</span> <span class="o">=</span> <span class="mi">22</span>
+   <span class="n">save_best_model</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="n">early_stopping</span> <span class="o">=</span> <span class="mi">0</span>
+
+   <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">30</span>
+   <span class="n">nb_epoch</span> <span class="o">=</span> <span class="mi">40</span>
+
+   <span class="c1"># whether to use all data for training the model (1) or just the train set for training the model (0)</span>
+   <span class="n">all_data_for_train_flag</span> <span class="o">=</span> <span class="mi">1</span>
+
+   <span class="c1"># the path where the pickles are there (default)</span>
+   <span class="n">pickle_adr</span> <span class="o">=</span> <span class="s1">&#39;/home/sara/information_science_journal/MLforGravitySpyJournal_from_neda_pc/pickles/pickle_2017-05-25_res0.3/&#39;</span>
+
+   <span class="c1"># the path where the trained model is saved</span>
+   <span class="n">save_address</span> <span class="o">=</span> <span class="s1">&#39;./multi_view_models/alldata5/&#39;</span>
+   <span class="n">save_best_model</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="n">image_size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">]</span>
+   <span class="n">verbose</span> <span class="o">=</span> <span class="mi">1</span>
+
+   <span class="n">main</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="p">,</span> <span class="n">all_data_for_train_flag</span><span class="p">,</span> <span class="n">pickle_adr</span><span class="p">,</span> <span class="n">save_address</span><span class="p">,</span>
+        <span class="n">nb_classes</span><span class="p">,</span> <span class="n">save_best_model</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Done!&#39;</span><span class="p">)</span>
 
 </pre></div>
 
@@ -381,7 +718,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.475.g33255d3.dirty',
+            VERSION:'0+untagged.509.g048e498.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

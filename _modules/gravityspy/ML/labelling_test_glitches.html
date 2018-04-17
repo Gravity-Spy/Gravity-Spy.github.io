@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ML.labelling_test_glitches &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
+  <title>gravityspy.ML.labelling_test_glitches &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="../../../index.html"/>
+    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0+untagged.475.g33255d3.dirty
+                0+untagged.509.g048e498.dirty
               </div>
             
           
@@ -93,6 +93,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -158,10 +160,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for gravityspy.ML.labelling_test_glitches</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">GS_utils</span> <span class="k">import</span> <span class="n">load_dataset_unlabelled_glitches</span>
+<span></span><span class="kn">from</span> <span class="nn">GS_utils</span> <span class="k">import</span> <span class="n">load_dataset_unlabelled_glitches</span><span class="p">,</span> <span class="n">concatenate_views</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">np_utils</span>
-<span class="kn">from</span> <span class="nn">functions_fusion</span> <span class="k">import</span> <span class="n">square_early_concatenate_feature</span>
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">cPickle</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">getopt</span> <span class="k">import</span> <span class="n">GetoptError</span><span class="p">,</span> <span class="n">getopt</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">model_from_json</span><span class="p">,</span> <span class="n">load_model</span>
@@ -173,13 +174,26 @@
 <span class="sd">By Sara Bahaadini and Neda Rohani, IVPL, Northwestern University.</span>
 <span class="sd">This function reads the trained ML classifier and pickle files of unlabelled glitches and generate the score</span>
 <span class="sd">file in a .csv file</span>
-<span class="sd">options:</span>
-<span class="sd">-p pickle_adr: the path where the pickle files of unlabelled gliches are saved there.</span>
-<span class="sd">-m model_adr: the path where the trained model is saved there.</span>
-<span class="sd">-s save_adr, the .csv file is saved in this address</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">pickle_adr</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    image_data : `pd.DataFrame` this is a DF with</span>
+<span class="sd">                 columns whose names are the same as</span>
+<span class="sd">                 the image and whose row entries are</span>
+<span class="sd">                 the b/w pixel values at some resoltion</span>
+<span class="sd">                 determined by `make_pickle`</span>
+
+<span class="sd">    model_adr : `str` path to folder containing model</span>
+
+<span class="sd">    image_size : `list`, default [140, 170]</span>
+
+<span class="sd">    verbose : `boolean`, default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">dw</span> <span class="o">=</span> <span class="n">label_glitches</span><span class="p">(</span><span class="n">pickle_adr</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
     <span class="n">dwslice</span> <span class="o">=</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
@@ -188,6 +202,23 @@
     <span class="k">return</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dwslice</span><span class="p">)</span>    
 
 <div class="viewcode-block" id="label_glitches"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.label_glitches">[docs]</a><span class="k">def</span> <span class="nf">label_glitches</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    image_data : `pd.DataFrame` this is a DF with</span>
+<span class="sd">                 columns whose names are the same as</span>
+<span class="sd">                 the image and whose row entries are</span>
+<span class="sd">                 the b/w pixel values at some resoltion</span>
+<span class="sd">                 determined by `make_pickle`</span>
+
+<span class="sd">    model_adr : `str` path to folder containing model</span>
+
+<span class="sd">    image_size : `list`, default [140, 170]</span>
+
+<span class="sd">    verbose : `boolean`, default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># the path where the trained is saved there</span>
     <span class="n">model_adr</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
@@ -200,11 +231,7 @@
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Retrieving the trained ML classifier&#39;</span><span class="p">)</span>
     <span class="n">load_folder</span> <span class="o">=</span> <span class="n">model_adr</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">load_folder</span> <span class="o">+</span> <span class="s1">&#39;/model.pklz&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
-    <span class="n">json_string</span> <span class="o">=</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-    <span class="n">final_model</span> <span class="o">=</span> <span class="n">model_from_json</span><span class="p">(</span><span class="n">json_string</span><span class="p">)</span>
-    <span class="n">final_model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">load_folder</span> <span class="o">+</span> <span class="s1">&#39;/model_weights.h5&#39;</span><span class="p">)</span>
+    <span class="n">final_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">load_folder</span> <span class="o">+</span> <span class="s1">&#39;/multi_view_classifier.h5&#39;</span><span class="p">)</span>
 
     <span class="n">final_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span>
                         <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adadelta&#39;</span><span class="p">,</span>
@@ -214,12 +241,12 @@
         <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Scoring unlabelled glitches&#39;</span><span class="p">)</span>
 
     <span class="c1"># read in 4 durations</span>
-    <span class="n">test_set_unlabelled_x_1</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">test_set_unlabelled_x_2</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;2.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">test_set_unlabelled_x_3</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;4.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">test_set_unlabelled_x_4</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;0.5.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_1</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;0.5.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_2</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;4.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_3</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_4</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;2.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
 
-    <span class="n">concat_test_unlabelled</span> <span class="o">=</span> <span class="n">square_early_concatenate_feature</span><span class="p">(</span><span class="n">test_set_unlabelled_x_1</span><span class="p">,</span>
+    <span class="n">concat_test_unlabelled</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">test_set_unlabelled_x_1</span><span class="p">,</span>
                             <span class="n">test_set_unlabelled_x_2</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_3</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
 
     <span class="n">score3_unlabelled</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">concat_test_unlabelled</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -228,6 +255,23 @@
 
 
 <div class="viewcode-block" id="get_feature_space"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.get_feature_space">[docs]</a><span class="k">def</span> <span class="nf">get_feature_space</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">semantic_model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    image_data : `pd.DataFrame` this is a DF with</span>
+<span class="sd">                 columns whose names are the same as</span>
+<span class="sd">                 the image and whose row entries are</span>
+<span class="sd">                 the b/w pixel values at some resoltion</span>
+<span class="sd">                 determined by `make_pickle`</span>
+
+<span class="sd">    semantic_model_adr : `str` path to folder containing similarity model</span>
+
+<span class="sd">    image_size : `list`, default [140, 170]</span>
+
+<span class="sd">    verbose : `boolean`, default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">semantic_idx_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">semantic_model_adr</span> <span class="o">+</span> <span class="s1">&#39;/semantic_idx_model.h5&#39;</span><span class="p">)</span>
@@ -278,7 +322,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.475.g33255d3.dirty',
+            VERSION:'0+untagged.509.g048e498.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

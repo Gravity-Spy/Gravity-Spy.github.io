@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.API.project &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
+  <title>gravityspy.API.project &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="../../../index.html"/>
+    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0+untagged.475.g33255d3.dirty
+                0+untagged.509.g048e498.dirty
               </div>
             
           
@@ -93,6 +93,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -162,18 +164,25 @@
 
 <span class="c1"># ---- Import standard modules to the python path.</span>
 
-<span class="kn">from</span> <span class="nn">panoptes_client</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">panoptes_client</span> <span class="k">import</span> <span class="n">SubjectSet</span><span class="p">,</span> <span class="n">Project</span><span class="p">,</span> <span class="n">Workflow</span>
 <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="k">import</span> <span class="n">coo_matrix</span>
 <span class="kn">from</span> <span class="nn">gwpy.table</span> <span class="k">import</span> <span class="n">EventTable</span>
 
-<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">operator</span><span class="o">,</span> <span class="nn">pickle</span><span class="o">,</span> <span class="nn">copy</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ZooProject&#39;</span><span class="p">,</span> <span class="s1">&#39;flatten&#39;</span><span class="p">,</span> <span class="s1">&#39;GravitySpyProject&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ZooProject&#39;</span><span class="p">,</span> <span class="s1">&#39;flatten&#39;</span><span class="p">,</span> <span class="s1">&#39;GravitySpyProject&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;workflow_with_most_answers&#39;</span><span class="p">]</span>
 
 <span class="c1"># This function generically flatten a dict</span>
 <div class="viewcode-block" id="flatten"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.flatten">[docs]</a><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">parent_key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">new_key</span> <span class="o">=</span> <span class="n">parent_key</span> <span class="o">+</span> <span class="n">sep</span> <span class="o">+</span> <span class="n">k</span> <span class="k">if</span> <span class="n">parent_key</span> <span class="k">else</span> <span class="n">k</span>
@@ -184,6 +193,17 @@
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
 
 
+<div class="viewcode-block" id="workflow_with_most_answers"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.workflow_with_most_answers">[docs]</a><span class="k">def</span> <span class="nf">workflow_with_most_answers</span><span class="p">(</span><span class="n">db</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">maxcount</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">maxcount</span><span class="p">]</span>
+
+
 <div class="viewcode-block" id="ZooProject"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject">[docs]</a><span class="k">class</span> <span class="nc">ZooProject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    `ZooProject` inherits from the Project class</span>
@@ -191,18 +211,7 @@
 <span class="sd">    wrapper functions to extracts helpful</span>
 <span class="sd">    project information.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zoo_project_id</span><span class="p">,</span> <span class="n">cache_zoo_project</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">load_zoo_project_from_cache</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
-        <span class="k">if</span> <span class="n">load_zoo_project_from_cache</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Trying to load project from cache...&#39;</span><span class="p">)</span>
-            <span class="n">inputFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zoo_project_id</span><span class="p">),</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
-            <span class="c1"># Pickle dictionary using protocol 0.</span>
-            <span class="n">project</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">inputFile</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;successful&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">project_info</span> <span class="o">=</span>  <span class="n">project</span><span class="o">.</span><span class="n">project_info</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">workflow_info</span>
-            <span class="k">return</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zoo_project_id</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">zoo_project_id</span> <span class="o">=</span> <span class="n">zoo_project_id</span>
         <span class="n">tmp</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">zoo_project_id</span><span class="p">)</span>
@@ -212,22 +221,46 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_info</span><span class="p">[</span><span class="s1">&#39;configuration_workflow_order&#39;</span><span class="p">]</span>
         <span class="n">workflows</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">iWorkflow</span><span class="p">))</span> <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow_order</span> <span class="o">=</span> <span class="n">workflows</span>
 
         <span class="c1"># Save workflow information</span>
         <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="n">workflows</span><span class="p">:</span>
             <span class="n">tmp1</span> <span class="o">=</span> <span class="n">Workflow</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">iWorkflow</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">iWorkflow</span><span class="p">)]</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">tmp1</span><span class="o">.</span><span class="n">raw</span><span class="p">)</span>
 
-        <span class="c1"># For faster creation of the ZooProject object</span>
-        <span class="c1"># it is recommended to save Object to cache</span>
-        <span class="c1"># and to use the load_zoo_project_from_cache option</span>
-        <span class="c1"># for future use.</span>
-        <span class="k">if</span> <span class="n">cache_zoo_project</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Saving project to cache...&#39;</span><span class="p">)</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zoo_project_id</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ZooProject.cache_project"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.cache_project">[docs]</a>    <span class="k">def</span> <span class="nf">cache_project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A dict with keys of workflow IDs and values list</span>
+<span class="sd">        of golden sets associated with that workflow</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zoo_project_id</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+        <span class="c1"># Pickle dictionary using protocol 0.</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span></div>
+        <span class="k">return</span>
+
+<div class="viewcode-block" id="ZooProject.load_project_from_cache"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.load_project_from_cache">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load_project_from_cache</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cache_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cache_file : `str` needs a &#39;.pkl&#39; extension</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A dict with keys of workflow IDs and values list</span>
+<span class="sd">        of golden sets associated with that workflow</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cache_file</span><span class="p">),</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pickle_file</span><span class="p">:</span>
             <span class="c1"># Pickle dictionary using protocol 0.</span>
-            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
-            
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pickle_file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;latin1&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span></div>
+                <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pickle_file</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="ZooProject.get_golden_subject_sets"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.get_golden_subject_sets">[docs]</a>    <span class="k">def</span> <span class="nf">get_golden_subject_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
@@ -243,15 +276,17 @@
         <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">workflowGoldenSetDict</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">]</span> <span class="o">=</span> \
-                    <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">][</span><span class="s1">&#39;configuration_gold_standard_sets&#39;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">]</span>\
+                        <span class="p">[</span><span class="s1">&#39;configuration_gold_standard_sets&#39;</span><span class="p">]</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="c1"># Workflow has no assosciated golden set</span>
                 <span class="n">workflowGoldenSetDict</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</div>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflowGoldenSetDict</span> <span class="o">=</span> <span class="n">workflowGoldenSetDict</span></div>
         <span class="k">return</span> <span class="n">workflowGoldenSetDict</span>
 
 
-<div class="viewcode-block" id="ZooProject.get_golden_images"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.get_golden_images">[docs]</a>    <span class="k">def</span> <span class="nf">get_golden_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ZooProject.get_golden_images"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.get_golden_images">[docs]</a>    <span class="k">def</span> <span class="nf">get_golden_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 
@@ -263,12 +298,17 @@
         <span class="n">workflowGoldenSetImagesDict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">workflowGoldenSetDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_golden_subject_sets</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="n">workflowGoldenSetDict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">workflow</span><span class="p">:</span>
+            <span class="n">workflows</span> <span class="o">=</span> <span class="n">workflow</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">workflows</span> <span class="o">=</span> <span class="n">workflowGoldenSetDict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="n">workflows</span><span class="p">:</span>
             <span class="n">goldenImages</span> <span class="o">=</span> <span class="p">{}</span>
 
             <span class="k">for</span> <span class="n">iGoldenSubjectSet</span> <span class="ow">in</span> <span class="n">workflowGoldenSetDict</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">]:</span>
                 <span class="n">tmp</span> <span class="o">=</span> <span class="n">SubjectSet</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">iGoldenSubjectSet</span><span class="p">)</span>
-
+                <span class="n">tmpSubjects</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">subjects</span>
 
                 <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -276,12 +316,13 @@
                         <span class="n">goldenImages</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">nextSubject</span><span class="o">.</span><span class="n">id</span><span class="p">)]</span> <span class="o">=</span> \
                             <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">nextSubject</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;subject_id&#39;</span><span class="p">]),</span>\
                              <span class="nb">str</span><span class="p">(</span><span class="n">nextSubject</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;#Label&#39;</span><span class="p">]),</span>
-                             <span class="nb">int</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])]</span>
+                             <span class="nb">int</span><span class="p">(</span><span class="n">nextSubject</span><span class="o">.</span><span class="n">id</span><span class="p">)]</span>
                     <span class="k">except</span><span class="p">:</span>
                         <span class="k">break</span>
 
             <span class="n">workflowGoldenSetImagesDict</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">]</span> <span class="o">=</span> <span class="n">goldenImages</span>
-</div>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflowGoldenSetImagesDict</span> <span class="o">=</span> <span class="n">workflowGoldenSetImagesDict</span></div>
         <span class="k">return</span> <span class="n">workflowGoldenSetImagesDict</span>
 
 
@@ -312,7 +353,8 @@
                                              <span class="p">[</span><span class="s1">&#39;tasks_T1_choicesOrder&#39;</span><span class="p">]:</span>
                 <span class="n">answerDict</span><span class="p">[</span><span class="n">iAnswer</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">workflowDictAnswers</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">]</span> <span class="o">=</span> <span class="n">answerDict</span>
-</div>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflowDictAnswers</span> <span class="o">=</span> <span class="n">workflowDictAnswers</span></div>
         <span class="k">return</span> <span class="n">workflowDictAnswers</span>
 
 
@@ -345,7 +387,8 @@
             <span class="n">subjectset_id</span> <span class="o">=</span> <span class="p">[</span><span class="n">iSubject</span> <span class="k">for</span> <span class="n">iSubject</span> <span class="ow">in</span> <span class="n">subjectset_id</span>\
                             <span class="k">if</span> <span class="n">iSubject</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">goldenset</span><span class="p">]</span>
             <span class="n">workflowDictSubjectSets</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">]</span> <span class="o">=</span> <span class="n">subjectset_id</span>
-</div></div>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflowDictSubjectSets</span> <span class="o">=</span> <span class="n">workflowDictSubjectSets</span></div></div>
         <span class="k">return</span> <span class="n">workflowDictSubjectSets</span>
 
 
@@ -365,16 +408,23 @@
 <span class="sd">        A dict with keys of workflow IDs and values list</span>
 <span class="sd">        of golden sets associated with that workflow</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;level_structure&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_structure</span>
+
         <span class="n">level_structure</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">workflowDictSubjectSets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subject_sets_per_workflow</span><span class="p">(</span><span class="n">workflow</span><span class="o">=</span><span class="n">workflow</span><span class="p">)</span>
+        <span class="n">workflowDictSubjectSets</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_subject_sets_per_workflow</span><span class="p">(</span><span class="n">workflow</span><span class="o">=</span><span class="n">workflow</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">iworkflow</span> <span class="ow">in</span> <span class="n">workflowDictSubjectSets</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="c1"># If it is final workflow level 4 subject sets are also linked</span>
             <span class="c1"># so need to filter for level 5 subject sets</span>
             <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">iworkflow</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2117</span><span class="p">:</span>
-                <span class="n">IDfilter</span> <span class="o">=</span> <span class="n">IDfilter</span> <span class="o">+</span> <span class="s1">&#39; (M)&#39;</span>
+                <span class="n">subjectset_id</span> <span class="o">=</span> <span class="p">[</span><span class="n">iid</span> <span class="k">for</span> <span class="n">iid</span> <span class="ow">in</span> \
+                                <span class="n">workflowDictSubjectSets</span><span class="p">[</span><span class="n">iworkflow</span><span class="p">]</span> \
+                                <span class="k">if</span> <span class="n">iid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">workflowDictSubjectSets</span><span class="p">[</span><span class="s1">&#39;2360&#39;</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">subjectset_id</span> <span class="o">=</span> <span class="n">workflowDictSubjectSets</span><span class="p">[</span><span class="n">iworkflow</span><span class="p">]</span>
 
-            <span class="n">subjectset_id</span> <span class="o">=</span> <span class="n">workflowDictSubjectSets</span><span class="p">[</span><span class="n">iworkflow</span><span class="p">]</span>
             <span class="c1"># Determine Display names of subject set</span>
             <span class="n">subjectset_displayname_id</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">iSubjectSet</span> <span class="ow">in</span> <span class="n">subjectset_id</span><span class="p">:</span>
@@ -385,12 +435,13 @@
                     <span class="n">subjectset_displayname_id</span><span class="p">[</span><span class="n">str_tmp</span><span class="p">]</span> <span class="o">=</span> \
                         <span class="p">(</span><span class="n">iworkflow</span><span class="p">,</span> <span class="n">iSubjectSet</span><span class="p">,</span>
                             <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">iThres</span><span class="p">)</span>
-                                <span class="k">for</span> <span class="n">iThres</span> 
+                                <span class="k">for</span> <span class="n">iThres</span>
                                     <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;\d+\.\d+&quot;</span><span class="p">,</span> <span class="n">displayname</span><span class="p">)</span>
                             <span class="p">]</span>
                         <span class="p">)</span>
             <span class="n">level_structure</span><span class="p">[</span><span class="n">iworkflow</span><span class="p">]</span> <span class="o">=</span> <span class="n">subjectset_displayname_id</span>
-</div>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_structure</span> <span class="o">=</span> <span class="n">level_structure</span></div>
         <span class="k">return</span> <span class="n">level_structure</span>
 
 
@@ -403,31 +454,26 @@
 <span class="sd">        A dict with keys of workflow IDs and values list</span>
 <span class="sd">        of golden sets associated with that workflow</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
         <span class="c1"># Load classifications, and golden images from DB</span>
-        <span class="n">classifications</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;classificationsdev&#39;</span><span class="p">,</span>
-                                           <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;links_user&#39;</span><span class="p">,</span>
-                                                    <span class="s1">&#39;links_subjects&#39;</span><span class="p">,</span>
-                                                    <span class="s1">&#39;links_workflow&#39;</span><span class="p">,</span>
-                                                    <span class="s1">&#39;annotations_value_choiceINT&#39;</span><span class="p">])</span>
-
-        <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span> 
-        <span class="n">golden_images</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;goldenimages&#39;</span><span class="p">)</span>
-        <span class="n">golden_images_df</span> <span class="o">=</span> <span class="n">golden_images</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
-
         <span class="c1"># Make sure choice is a valid index</span>
-        <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-                              <span class="n">classifications</span><span class="o">.</span><span class="n">annotations_value_choiceINT</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
-                                             <span class="p">]</span>
-
         <span class="c1"># Make sure to evaluate only logged in users</span>
-        <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">classifications</span><span class="o">.</span><span class="n">links_user</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
-
         <span class="c1"># Ignore NONEOFTHEABOVE classificatios when constructing confusion</span>
         <span class="c1"># matrix</span>
-        <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-                              <span class="n">classifications</span><span class="o">.</span><span class="n">annotations_value_choiceINT</span> <span class="o">!=</span> <span class="mi">12</span>
-                                             <span class="p">]</span>
+        <span class="c1"># Make sure to the subject classified was a golden image</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;classificationsdev WHERE </span><span class="se">\&quot;</span><span class="s1">annotations_value_choiceINT</span><span class="se">\&quot;</span><span class="s1"> != </span><span class="se">\</span>
+<span class="s1">            -1 AND </span><span class="se">\&quot;</span><span class="s1">links_user</span><span class="se">\&quot;</span><span class="s1"> != 0 AND </span><span class="se">\</span>
+<span class="s1">            </span><span class="se">\&quot;</span><span class="s1">annotations_value_choiceINT</span><span class="se">\&quot;</span><span class="s1"> != 12 AND </span><span class="se">\</span>
+<span class="s1">            CAST(links_subjects AS FLOAT) IN </span><span class="se">\</span>
+<span class="s1">            (SELECT </span><span class="se">\&quot;</span><span class="s1">links_subjects</span><span class="se">\&quot;</span><span class="s1"> FROM goldenimages)&#39;</span>
+
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;links_user&#39;</span><span class="p">,</span> <span class="s1">&#39;links_subjects&#39;</span><span class="p">,</span> <span class="s1">&#39;links_workflow&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;annotations_value_choiceINT&#39;</span><span class="p">]</span>
+        <span class="n">classifications</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
+                                           <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">)</span>
+
+        <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+        <span class="n">golden_images</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;goldenimages&#39;</span><span class="p">)</span>
+        <span class="n">golden_images_df</span> <span class="o">=</span> <span class="n">golden_images</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
 
         <span class="c1"># From answers Dict determine number of classes</span>
         <span class="n">numClasses</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_answers</span><span class="p">(</span><span class="n">workflow</span><span class="o">=</span><span class="mi">2360</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
@@ -446,7 +492,8 @@
         <span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">links_subjects</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
         <span class="c1"># Create &quot;Sparse Matrices&quot; and perform a normalization task on them.</span>
-        <span class="c1"># Afterwards determine if the users diagonal is above the threshold set above</span>
+        <span class="c1"># Afterwards determine if the users diagonal</span>
+        <span class="c1"># is above the threshold set above</span>
         <span class="n">confusion_matrices</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">iUser</span> <span class="ow">in</span> <span class="n">test</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;links_user&#39;</span><span class="p">):</span>
             <span class="n">columns</span> <span class="o">=</span> <span class="n">iUser</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">annotations_value_choiceINT</span>
@@ -456,30 +503,121 @@
                                                              <span class="n">numClasses</span><span class="p">))</span>
             <span class="n">conf_divided</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span> <span class="o">=</span> \
                 <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diagflat</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
-                                            <span class="n">tmp</span><span class="o">.</span><span class="n">todense</span><span class="p">(</span><span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+                                            <span class="n">tmp</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+
+            <span class="n">conf_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;userID&#39;</span> <span class="p">:</span> <span class="n">iUser</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;conf_matrix&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">conf_divided</span><span class="p">],</span>
+                  <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">conf_divided</span><span class="p">)]}</span>
+
             <span class="n">confusion_matrices</span> <span class="o">=</span> \
                 <span class="n">confusion_matrices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                                                      <span class="p">{</span><span class="s1">&#39;userID&#39;</span> <span class="p">:</span> <span class="n">iUser</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                                                       <span class="s1">&#39;conf_matrix&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">conf_divided</span><span class="p">],</span>
-                                                       <span class="s1">&#39;alpha&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">conf_divided</span><span class="p">)]},</span>
-                                                      <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">iUser</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
-</div>
+                                                       <span class="n">conf_dict</span><span class="p">,</span>
+                                                       <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">iUser</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">confusion_matrices</span> <span class="o">=</span> <span class="n">confusion_matrices</span></div>
         <span class="k">return</span> <span class="n">confusion_matrices</span>
 
 
-<div class="viewcode-block" id="GravitySpyProject.determine_level"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.determine_level">[docs]</a>    <span class="k">def</span> <span class="nf">determine_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="GravitySpyProject.determine_level"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.determine_level">[docs]</a>    <span class="k">def</span> <span class="nf">determine_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        alpha = 1xN vector of proficiency scores</span>
+<span class="sd">        where N is the number of glitch classes</span>
 
-        <span class="n">answers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_answers</span><span class="p">(</span><span class="n">workflow</span><span class="o">=</span><span class="mi">2360</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">alpha</span><span class="p">:</span>
-            <span class="n">numClasses</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">answers</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A dict with keys of workflow IDs and values list</span>
+<span class="sd">        of golden sets associated with that workflow</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_answers</span><span class="p">()</span>
+        <span class="n">workflow</span> <span class="o">=</span> <span class="n">workflow_with_most_answers</span><span class="p">(</span><span class="n">answers</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">answersDictRev</span> <span class="o">=</span>  <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="n">workflow</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+        <span class="n">answersDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">answersDictRev</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+
+        <span class="n">answersidx</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">answers</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">answersidx</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answersDict</span><span class="p">[</span><span class="n">k1</span><span class="p">]</span> <span class="k">for</span> <span class="n">k1</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> \
+                                <span class="k">if</span> <span class="n">k1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;NONEOFTHEABOVE&#39;</span><span class="p">]]</span>
+
+        <span class="c1"># Obtain workflow order</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_info</span><span class="p">[</span><span class="s1">&#39;configuration_workflow_order&#39;</span><span class="p">]</span>
+        <span class="n">workflows</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">iWorkflow</span><span class="p">))</span> <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
+        <span class="n">levelWorkflowDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">workflows</span><span class="p">))</span>
+        <span class="n">workflowLevelDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">levelWorkflowDict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">alpha</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">numClasses</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">answersDict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="n">alpha</span> <span class="o">=</span> <span class="o">.</span><span class="mi">7</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">numClasses</span><span class="p">)</span>
             <span class="n">alpha</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.65</span>
 
-        
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;confusion_matrices&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calculate_confusion_matrices</span><span class="p">()</span>
 
-        <span class="c1"># Retrieve Answers</span>
-        <span class="n">answersDictRev</span> <span class="o">=</span>  <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s1">&#39;2360&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span></div></div>
-        <span class="n">answersDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">answersDictRev</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">iuser</span><span class="p">,</span> <span class="n">ialpha</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">confusion_matrices</span><span class="o">.</span><span class="n">userID</span><span class="p">,</span> 
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">confusion_matrices</span><span class="o">.</span><span class="n">alpha</span><span class="p">):</span>
+
+            <span class="n">proficiencyidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ialpha</span> <span class="o">&gt;</span> <span class="n">alpha</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># determine whether a user is proficient at &gt;= number</span>
+            <span class="c1"># of answers on a level. If yes, the check next level</span>
+            <span class="c1"># until &lt; at which point you know which level the user</span>
+            <span class="c1"># should be on</span>
+
+            <span class="n">maxlevel</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">levelWorkflowDict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">maxworkflow</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">levelWorkflowDict</span><span class="p">[</span><span class="n">maxlevel</span><span class="p">])</span>
+            <span class="c1"># first check if they should be on level 5 and end</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">answersidx</span><span class="p">[</span><span class="n">maxworkflow</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="nb">set</span><span class="p">(</span><span class="n">proficiencyidx</span><span class="p">)):</span>
+                <span class="n">level</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">maxworkflow</span><span class="p">,</span> <span class="n">maxlevel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">iuser</span><span class="p">])</span>
+                <span class="k">continue</span>
+
+            <span class="n">minlevel</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">levelWorkflowDict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">minworkflow</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">levelWorkflowDict</span><span class="p">[</span><span class="n">minlevel</span><span class="p">])</span>
+            <span class="c1"># second check if they should be on level 1 and end</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">proficiencyidx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">set</span><span class="p">(</span><span class="n">answersidx</span><span class="p">[</span><span class="n">minworkflow</span><span class="p">])):</span>
+                <span class="n">level</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">minworkflow</span><span class="p">,</span> <span class="n">minlevel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">iuser</span><span class="p">])</span>
+                <span class="k">continue</span>
+            
+            <span class="k">for</span> <span class="n">ilevel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxlevel</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="c1"># first check if they should be on level 5 and end</span>
+                <span class="n">next_workflow</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">levelWorkflowDict</span><span class="p">[</span><span class="n">ilevel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="n">curr_workflow</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">levelWorkflowDict</span><span class="p">[</span><span class="n">ilevel</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">answersidx</span><span class="p">[</span><span class="n">curr_workflow</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="nb">set</span><span class="p">(</span><span class="n">proficiencyidx</span><span class="p">))</span> \
+                   <span class="ow">and</span> \
+                   <span class="p">(</span><span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">answersidx</span><span class="p">[</span><span class="n">next_workflow</span><span class="p">])</span> \
+                       <span class="o">&lt;=</span> <span class="nb">set</span><span class="p">(</span><span class="n">proficiencyidx</span><span class="p">)):</span>
+                    <span class="n">curr_workflow</span> <span class="o">=</span> <span class="n">levelWorkflowDict</span><span class="p">[</span><span class="n">ilevel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="n">curr_level</span> <span class="o">=</span> <span class="n">workflowLevelDict</span><span class="p">[</span><span class="n">curr_workflow</span><span class="p">]</span>
+                    <span class="n">level</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">curr_workflow</span><span class="p">,</span> <span class="n">curr_level</span><span class="p">,</span> <span class="n">iuser</span><span class="p">])</span>
+
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;curr_workflow&#39;</span><span class="p">,</span> <span class="s1">&#39;curr_level&#39;</span><span class="p">,</span> <span class="s1">&#39;userID&#39;</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GravitySpyProject.check_level_by_classification"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.check_level_by_classification">[docs]</a>    <span class="k">def</span> <span class="nf">check_level_by_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Obtain workflow order</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_info</span><span class="p">[</span><span class="s1">&#39;configuration_workflow_order&#39;</span><span class="p">]</span>
+        <span class="n">workflows</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">iWorkflow</span><span class="p">))</span> <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
+        <span class="n">levelWorkflowDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">workflows</span><span class="p">))</span>
+        <span class="n">workflowLevelDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">levelWorkflowDict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;classificationsdev GROUP BY links_user, links_workflow&#39;</span>
+        <span class="n">userlevels</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
+                         <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;links_user&#39;</span><span class="p">,</span> <span class="s1">&#39;links_workflow&#39;</span><span class="p">])</span>
+
+        <span class="n">userlevels</span> <span class="o">=</span> <span class="n">userlevels</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+        <span class="n">userlevels</span><span class="p">[</span><span class="s1">&#39;Level&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">userlevels</span><span class="o">.</span><span class="n">links_workflow</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                                  <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">workflowLevelDict</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+
+        <span class="n">init_user_levels</span> <span class="o">=</span> <span class="n">userlevels</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;links_user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">Level</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+        <span class="n">init_user_levels_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;userID&#39;</span> <span class="p">:</span> <span class="n">init_user_levels</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                                <span class="s1">&#39;workflowInit&#39;</span> <span class="p">:</span> <span class="n">init_user_levels</span><span class="o">.</span><span class="n">tolist</span><span class="p">()}</span>
+
+        <span class="n">userStatusInit</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">init_user_levels_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">userStatusInit</span> <span class="o">=</span> <span class="n">userStatusInit</span></div></div>
+        <span class="k">return</span> <span class="n">userStatusInit</span>
 </pre></div>
 
            </div>
@@ -516,7 +654,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.475.g33255d3.dirty',
+            VERSION:'0+untagged.509.g048e498.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

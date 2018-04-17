@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="../index.html"/> 
+    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0+untagged.475.g33255d3.dirty
+                0+untagged.509.g048e498.dirty
               </div>
             
           
@@ -92,6 +92,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -158,8 +160,70 @@
             
   <span class="target" id="module-gravityspy.ML.train_classifier"></span><dl class="function">
 <dt id="gravityspy.ML.train_classifier.main">
-<code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">main</code><span class="sig-paren">(</span><em>batch_size</em>, <em>nb_epoch</em>, <em>train_flag</em>, <em>pickle_adr</em>, <em>save_address</em>, <em>number_of_classes</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.main" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">main</code><span class="sig-paren">(</span><em>batch_size, nb_epoch, all_data_for_train_flag, pickle_adr, save_address, number_of_classes, best_model_based_validset, image_size=[140, 170], verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.main" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="gravityspy.ML.train_classifier.make_model">
+<code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">make_model</code><span class="sig-paren">(</span><em>data, model_folder='model', batch_size=22, nb_epoch=10, nb_classes=22, fraction_validation=0.125, fraction_testing=None, best_model_based_validset=0, image_size=[140, 170], random_seed=1986, verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#make_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.make_model" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data</strong> : <cite>str</cite> file path to pickled trianing set data</p>
+<p><strong>model_folder</strong> : <cite>str</cite> path to folder you would like to save</p>
+<blockquote>
+<div><p>the model
+optional Default <cite>model</cite></p>
+</div></blockquote>
+<p><strong>batch_size</strong> : <cite>int</cite> default 22</p>
+<p><strong>nb_epoch</strong> : <cite>int</cite> default 40</p>
+<p><strong>nb_classes</strong> : <cite>int</cite> default 22</p>
+<p><strong>fraction_validation</strong> : <cite>float</cite> default .125</p>
+<p><strong>fraction_testing</strong> : <cite>float</cite> default None</p>
+<p><strong>all_data_for_train_flag</strong> : <cite>int</cite> default 1</p>
+<p><strong>best_model_based_validset</strong> : <cite>int</cite> default 0</p>
+<p><strong>image_size</strong> : <cite>int</cite> default [140, 170]</p>
+<p><strong>random_seed</strong> : <cite>int</cite>  default 1986</p>
+<p><strong>verbose</strong> : <cite>boolean</cite>, default False</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A training Convultional Neural Network</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravityspy.ML.train_classifier.pickle_trainingset">
+<code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">pickle_trainingset</code><span class="sig-paren">(</span><em>path_to_trainingset</em>, <em>save_address='pickleddata'</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#pickle_trainingset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.pickle_trainingset" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>path_to_trainingset</strong> : <cite>str</cite> pwd to trainingset</p>
+<blockquote>
+<div><p>where format of training set folder
+is “somedirectoryname”/”classname/”images”</p>
+</div></blockquote>
+<p><strong>save_address</strong> : <cite>str</cite> path to folder you would like to save</p>
+<blockquote>
+<div><p>the pixelated training data
+optional Default <cite>pickleddata</cite></p>
+</div></blockquote>
+<p><strong>verbose</strong> : <cite>boolean</cite>, default False</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A pickled <cite>pandas.DataFrame</cite> with rows of samples</p>
+<p>and columns containing the pixelated 0.5, 1.0, 2.0,</p>
+<p>and 4.0 duration images as well as a column with the True</p>
+<p class="last">Label and a column with an ID that uniquely identifies that sample</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 
 
@@ -197,7 +261,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.475.g33255d3.dirty',
+            VERSION:'0+untagged.509.g048e498.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -1,4 +1,0 @@
-.. automodule:: gravityspy.API.getLabelDict
-    :members:
-    :undoc-members:
-    :show-inheritance:

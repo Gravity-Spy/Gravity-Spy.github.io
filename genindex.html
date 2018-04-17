@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
+  <title>Index &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
   
 
   
@@ -38,7 +38,7 @@
         <link rel="index" title="Index"
               href="#"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="index.html"/> 
+    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0+untagged.475.g33255d3.dirty
+                0+untagged.509.g048e498.dirty
               </div>
             
           
@@ -93,6 +93,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -162,13 +164,12 @@
  <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
- | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#V"><strong>V</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
  
 </div>
@@ -189,13 +190,21 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.cache_project">cache_project() (gravityspy.API.project.ZooProject method)</a>
+</li>
       <li><a href="api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices">calculate_confusion_matrices() (gravityspy.API.project.GravitySpyProject method)</a>
+</li>
+      <li><a href="api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.check_level_by_classification">check_level_by_classification() (gravityspy.API.project.GravitySpyProject method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/gravityspy.utils.log.html#gravityspy.utils.log.color_text">color_text() (in module gravityspy.utils.log)</a>
 </li>
       <li><a href="api/gravityspy.utils.log.html#gravityspy.utils.log.ColoredFormatter">ColoredFormatter (class in gravityspy.utils.log)</a>
+</li>
+      <li><a href="api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.concatenate_views">concatenate_views() (in module gravityspy.ML.GS_utils)</a>
+</li>
+      <li><a href="api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.create_model_folder">create_model_folder() (in module gravityspy.ML.GS_utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -208,25 +217,11 @@
   </ul></td>
 </tr></table>
 
-<h2 id="E">E</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/gravityspy.ML.functions_fusion.html#gravityspy.ML.functions_fusion.early_concatenate_feature">early_concatenate_feature() (in module gravityspy.ML.functions_fusion)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/gravityspy.API.getLabelDict.html#gravityspy.API.getLabelDict.flatten">flatten() (in module gravityspy.API.getLabelDict)</a>
-
-      <ul>
-        <li><a href="api/gravityspy.API.project.html#gravityspy.API.project.flatten">(in module gravityspy.API.project)</a>
+      <li><a href="api/gravityspy.API.project.html#gravityspy.API.project.flatten">flatten() (in module gravityspy.API.project)</a>
 </li>
-        <li><a href="api/gravityspy.API.projectStructure.html#gravityspy.API.projectStructure.flatten">(in module gravityspy.API.projectStructure)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/gravityspy.utils.log.html#gravityspy.utils.log.Logger.FORMAT">FORMAT (gravityspy.utils.log.Logger attribute)</a>
@@ -251,23 +246,15 @@
 </li>
       <li><a href="api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.get_subject_sets_per_workflow">get_subject_sets_per_workflow() (gravityspy.API.project.ZooProject method)</a>
 </li>
-      <li><a href="api/gravityspy.API.getLabelDict.html#gravityspy.API.getLabelDict.getAnswers">getAnswers() (in module gravityspy.API.getLabelDict)</a>
-</li>
       <li><a href="api/gravityspy.html#module-gravityspy">gravityspy (module)</a>
 </li>
       <li><a href="api/gravityspy.API.html#module-gravityspy.API">gravityspy.API (module)</a>
-</li>
-      <li><a href="api/gravityspy.API.getLabelDict.html#module-gravityspy.API.getLabelDict">gravityspy.API.getLabelDict (module)</a>
 </li>
       <li><a href="api/gravityspy.API.project.html#module-gravityspy.API.project">gravityspy.API.project (module)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/gravityspy.API.projectStructure.html#module-gravityspy.API.projectStructure">gravityspy.API.projectStructure (module)</a>
-</li>
       <li><a href="api/gravityspy.ML.html#module-gravityspy.ML">gravityspy.ML (module)</a>
-</li>
-      <li><a href="api/gravityspy.ML.functions_fusion.html#module-gravityspy.ML.functions_fusion">gravityspy.ML.functions_fusion (module)</a>
 </li>
       <li><a href="api/gravityspy.ML.GS_utils.html#module-gravityspy.ML.GS_utils">gravityspy.ML.GS_utils (module)</a>
 </li>
@@ -278,6 +265,8 @@
       <li><a href="api/gravityspy.ML.train_classifier.html#module-gravityspy.ML.train_classifier">gravityspy.ML.train_classifier (module)</a>
 </li>
       <li><a href="api/gravityspy.plot.html#module-gravityspy.plot">gravityspy.plot (module)</a>
+</li>
+      <li><a href="api/gravityspy.plot.plot.html#module-gravityspy.plot.plot">gravityspy.plot.plot (module)</a>
 </li>
       <li><a href="api/gravityspy.utils.html#module-gravityspy.utils">gravityspy.utils (module)</a>
 </li>
@@ -293,13 +282,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.label_glitches">label_glitches() (in module gravityspy.ML.labelling_test_glitches)</a>
 </li>
-      <li><a href="api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.listdir_nohidden">listdir_nohidden() (in module gravityspy.ML.GS_utils)</a>
+      <li><a href="api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.load_data">load_data() (in module gravityspy.ML.GS_utils)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.load_data">load_data() (in module gravityspy.ML.GS_utils)</a>
-</li>
       <li><a href="api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.load_dataset_unlabelled_glitches">load_dataset_unlabelled_glitches() (in module gravityspy.ML.GS_utils)</a>
+</li>
+      <li><a href="api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.load_project_from_cache">load_project_from_cache() (gravityspy.API.project.ZooProject class method)</a>
 </li>
       <li><a href="api/gravityspy.utils.log.html#gravityspy.utils.log.Logger">Logger (class in gravityspy.utils.log)</a>
 </li>
@@ -309,16 +298,16 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/gravityspy.API.projectStructure.html#gravityspy.API.projectStructure.main">main() (in module gravityspy.API.projectStructure)</a>
+      <li><a href="api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.main">main() (in module gravityspy.ML.labelling_test_glitches)</a>
 
       <ul>
-        <li><a href="api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.main">(in module gravityspy.ML.labelling_test_glitches)</a>
-</li>
         <li><a href="api/gravityspy.ML.make_pickle_for_linux.html#gravityspy.ML.make_pickle_for_linux.main">(in module gravityspy.ML.make_pickle_for_linux)</a>
 </li>
         <li><a href="api/gravityspy.ML.train_classifier.html#gravityspy.ML.train_classifier.main">(in module gravityspy.ML.train_classifier)</a>
 </li>
       </ul></li>
+      <li><a href="api/gravityspy.ML.train_classifier.html#gravityspy.ML.train_classifier.make_model">make_model() (in module gravityspy.ML.train_classifier)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.my_load_dataset">my_load_dataset() (in module gravityspy.ML.GS_utils)</a>
@@ -334,18 +323,22 @@
   </ul></td>
 </tr></table>
 
-<h2 id="S">S</h2>
+<h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/gravityspy.ML.functions_fusion.html#gravityspy.ML.functions_fusion.square_early_concatenate_feature">square_early_concatenate_feature() (in module gravityspy.ML.functions_fusion)</a>
+      <li><a href="api/gravityspy.ML.train_classifier.html#gravityspy.ML.train_classifier.pickle_trainingset">pickle_trainingset() (in module gravityspy.ML.train_classifier)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.plot.plot.html#gravityspy.plot.plot.plot_qtransform">plot_qtransform() (in module gravityspy.plot.plot)</a>
 </li>
   </ul></td>
 </tr></table>
 
-<h2 id="V">V</h2>
+<h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/gravityspy.ML.functions_fusion.html#gravityspy.ML.functions_fusion.volumize_concatenate_feature">volumize_concatenate_feature() (in module gravityspy.ML.functions_fusion)</a>
+      <li><a href="api/gravityspy.API.project.html#gravityspy.API.project.workflow_with_most_answers">workflow_with_most_answers() (in module gravityspy.API.project)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -394,7 +387,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0+untagged.475.g33255d3.dirty',
+            VERSION:'0+untagged.509.g048e498.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

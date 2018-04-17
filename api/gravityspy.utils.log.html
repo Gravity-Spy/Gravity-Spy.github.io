@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.475.g33255d3.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.475.g33255d3.dirty documentation" href="../index.html"/> 
+    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0+untagged.475.g33255d3.dirty
+                0+untagged.509.g048e498.dirty
               </div>
             
           
@@ -92,6 +92,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
 
@@ -162,30 +164,6 @@
 <em class="property">class </em><code class="descclassname">gravityspy.utils.log.</code><code class="descname">ColoredFormatter</code><span class="sig-paren">(</span><em>msg</em>, <em>use_color=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/utils/log.html#ColoredFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.utils.log.ColoredFormatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Formatter" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Formatter</span></code></a></p>
 <p>A <cite>~logging.Formatter</cite> that supports coloured output</p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">converter</span></code>([seconds])</td>
-<td>Convert seconds since the Epoch to a time tuple expressing local time.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#gravityspy.utils.log.ColoredFormatter.format" title="gravityspy.utils.log.ColoredFormatter.format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format</span></code></a>(record)</td>
-<td>Format the specified record as text.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatException</span></code>(ei)</td>
-<td>Format and return the specified exception information as a string.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatTime</span></code>(record[,&nbsp;datefmt])</td>
-<td>Return the creation time of the specified LogRecord as formatted text.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">usesTime</span></code>()</td>
-<td>Check if the format uses the creation time of the record.</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="gravityspy.utils.log.ColoredFormatter.format">
 <code class="descname">format</code><span class="sig-paren">(</span><em>record</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/utils/log.html#ColoredFormatter.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.utils.log.ColoredFormatter.format" title="Permalink to this definition">¶</a></dt>
@@ -207,81 +185,6 @@ it is formatted using formatException() and appended to the message.</p>
 <em class="property">class </em><code class="descclassname">gravityspy.utils.log.</code><code class="descname">Logger</code><span class="sig-paren">(</span><em>name</em>, <em>level=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/utils/log.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.utils.log.Logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Logger</span></code></a></p>
 <p><cite>~logging.Logger</cite> with a nice format</p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">addFilter</span></code>(filter)</td>
-<td>Add the specified filter to this handler.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">addHandler</span></code>(hdlr)</td>
-<td>Add the specified handler to this logger.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">callHandlers</span></code>(record)</td>
-<td>Pass a record to all relevant handlers.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">critical</span></code>(msg,&nbsp;*args,&nbsp;**kwargs)</td>
-<td>Log ‘msg % args’ with severity ‘CRITICAL’.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">debug</span></code>(msg,&nbsp;*args,&nbsp;**kwargs)</td>
-<td>Log ‘msg % args’ with severity ‘DEBUG’.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">error</span></code>(msg,&nbsp;*args,&nbsp;**kwargs)</td>
-<td>Log ‘msg % args’ with severity ‘ERROR’.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">exception</span></code>(msg,&nbsp;*args,&nbsp;**kwargs)</td>
-<td>Convenience method for logging an ERROR with exception information.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fatal</span></code>(msg,&nbsp;*args,&nbsp;**kwargs)</td>
-<td>Log ‘msg % args’ with severity ‘CRITICAL’.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code>(record)</td>
-<td>Determine if a record is loggable by consulting all the filters.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">findCaller</span></code>()</td>
-<td>Find the stack frame of the caller so that we can note the source file name, line number and function name.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">getChild</span></code>(suffix)</td>
-<td>Get a logger which is a descendant to this one.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">getEffectiveLevel</span></code>()</td>
-<td>Get the effective level for this logger.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle</span></code>(record)</td>
-<td>Call the handlers for the specified record.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code>(msg,&nbsp;*args,&nbsp;**kwargs)</td>
-<td>Log ‘msg % args’ with severity ‘INFO’.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">isEnabledFor</span></code>(level)</td>
-<td>Is this logger enabled for level ‘level’?</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">log</span></code>(level,&nbsp;msg,&nbsp;*args,&nbsp;**kwargs)</td>
-<td>Log ‘msg % args’ with the integer severity ‘level’.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">makeRecord</span></code>(name,&nbsp;level,&nbsp;fn,&nbsp;lno,&nbsp;msg,&nbsp;args,&nbsp;…)</td>
-<td>A factory method which can be overridden in subclasses to create specialized LogRecords.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">removeFilter</span></code>(filter)</td>
-<td>Remove the specified filter from this handler.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">removeHandler</span></code>(hdlr)</td>
-<td>Remove the specified handler from this logger.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">setLevel</span></code>(level)</td>
-<td>Set the logging level of this logger.</td>
-</tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">warn</span></code>(msg,&nbsp;*args,&nbsp;**kwargs)</td>
-<td>Log ‘msg % args’ with severity ‘WARNING’.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">warning</span></code>(msg,&nbsp;*args,&nbsp;**kwargs)</td>
-<td>Log ‘msg % args’ with severity ‘WARNING’.</td>
-</tr>
-</tbody>
-</table>
 <dl class="attribute">
 <dt id="gravityspy.utils.log.Logger.FORMAT">
 <code class="descname">FORMAT</code><em class="property"> = '[\x1b[1m%(name)s\x1b[0m %(gpstime)d] %(levelname)+19s: %(message)s'</em><a class="headerlink" href="#gravityspy.utils.log.Logger.FORMAT" title="Permalink to this definition">¶</a></dt>
@@ -330,7 +233,7 @@ it is formatted using formatException() and appended to the message.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.475.g33255d3.dirty',
+            VERSION:'0+untagged.509.g048e498.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
