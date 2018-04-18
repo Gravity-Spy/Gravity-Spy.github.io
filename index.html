@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to GravitySpy’s documentation! &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
+  <title>Welcome to GravitySpy’s documentation! &mdash; GravitySpy 0+untagged.511.g4e019ea.dirty documentation</title>
   
 
   
@@ -25,27 +25,19 @@
   
 
   
-  
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/hveto-docs.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="#"/>
-        <link rel="next" title="Running wscan on the command line" href="command-line/index.html"/> 
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/hveto-docs.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Running wscan on the command line" href="wscan/index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -67,7 +59,7 @@
             
             
               <div class="version">
-                0+untagged.509.g048e498.dirty
+                0+untagged.511.g4e019ea.dirty
               </div>
             
           
@@ -92,8 +84,8 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
@@ -107,7 +99,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="#">GravitySpy</a>
@@ -115,9 +107,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -161,18 +154,38 @@
             
   <div class="section" id="welcome-to-gravityspy-s-documentation">
 <h1>Welcome to GravitySpy’s documentation!<a class="headerlink" href="#welcome-to-gravityspy-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://gravityspy.org">Gravity Spy</a> is an innovative citizen-science meets Machine Learning meets gravitational wave physics project. This repository is meant to faciliate the creation of new similar citizen science projects on <a class="reference external" href="https://zooniverse.org">Zooniverse</a>
-For full details see <a class="reference external" href="https://iopscience.iop.org/article/10.1088/1361-6382/aa5cea">Zevin et al. (Classical and Quantum Gravity, 2016)</a></p>
+<p><a class="reference external" href="https://gravityspy.org">Gravity Spy</a> is an innovative citizen-science meets Machine Learning meets gravitational wave physics project. This repository is meant to faciliate the creation of new similar citizen science projects on <a class="reference external" href="https://zooniverse.org">Zooniverse</a></p>
+<div class="section" id="publications">
+<h2>Publications<a class="headerlink" href="#publications" title="Permalink to this headline">¶</a></h2>
+<p>If you use Gravity Spy in your scientific publications or projects, we ask that you acknowlege our work by citing the publications that describe Gravity Spy.</p>
+<ul class="simple">
+<li>For general citations and information on Gravity Spy use the methods paper : <a class="reference external" href="https://iopscience.iop.org/article/10.1088/1361-6382/aa5cea">Zevin et al. Gravity Spy: Integrating Advanced LIGO Detector Characterization, Machine Learning, and Citizen Science</a></li>
+<li><a class="reference external" href="https://citsci.syr.edu/sites/crowston.syr.edu/files/cpa137-crowstonA.pdf">K. Crowston, &amp; The Gravity Spy Collaboration. Gravity Spy: Humans, machines and the future of citizen science</a></li>
+<li><a class="reference external" href="https://crowston.syr.edu/sites/crowston.syr.edu/files/training%20v3%20to%20share_0.pdf">K. Crowston, C. Østerlund, T. Kyoung Lee. Blending machine and human learning processes</a></li>
+<li><a class="reference external" href="https://citsci.syr.edu/sites/crowston.syr.edu/files/cpa143-leeA.pdf">T. Kyoung Lee, K. Crowston, C. Østerlund, &amp; G. Miller. Recruiting messages matter: Message strategies to attract citizen scientists</a></li>
+<li><a class="reference external" href="https://arxiv.org/pdf/1705.00034.pdf">S. Bahaadini, N. Rohani, S. Coughlin, M. Zevin, V. Kalogera, &amp; A. Katsaggelos. Deep multi-view models for glitch classification</a></li>
+<li>For a thorough discussion of versionn 1.0 of the training set used see: <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0020025518301634">S. Bahaadini, V. Noroozi, N. Rohani, S. Coughlin, M. Zevin, J. R. Smith, V. Kalogera, &amp; A. Katsaggelos. Machine learning for Gravity Spy: Glitch classification and dataset</a></li>
+<li><ol class="first upperalpha" start="3">
+<li>Jackson, C. Østerlund, K. Crowston, M. Harandi, S. Allen, S. Bahaadini, S. Coughlin, V. Kalogera, A. Katsaggelos, S. Larson, N. Rohani, J. Smith, L. Trouille, and M. Zevin. [Making High-Performing Contributors: An Experiment With Training in an Online Production Community], submitted to IEEE Transactions on Learning Technologies, 2018.</li>
+</ol>
+</li>
+<li><ol class="first upperalpha" start="19">
+<li>Bahaadini, V. Noroozi, N. Rohani, S. Coughlin, M. Zevin, &amp; A. Katsaggelos. DIRECT: Deep DIscRiminative Embedding for ClusTering of LIGO Data, submitted to IEEE International Conference on Image Processing, 2018.</li>
+</ol>
+</li>
+</ul>
+</div>
 <div class="section" id="installing-gravityspy">
 <h2>Installing GravitySpy<a class="headerlink" href="#installing-gravityspy" title="Permalink to this headline">¶</a></h2>
 <p>The easiest method to install gravityspy is using <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> directly from the <a class="reference external" href="https://github.com/Gravity-Spy/GravitySpy.git">GitHub repository</a>:</p>
+<p>Gravity Spy software has been tested on py35 and py27. Work is in progress to have unit tests verify gravity spy on py27 and py34 py35 and py36.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/Gravity-Spy/GravitySpy.git
 </pre></div>
 </div>
 </div>
-<div class="section" id="how-to-run-gravityspy">
-<h2>How to run GravitySpy<a class="headerlink" href="#how-to-run-gravityspy" title="Permalink to this headline">¶</a></h2>
-<p>The main product of this package is the command-line executable <cite>wscan</cite>, which takes an excess noise time makes an omega scan of the event and classifies the image.</p>
+<div class="section" id="how-to-classify-unlabeled-excess-noise">
+<h2>How to classify unlabeled excess noise<a class="headerlink" href="#how-to-classify-unlabeled-excess-noise" title="Permalink to this headline">¶</a></h2>
+<p>One of the main product of this package is the command-line executable <cite>wscan</cite>, which takes an excess noise time makes an omega scan of the event and classifies the image.</p>
 <p>To run an analysis:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wscan --inifile my-wini-config-file.ini --eventTime &lt;eventTime&gt; --outDir ./public_html/GravitySpy/Test/ --uniqueID --ID 123abc1234 --HDF5 --runML --pathToModel ../bin
 </pre></div>
@@ -182,7 +195,21 @@ For full details see <a class="reference external" href="https://iopscience.iop.
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wscan --help
 </pre></div>
 </div>
-<p>For more details see <a class="reference internal" href="command-line/index.html#command-line"><span class="std std-ref">Running wscan on the command line</span></a>.</p>
+<p>For more details see <a class="reference internal" href="wscan/index.html#wscan"><span class="std std-ref">Running wscan on the command line</span></a>.</p>
+</div>
+<div class="section" id="how-to-train-a-new-model">
+<h2>How to train a new model<a class="headerlink" href="#how-to-train-a-new-model" title="Permalink to this headline">¶</a></h2>
+<p>Another main product of this package is the command-line executable <cite>trainmodel</cite>, which serves as an easy wrapper function for training a new Convolutional Neural Net Model (CNN).</p>
+<p>To train a model:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nv">THEANO_FLAGS</span><span class="o">=</span><span class="nv">mode</span><span class="o">=</span>FAST_RUN,device<span class="o">=</span>cuda,floatX<span class="o">=</span>float32 trainmodel --path-to-trainingset &lt;path-to-trainingset&gt; --number-of-classes &lt;number-of-classes&gt;
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">&lt;path-to-trainingset&gt;</span></code> is a folder that has the structure <cite>“class”/”sampes”</cite> and <code class="docutils literal notranslate"><span class="pre">&lt;number-of-classes&gt;</span></code> is how many different classes there are.</p>
+<p>For a full list of command-line argument and options, run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ trainmodel --help
+</pre></div>
+</div>
+<p>For more details see <a class="reference internal" href="trainmodel/index.html#trainmodel"><span class="std std-ref">Running trainmodel on the command line</span></a>.</p>
 </div>
 <div class="section" id="the-many-databases-of-gravityspy">
 <h2>The many databases of GravitySpy<a class="headerlink" href="#the-many-databases-of-gravityspy" title="Permalink to this headline">¶</a></h2>
@@ -193,8 +220,8 @@ For full details see <a class="reference external" href="https://iopscience.iop.
 <p>Please consult these pages for more details on using GravitySpy:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
@@ -212,15 +239,13 @@ For full details see <a class="reference external" href="https://iopscience.iop.
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="command-line/index.html" class="btn btn-neutral float-right" title="Running wscan on the command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="wscan/index.html" class="btn btn-neutral float-right" title="Running wscan on the command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -234,7 +259,7 @@ For full details see <a class="reference external" href="https://iopscience.iop.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -252,7 +277,8 @@ For full details see <a class="reference external" href="https://iopscience.iop.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0+untagged.509.g048e498.dirty',
+            VERSION:'0+untagged.511.g4e019ea.dirty',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -270,14 +296,13 @@ For full details see <a class="reference external" href="https://iopscience.iop.
     <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ML.labelling_test_glitches &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
+  <title>gravityspy.ML.labelling_test_glitches &mdash; GravitySpy 0+untagged.511.g4e019ea.dirty documentation</title>
   
 
   
@@ -25,27 +25,18 @@
   
 
   
-  
     <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../../_static/hveto-docs.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../../genindex.html"/>
-        <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="../../../index.html"/>
-        <link rel="up" title="Module code" href="../../index.html"/> 
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/hveto-docs.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -67,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.509.g048e498.dirty
+                0+untagged.511.g4e019ea.dirty
               </div>
             
           
@@ -92,8 +83,8 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
@@ -107,7 +98,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">GravitySpy</a>
@@ -115,9 +106,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -147,8 +139,6 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
-        
       </li>
     
   </ul>
@@ -160,10 +150,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for gravityspy.ML.labelling_test_glitches</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">GS_utils</span> <span class="k">import</span> <span class="n">load_dataset_unlabelled_glitches</span><span class="p">,</span> <span class="n">concatenate_views</span>
+<span></span><span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">load_dataset_unlabelled_glitches</span><span class="p">,</span> <span class="n">concatenate_views</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">np_utils</span>
-<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">cPickle</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">pickle</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">getopt</span> <span class="k">import</span> <span class="n">GetoptError</span><span class="p">,</span> <span class="n">getopt</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">model_from_json</span><span class="p">,</span> <span class="n">load_model</span>
 <span class="kn">from</span> <span class="nn">scipy.misc</span> <span class="k">import</span> <span class="n">imresize</span>
@@ -197,9 +187,9 @@
 
     <span class="n">dw</span> <span class="o">=</span> <span class="n">label_glitches</span><span class="p">(</span><span class="n">pickle_adr</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
     <span class="n">dwslice</span> <span class="o">=</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="n">dwslice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">dwslice</span><span class="p">))</span>
-</div>
-    <span class="k">return</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dwslice</span><span class="p">)</span>    
+    <span class="n">dwslice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">dwslice</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dwslice</span><span class="p">)</span>    </div>
 
 <div class="viewcode-block" id="label_glitches"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.label_glitches">[docs]</a><span class="k">def</span> <span class="nf">label_glitches</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parameters</span>
@@ -250,8 +240,8 @@
                             <span class="n">test_set_unlabelled_x_2</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_3</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
 
     <span class="n">score3_unlabelled</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">concat_test_unlabelled</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="n">score3_unlabelled</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">score3_unlabelled</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">score3_unlabelled</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">score3_unlabelled</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_feature_space"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.get_feature_space">[docs]</a><span class="k">def</span> <span class="nf">get_feature_space</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">semantic_model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -284,14 +274,12 @@
         <span class="n">img_cols</span> <span class="o">=</span> <span class="mi">224</span>
         <span class="n">img_rows</span> <span class="o">=</span> <span class="mi">224</span>
         <span class="n">test_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">new_data2</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="n">semantic_idx_model</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">test_data</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">semantic_idx_model</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">test_data</span><span class="p">])</span></div>
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -304,7 +292,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -322,7 +310,8 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.509.g048e498.dirty',
+            VERSION:'0+untagged.511.g4e019ea.dirty',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -340,14 +329,13 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

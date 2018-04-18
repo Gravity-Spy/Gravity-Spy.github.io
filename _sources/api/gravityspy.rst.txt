@@ -6,8 +6,10 @@ Subpackages
 
 .. toctree::
 
+    gravityspy.API
     gravityspy.ML
     gravityspy.plot
+    gravityspy.utils
 
 Module contents
 ---------------

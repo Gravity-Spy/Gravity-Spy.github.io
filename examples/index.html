@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Querying Gravity Spy data &mdash; GravitySpy 0+untagged.509.g048e498.dirty documentation</title>
+  <title>Querying Gravity Spy data &mdash; GravitySpy 0+untagged.511.g4e019ea.dirty documentation</title>
   
 
   
@@ -25,28 +25,20 @@
   
 
   
-  
     <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/hveto-docs.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="GravitySpy 0+untagged.509.g048e498.dirty documentation" href="../index.html"/>
-        <link rel="next" title="The many DBs of Gravity Spy" href="../DBs/index.html"/>
-        <link rel="prev" title="Running wscan on the command line" href="../command-line/index.html"/> 
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/hveto-docs.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The many DBs of Gravity Spy" href="../DBs/index.html" />
+    <link rel="prev" title="Running trainmodel on the command line" href="../trainmodel/index.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -68,7 +60,7 @@
             
             
               <div class="version">
-                0+untagged.509.g048e498.dirty
+                0+untagged.511.g4e019ea.dirty
               </div>
             
           
@@ -93,8 +85,8 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../command-line/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../command-line/index.html#running-trainmodel-on-the-command-line">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Querying Gravity Spy data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
@@ -118,7 +110,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">GravitySpy</a>
@@ -126,9 +118,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -273,8 +266,8 @@ $ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137
 &gt;&gt;&gt; <span class="nv">blips</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>, <span class="s1">&#39;trainingsetv1d1&#39;</span>, <span class="nv">selection</span><span class="o">=</span><span class="s1">&#39;Label=Blip&#39;</span><span class="o">)</span>
 &gt;&gt;&gt; <span class="nv">whistle</span> <span class="o">=</span> EventTable.fetch<span class="o">(</span><span class="s1">&#39;gravityspy&#39;</span>, <span class="s1">&#39;trainingsetv1d1&#39;</span>, <span class="nv">selection</span><span class="o">=</span><span class="s1">&#39;Label=Whistle&#39;</span><span class="o">)</span>
 &gt;&gt;&gt; <span class="c1"># Downselect to 100 samples (otherwise the download takes too long)</span>
-&gt;&gt;&gt; <span class="nv">blips</span> <span class="o">=</span> blips<span class="o">[</span><span class="m">0</span>:100<span class="o">]</span>
-&gt;&gt;&gt; <span class="nv">whistle</span> <span class="o">=</span> whistle<span class="o">[</span><span class="m">0</span>:100<span class="o">]</span>
+&gt;&gt;&gt; <span class="nv">blips</span> <span class="o">=</span> blips<span class="o">[</span><span class="m">0</span>:50<span class="o">]</span>
+&gt;&gt;&gt; <span class="nv">whistle</span> <span class="o">=</span> whistle<span class="o">[</span><span class="m">0</span>:50<span class="o">]</span>
 &gt;&gt;&gt; <span class="nv">trainingset</span> <span class="o">=</span> vstack<span class="o">([</span>whistle, blips<span class="o">])</span>
 &gt;&gt;&gt; trainingset.download<span class="o">(</span><span class="nv">nproc</span><span class="o">=</span><span class="m">4</span>, <span class="nv">TrainingSet</span><span class="o">=</span><span class="m">1</span>, <span class="nv">download_path</span><span class="o">=</span><span class="s1">&#39;TrainingSet&#39;</span><span class="o">)</span>
 </pre></div>
@@ -291,9 +284,7 @@ $ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -302,7 +293,7 @@ $ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137
         <a href="../DBs/index.html" class="btn btn-neutral float-right" title="The many DBs of Gravity Spy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../command-line/index.html" class="btn btn-neutral" title="Running wscan on the command line" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../trainmodel/index.html" class="btn btn-neutral" title="Running trainmodel on the command line" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -315,7 +306,7 @@ $ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -333,7 +324,8 @@ $ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.509.g048e498.dirty',
+            VERSION:'0+untagged.511.g4e019ea.dirty',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -351,14 +343,13 @@ $ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

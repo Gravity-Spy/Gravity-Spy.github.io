@@ -134,8 +134,8 @@ Training a model
     >>> blips = EventTable.fetch('gravityspy', 'trainingsetv1d1', selection='Label=Blip')
     >>> whistle = EventTable.fetch('gravityspy', 'trainingsetv1d1', selection='Label=Whistle')
     >>> # Downselect to 100 samples (otherwise the download takes too long)
-    >>> blips = blips[0:100]
-    >>> whistle = whistle[0:100]
+    >>> blips = blips[0:50]
+    >>> whistle = whistle[0:50]
     >>> trainingset = vstack([whistle, blips])
     >>> trainingset.download(nproc=4, TrainingSet=1, download_path='TrainingSet')
 
