@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ML.labelling_test_glitches &mdash; GravitySpy 0+untagged.511.g4e019ea.dirty documentation</title>
+  <title>gravityspy.ML.labelling_test_glitches &mdash; GravitySpy 0+untagged.514.g1f5e9e5 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.511.g4e019ea.dirty
+                0+untagged.514.g1f5e9e5
               </div>
             
           
@@ -83,6 +83,7 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -167,7 +168,8 @@
 <span class="sd">&#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parameters</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    image_data : `pd.DataFrame` this is a DF with</span>
 <span class="sd">                 columns whose names are the same as</span>
@@ -189,25 +191,34 @@
     <span class="n">dwslice</span> <span class="o">=</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
     <span class="n">dwslice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">dwslice</span><span class="p">)))</span>
 
-    <span class="k">return</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dwslice</span><span class="p">)</span>    </div>
+    <span class="k">return</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dwslice</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="label_glitches"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.label_glitches">[docs]</a><span class="k">def</span> <span class="nf">label_glitches</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    image_data : `pd.DataFrame` this is a DF with</span>
-<span class="sd">                 columns whose names are the same as</span>
-<span class="sd">                 the image and whose row entries are</span>
-<span class="sd">                 the b/w pixel values at some resoltion</span>
-<span class="sd">                 determined by `make_pickle`</span>
+    <span class="sd">&quot;&quot;&quot;Obtain 1XNclasses confidence vector and label for image</span>
 
-<span class="sd">    model_adr : `str` path to folder containing model</span>
+<span class="sd">    Parameters:</span>
 
-<span class="sd">    image_size : `list`, default [140, 170]</span>
+<span class="sd">        image_data (`pd.DataFrame`):</span>
+<span class="sd">            This is a DF with columns whose names are the same as</span>
+<span class="sd">            the image and whose row entries are</span>
+<span class="sd">            the b/w pixel values at some resoltion</span>
+<span class="sd">            determined by `make_pickle`</span>
 
-<span class="sd">    verbose : `boolean`, default False</span>
+<span class="sd">        model_adr (str, optional):</span>
+<span class="sd">            Path to folder containing model</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
+<span class="sd">        image_size (list, optional):</span>
+<span class="sd">            Default [140, 170]</span>
+
+<span class="sd">        verbose (bool, optional):</span>
+<span class="sd">            Default False</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">        score3_unlabelled (np.array):</span>
+<span class="sd">            confidence scores per class (b/t 0 and 1)</span>
+<span class="sd">            index_label (int): ml label</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># the path where the trained is saved there</span>
@@ -215,7 +226,7 @@
 
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1986</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
 
-    <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+    <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="c1"># load a model and weights</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -244,25 +255,32 @@
     <span class="k">return</span> <span class="n">score3_unlabelled</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">score3_unlabelled</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_feature_space"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.get_feature_space">[docs]</a><span class="k">def</span> <span class="nf">get_feature_space</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">semantic_model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    image_data : `pd.DataFrame` this is a DF with</span>
-<span class="sd">                 columns whose names are the same as</span>
-<span class="sd">                 the image and whose row entries are</span>
-<span class="sd">                 the b/w pixel values at some resoltion</span>
-<span class="sd">                 determined by `make_pickle`</span>
+<div class="viewcode-block" id="get_feature_space"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.get_feature_space">[docs]</a><span class="k">def</span> <span class="nf">get_feature_space</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">semantic_model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Obtain N dimensional feature space of sample</span>
 
-<span class="sd">    semantic_model_adr : `str` path to folder containing similarity model</span>
+<span class="sd">    Parameters:</span>
 
-<span class="sd">    image_size : `list`, default [140, 170]</span>
+<span class="sd">        image_data (`pd.DataFrame`):</span>
+<span class="sd">            This is a DF with columns whose names are the same as</span>
+<span class="sd">            the image and whose row entries are</span>
+<span class="sd">            the b/w pixel values at some resoltion</span>
+<span class="sd">            determined by `make_pickle`</span>
 
-<span class="sd">    verbose : `boolean`, default False</span>
+<span class="sd">        semantic_model_adr (str):</span>
+<span class="sd">            Path to folder containing similarity model</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
+<span class="sd">        image_size (list, optional):</span>
+<span class="sd">            default [140, 170]</span>
+
+<span class="sd">        verbose (bool, optional):</span>
+<span class="sd">            default False</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">        np.array:</span>
+<span class="sd">            a 200 dimensional feature space vector</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">semantic_idx_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">semantic_model_adr</span> <span class="o">+</span> <span class="s1">&#39;/semantic_idx_model.h5&#39;</span><span class="p">)</span>
     <span class="n">test_data</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
@@ -310,7 +328,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.511.g4e019ea.dirty',
+            VERSION:'0+untagged.514.g1f5e9e5',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

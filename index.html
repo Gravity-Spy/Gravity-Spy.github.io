@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to GravitySpy’s documentation! &mdash; GravitySpy 0+untagged.511.g4e019ea.dirty documentation</title>
+  <title>Welcome to GravitySpy’s documentation! &mdash; GravitySpy 0+untagged.514.g1f5e9e5 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="_static/hveto-docs.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Running wscan on the command line" href="wscan/index.html" /> 
+    <link rel="next" title="Installation" href="install/index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0+untagged.511.g4e019ea.dirty
+                0+untagged.514.g1f5e9e5
               </div>
             
           
@@ -84,6 +84,7 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
@@ -155,6 +156,16 @@
   <div class="section" id="welcome-to-gravityspy-s-documentation">
 <h1>Welcome to GravitySpy’s documentation!<a class="headerlink" href="#welcome-to-gravityspy-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="https://gravityspy.org">Gravity Spy</a> is an innovative citizen-science meets Machine Learning meets gravitational wave physics project. This repository is meant to faciliate the creation of new similar citizen science projects on <a class="reference external" href="https://zooniverse.org">Zooniverse</a></p>
+<p>The module level docstrings attempt to follow the following format : <a class="reference external" href="http://www.sphinx-doc.org/en/master/ext/example_google.html">Google Style Sphinx</a></p>
+<div class="section" id="installing-gravityspy">
+<h2>Installing GravitySpy<a class="headerlink" href="#installing-gravityspy" title="Permalink to this headline">¶</a></h2>
+<p>The easiest method to install gravityspy is using <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> directly from the <a class="reference external" href="https://github.com/Gravity-Spy/GravitySpy.git">GitHub repository</a>:</p>
+<p>Gravity Spy software has been tested on py35 and py27. Work is in progress to have unit tests verify gravity spy on py27 and py34 py35 and py36.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/Gravity-Spy/GravitySpy.git
+</pre></div>
+</div>
+<p>For more details see <a class="reference internal" href="install/index.html#install"><span class="std std-ref">Installation</span></a>.</p>
+</div>
 <div class="section" id="publications">
 <h2>Publications<a class="headerlink" href="#publications" title="Permalink to this headline">¶</a></h2>
 <p>If you use Gravity Spy in your scientific publications or projects, we ask that you acknowlege our work by citing the publications that describe Gravity Spy.</p>
@@ -174,14 +185,6 @@
 </ol>
 </li>
 </ul>
-</div>
-<div class="section" id="installing-gravityspy">
-<h2>Installing GravitySpy<a class="headerlink" href="#installing-gravityspy" title="Permalink to this headline">¶</a></h2>
-<p>The easiest method to install gravityspy is using <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> directly from the <a class="reference external" href="https://github.com/Gravity-Spy/GravitySpy.git">GitHub repository</a>:</p>
-<p>Gravity Spy software has been tested on py35 and py27. Work is in progress to have unit tests verify gravity spy on py27 and py34 py35 and py36.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/Gravity-Spy/GravitySpy.git
-</pre></div>
-</div>
 </div>
 <div class="section" id="how-to-classify-unlabeled-excess-noise">
 <h2>How to classify unlabeled excess noise<a class="headerlink" href="#how-to-classify-unlabeled-excess-noise" title="Permalink to this headline">¶</a></h2>
@@ -220,6 +223,7 @@
 <p>Please consult these pages for more details on using GravitySpy:</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
@@ -245,7 +249,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="wscan/index.html" class="btn btn-neutral float-right" title="Running wscan on the command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="install/index.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -277,7 +281,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0+untagged.511.g4e019ea.dirty',
+            VERSION:'0+untagged.514.g1f5e9e5',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.511.g4e019ea.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.514.g1f5e9e5 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.511.g4e019ea.dirty
+                0+untagged.514.g1f5e9e5
               </div>
             
           
@@ -83,6 +83,7 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -154,31 +155,26 @@
   <span class="target" id="module-gravityspy.ML.make_pickle_for_linux"></span><dl class="function">
 <dt id="gravityspy.ML.make_pickle_for_linux.main">
 <code class="descclassname">gravityspy.ML.make_pickle_for_linux.</code><code class="descname">main</code><span class="sig-paren">(</span><em>filename</em>, <em>resolution=0.3</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/make_pickle_for_linux.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.make_pickle_for_linux.main" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename</strong> : <cite>str</cite>,</p>
-<blockquote>
-<div><p>the file you would like to pixelize</p>
-</div></blockquote>
+<dd><p>Convert image from RGB to Gray, downsample</p>
 <dl class="docutils">
-<dt><strong>resolution</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><cite>float</cite>, optional, default: 0.3</span></dt>
-<dd></dd>
-<dt><strong>verbose</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><cite>bool</cite>, optional, default: False</span></dt>
-<dd></dd>
+<dt>Parameters</dt>
+<dd><dl class="first last docutils">
+<dt>filename (str):</dt>
+<dd>the file you would like to pixelize</dd>
+<dt>resolution (float, optional):</dt>
+<dd>default: 0.3</dd>
+<dt>verbose (bool, optional):</dt>
+<dd>default: False</dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>image_data</strong> : <cite>np.array</cite></p>
-<blockquote class="last">
-<div><p>this images is taken from rgb to gray scale
-and then downsampled by the resolution.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt>Returns</dt>
+<dd><dl class="first last docutils">
+<dt>image_data (<a href="#id1"><span class="problematic" id="id2">`</span></a>np.array):</dt>
+<dd>this images is taken from rgb to gray scale
+and then downsampled by the resolution.</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 
@@ -215,7 +211,7 @@ and then downsampled by the resolution.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.511.g4e019ea.dirty',
+            VERSION:'0+untagged.514.g1f5e9e5',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

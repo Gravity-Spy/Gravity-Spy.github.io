@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ML.make_pickle_for_linux &mdash; GravitySpy 0+untagged.511.g4e019ea.dirty documentation</title>
+  <title>gravityspy.ML.make_pickle_for_linux &mdash; GravitySpy 0+untagged.514.g1f5e9e5 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.511.g4e019ea.dirty
+                0+untagged.514.g1f5e9e5
               </div>
             
           
@@ -83,6 +83,7 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -159,20 +160,22 @@
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/gravityspy.ML.make_pickle_for_linux.html#gravityspy.ML.make_pickle_for_linux.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    filename : `str`,</span>
-<span class="sd">        the file you would like to pixelize</span>
+    <span class="sd">&quot;&quot;&quot;Convert image from RGB to Gray, downsample</span>
 
-<span class="sd">    resolution : `float`, optional, default: 0.3</span>
+<span class="sd">    Parameters</span>
+<span class="sd">        filename (str):</span>
+<span class="sd">            the file you would like to pixelize</span>
 
-<span class="sd">    verbose : `bool`, optional, default: False</span>
+<span class="sd">        resolution (float, optional):</span>
+<span class="sd">            default: 0.3</span>
+
+<span class="sd">        verbose (bool, optional):</span>
+<span class="sd">            default: False</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    image_data : `np.array`</span>
-<span class="sd">        this images is taken from rgb to gray scale</span>
-<span class="sd">        and then downsampled by the resolution.</span>
+<span class="sd">        image_data (`np.array):</span>
+<span class="sd">            this images is taken from rgb to gray scale</span>
+<span class="sd">            and then downsampled by the resolution.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1986</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
@@ -221,7 +224,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.511.g4e019ea.dirty',
+            VERSION:'0+untagged.514.g1f5e9e5',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
