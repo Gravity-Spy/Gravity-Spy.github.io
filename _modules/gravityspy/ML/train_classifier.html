@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ML.train_classifier &mdash; GravitySpy 0+untagged.514.g1f5e9e5 documentation</title>
+  <title>gravityspy.ML.train_classifier &mdash; GravitySpy 0+untagged.514.g1f5e9e5.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.514.g1f5e9e5
+                0+untagged.514.g1f5e9e5.dirty
               </div>
             
           
@@ -151,18 +151,16 @@
            <div itemprop="articleBody">
             
   <h1>Source code for gravityspy.ML.train_classifier</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">build_cnn</span><span class="p">,</span> <span class="n">my_load_dataset</span>
-<span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">create_model_folder</span><span class="p">,</span> <span class="n">concatenate_views</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">build_cnn</span><span class="p">,</span> <span class="n">concatenate_views</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dense</span>
 <span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">np_utils</span>
 <span class="kn">from</span> <span class="nn">keras.callbacks</span> <span class="k">import</span> <span class="n">ModelCheckpoint</span>
-<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">getopt</span>
-<span class="kn">import</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">make_pickle_for_linux</span> <span class="k">as</span> <span class="n">make_pickle</span>
 <span class="kn">from</span> <span class="nn">gravityspy.utils</span> <span class="k">import</span> <span class="n">log</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">make_pickle_for_linux</span> <span class="k">as</span> <span class="n">make_pickle</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
@@ -246,6 +244,15 @@
                <span class="n">best_model_based_validset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
                <span class="n">random_seed</span><span class="o">=</span><span class="mi">1986</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Train a Convultional Neural Net (CNN).</span>
+
+<span class="sd">    This module uses `keras &lt;https://keras.io/&gt;`_ to interface</span>
+<span class="sd">    with the creation of a neural net and currently uses</span>
+<span class="sd">    `theano &lt;http://deeplearning.net/software/theano/&gt;`_ as the backend</span>
+<span class="sd">    for doing the heavy gpu lifting.</span>
+
+<span class="sd">    The optimizer :class:`keras.optimizers.Adadelta`</span>
+
+<span class="sd">    The loss function being optimized is `softmax &lt;https://en.wikipedia.org/wiki/Softmax_function&gt;`_</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        data (str):</span>
@@ -546,7 +553,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.514.g1f5e9e5',
+            VERSION:'0+untagged.514.g1f5e9e5.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

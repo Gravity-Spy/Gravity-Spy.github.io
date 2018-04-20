@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ML.labelling_test_glitches &mdash; GravitySpy 0+untagged.514.g1f5e9e5 documentation</title>
+  <title>gravityspy.ML.labelling_test_glitches &mdash; GravitySpy 0+untagged.514.g1f5e9e5.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.514.g1f5e9e5
+                0+untagged.514.g1f5e9e5.dirty
               </div>
             
           
@@ -151,15 +151,12 @@
            <div itemprop="articleBody">
             
   <h1>Source code for gravityspy.ML.labelling_test_glitches</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">load_dataset_unlabelled_glitches</span><span class="p">,</span> <span class="n">concatenate_views</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">np_utils</span>
-<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">gzip</span><span class="o">,</span> <span class="nn">pickle</span><span class="o">,</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">getopt</span> <span class="k">import</span> <span class="n">GetoptError</span><span class="p">,</span> <span class="n">getopt</span>
-<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">model_from_json</span><span class="p">,</span> <span class="n">load_model</span>
+<span></span><span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">concatenate_views</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">load_model</span>
 <span class="kn">from</span> <span class="nn">scipy.misc</span> <span class="k">import</span> <span class="n">imresize</span>
-<span class="kn">import</span> <span class="nn">glob</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">By Sara Bahaadini and Neda Rohani, IVPL, Northwestern University.</span>
@@ -328,7 +325,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.514.g1f5e9e5',
+            VERSION:'0+untagged.514.g1f5e9e5.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

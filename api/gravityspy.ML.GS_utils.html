@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.514.g1f5e9e5 documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.514.g1f5e9e5.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.514.g1f5e9e5
+                0+untagged.514.g1f5e9e5.dirty
               </div>
             
           
@@ -160,62 +160,67 @@ image from a set of samples or weights.</p>
 <dl class="function">
 <dt id="gravityspy.ML.GS_utils.build_cnn">
 <code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">build_cnn</code><span class="sig-paren">(</span><em>img_rows</em>, <em>img_cols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#build_cnn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.build_cnn" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.build_cnn_volume">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">build_cnn_volume</code><span class="sig-paren">(</span><em>img_rows</em>, <em>img_cols</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#build_cnn_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.build_cnn_volume" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.build_partial_cnn1">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">build_partial_cnn1</code><span class="sig-paren">(</span><em>img_rows</em>, <em>img_cols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#build_partial_cnn1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.build_partial_cnn1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is where we use Keras to build a covolutional neural network (CNN)</p>
+<p>The CNN built here is described in the
+<a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0020025518301634#tbl0004">Table 5</a></p>
+<p>There are 5 layers. For each layer the logic is as follows</p>
+<p>input 2D matrix –&gt; 2D Conv layer with x number of kernels with a 5 by 5 shape
+–&gt; activation layer we use <a class="reference external" href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)">ReLU</a>
+–&gt; MaxPooling of size 2 by 2 all pixels are now grouped into bigger pixels of
+size 2 by 2 and the max pixel of the pixels that make up the 2 by 2 pizels is the
+value of the bigger pixel –&gt; Dropout set to 50 percent. This means each pixel
+at this stage has a 50 percent chance of being set to 0.</p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd><dl class="first last docutils">
+<dt>image_rows (int):</dt>
+<dd>This refers to the number of rows in the non-flattened image</dd>
+<dt>image_cols (int):</dt>
+<dd>This refers to the number of cols in the non-flattened image</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>model (<cite>object</cite>):</dt>
+<dd>a CNN</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="function">
 <dt id="gravityspy.ML.GS_utils.concatenate_views">
 <code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">concatenate_views</code><span class="sig-paren">(</span><em>image_set1</em>, <em>image_set2</em>, <em>image_set3</em>, <em>image_set4</em>, <em>image_size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#concatenate_views"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.concatenate_views" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.create_model_folder">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">create_model_folder</code><span class="sig-paren">(</span><em>file_name</em>, <em>save_adr</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#create_model_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.create_model_folder" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.load_data">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">load_data</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#load_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.load_data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.load_dataset_unlabelled_glitches">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">load_dataset_unlabelled_glitches</code><span class="sig-paren">(</span><em>dataset</em>, <em>verbose</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#load_dataset_unlabelled_glitches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.load_dataset_unlabelled_glitches" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.my_load_dataset">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">my_load_dataset</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#my_load_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.my_load_dataset" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.my_read_image">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">my_read_image</code><span class="sig-paren">(</span><em>data_path</em>, <em>dataset_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#my_read_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.my_read_image" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.my_read_image2">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">my_read_image2</code><span class="sig-paren">(</span><em>data_path</em>, <em>dataset_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#my_read_image2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.my_read_image2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.my_save_dataset">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">my_save_dataset</code><span class="sig-paren">(</span><em>save_adress</em>, <em>new_ind</em>, <em>imgs</em>, <em>labels</em>, <em>names</em>, <em>str_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#my_save_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.my_save_dataset" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="gravityspy.ML.GS_utils.my_save_dataset_test">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">my_save_dataset_test</code><span class="sig-paren">(</span><em>save_adress</em>, <em>imgs</em>, <em>labels</em>, <em>names</em>, <em>str_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#my_save_dataset_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.my_save_dataset_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Partitioning into train, validation and test sets</p>
+<dd><p>Create a merged view from a set of 4 views of one sample image</p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd><dl class="first last docutils">
+<dt>image_set1 (array):</dt>
+<dd>The grayscale downsamples pixels for one duration of one
+of the samples</dd>
+<dt>image_set2 (array):</dt>
+<dd>The grayscale downsamples pixels for one duration of one
+of the samples</dd>
+<dt>image_set3 (array):</dt>
+<dd>The grayscale downsamples pixels for one duration of one
+of the samples</dd>
+<dt>image_set4 (array):</dt>
+<dd>The grayscale downsamples pixels for one duration of one
+of the samples</dd>
+<dt>image_size (list):</dt>
+<dd>This refers to the shape of the non flattened pixelized image
+array</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>concated_view (array):</dt>
+<dd>A single merged view of the sample, in the case
+a merged view of the 0.5 1.0 2.0 and 4.0 duration
+omega scans.</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 
@@ -252,7 +257,7 @@ image from a set of samples or weights.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.514.g1f5e9e5',
+            VERSION:'0+untagged.514.g1f5e9e5.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

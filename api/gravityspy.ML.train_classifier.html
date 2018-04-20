@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.514.g1f5e9e5 documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.514.g1f5e9e5.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.514.g1f5e9e5
+                0+untagged.514.g1f5e9e5.dirty
               </div>
             
           
@@ -156,6 +156,12 @@
 <dt id="gravityspy.ML.train_classifier.make_model">
 <code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">make_model</code><span class="sig-paren">(</span><em>data, model_folder='model', batch_size=22, nb_epoch=10, nb_classes=22, fraction_validation=0.125, fraction_testing=None, best_model_based_validset=0, image_size=[140, 170], random_seed=1986, verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#make_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.make_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Train a Convultional Neural Net (CNN).</p>
+<p>This module uses <a class="reference external" href="https://keras.io/">keras</a> to interface
+with the creation of a neural net and currently uses
+<a class="reference external" href="http://deeplearning.net/software/theano/">theano</a> as the backend
+for doing the heavy gpu lifting.</p>
+<p>The optimizer <code class="xref py py-class docutils literal notranslate"><span class="pre">keras.optimizers.Adadelta</span></code></p>
+<p>The loss function being optimized is <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function">softmax</a></p>
 <dl class="docutils">
 <dt>Parameters:</dt>
 <dd><dl class="first last docutils">
@@ -260,7 +266,7 @@ Label and a column with an ID that uniquely identifies that sample</dd>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.514.g1f5e9e5',
+            VERSION:'0+untagged.514.g1f5e9e5.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
