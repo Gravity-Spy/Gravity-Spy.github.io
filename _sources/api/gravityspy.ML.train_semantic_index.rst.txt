@@ -1,0 +1,4 @@
+.. automodule:: gravityspy.ML.train_semantic_index
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Running trainmodel on the command line &mdash; GravitySpy 0+untagged.514.g1f5e9e5.dirty documentation</title>
+  <title>Running trainmodel on the command line &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0+untagged.514.g1f5e9e5.dirty
+                0+untagged.528.ge27167b.dirty
               </div>
             
           
@@ -167,9 +167,9 @@
 /Users/scottcoughlin/Documents/virtualenvs/GravitySpy-py35/lib/python3.5/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
   from ._conv import register_converters as _register_converters
 Using Theano backend.
-usage: trainmodel [-h] --path-to-trainingset PATH_TO_TRAININGSET
+usage: trainmodel [-h] [--path-to-trainingset PATH_TO_TRAININGSET]
                   --number-of-classes NUMBER_OF_CLASSES
-                  [--path-to-pickle PATH_TO_PICKLE]
+                  [--trainingset-pickle-file TRAININGSET_PICKLE_FILE]
                   [--path-to-trained-model PATH_TO_TRAINED_MODEL]
                   [--batch-size BATCH_SIZE] [--nb-epoch NB_EPOCH]
                   [--fraction-validation FRACTION_VALIDATION]
@@ -186,7 +186,7 @@ optional arguments:
                         folder where labeled images live
   --number-of-classes NUMBER_OF_CLASSES
                         How many classes do you have
-  --path-to-pickle PATH_TO_PICKLE
+  --trainingset-pickle-file TRAININGSET_PICKLE_FILE
                         folder where the entire pickled training set will
                         live. This pickle file should be read in by pandas
   --path-to-trained-model PATH_TO_TRAINED_MODEL
@@ -254,7 +254,7 @@ optional arguments:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.514.g1f5e9e5.dirty',
+            VERSION:'0+untagged.528.ge27167b.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

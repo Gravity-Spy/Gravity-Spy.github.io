@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 from gwpy.table import EventTable
-blips_O2_L1 = EventTable.fetch('gravityspy', 'glitches', selection = ['"Label" = "Blip"', '"peakGPS" > 1137250000', '"Blip" > 0.95', 'ifo=L1'])
-koi_O2_L1 = EventTable.fetch('gravityspy', 'glitches', selection = ['"Label" = "Koi_Fish"', '"peakGPS" > 1137250000', '"Koi_Fish" > 0.95', 'ifo=L1'])
+blips_O2_L1 = EventTable.fetch('gravityspy', 'glitches', selection = ['"Label" = "Blip"', '1200000000 > "peakGPS" > 1137250000', '"Blip" > 0.95', 'ifo=L1'])
+koi_O2_L1 = EventTable.fetch('gravityspy', 'glitches', selection = ['"Label" = "Koi_Fish"', '1200000000 > "peakGPS" > 1137250000', '"Koi_Fish" > 0.95', 'ifo=L1'])
 aftercomiss_koi_l1 = koi_O2_L1[koi_O2_L1['peakGPS']>1178841618]
 beforecomiss_koi_l1 = koi_O2_L1[koi_O2_L1['peakGPS']<1178841618]
 beforecomiss_blips_l1 = blips_O2_L1[blips_O2_L1['peakGPS']<1178841618]

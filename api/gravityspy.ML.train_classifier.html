@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.514.g1f5e9e5.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.514.g1f5e9e5.dirty
+                0+untagged.528.ge27167b.dirty
               </div>
             
           
@@ -153,6 +153,23 @@
            <div itemprop="articleBody">
             
   <span class="target" id="module-gravityspy.ML.train_classifier"></span><dl class="function">
+<dt id="gravityspy.ML.train_classifier.fetch_data">
+<code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">fetch_data</code><span class="sig-paren">(</span><em>ifo</em>, <em>event_time</em>, <em>duration=8</em>, <em>sample_frequency=4096</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#fetch_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.fetch_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch raw data around a glitch</p>
+<p>Parameters:</p>
+<blockquote>
+<div><p>ifo (str):</p>
+<p>event_time (str):</p>
+<p>duration (int, optional):</p>
+<p>sample_frequency (int, optional):</p>
+<p>verbose (bool, optional):</p>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div>a <cite>gwpy.timeseries.TimeSeries</cite></div></blockquote>
+</dd></dl>
+
+<dl class="function">
 <dt id="gravityspy.ML.train_classifier.make_model">
 <code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">make_model</code><span class="sig-paren">(</span><em>data, model_folder='model', batch_size=22, nb_epoch=10, nb_classes=22, fraction_validation=0.125, fraction_testing=None, best_model_based_validset=0, image_size=[140, 170], random_seed=1986, verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#make_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.make_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Train a Convultional Neural Net (CNN).</p>
@@ -204,7 +221,7 @@ A trained Convultional Neural Network</dd>
 
 <dl class="function">
 <dt id="gravityspy.ML.train_classifier.pickle_trainingset">
-<code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">pickle_trainingset</code><span class="sig-paren">(</span><em>path_to_trainingset</em>, <em>save_address='pickleddata'</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#pickle_trainingset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.pickle_trainingset" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">pickle_trainingset</code><span class="sig-paren">(</span><em>path_to_trainingset</em>, <em>save_address='pickleddata/trainingset.pkl'</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#pickle_trainingset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.pickle_trainingset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pre-processes the training set images and save to pickle.</p>
 <p>Parameters:</p>
 <blockquote>
@@ -230,6 +247,23 @@ and 4.0 duration images as well as a column with the True
 Label and a column with an ID that uniquely identifies that sample</dd>
 </dl>
 </div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravityspy.ML.train_classifier.training_set_raw_data">
+<code class="descclassname">gravityspy.ML.train_classifier.</code><code class="descname">training_set_raw_data</code><span class="sig-paren">(</span><em>filename</em>, <em>format</em>, <em>duration=8</em>, <em>sample_frequency=4096</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/train_classifier.html#training_set_raw_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.train_classifier.training_set_raw_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the raw timeseries for the whole training set</p>
+<p>Parameters:</p>
+<blockquote>
+<div><p>filename (str):</p>
+<p>format (str):</p>
+<p>duration (int, optional):</p>
+<p>sample_frequency (int, optional):</p>
+<p>verbose (bool, optional):</p>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div>A file containing the raw timeseries data of the training set</div></blockquote>
 </dd></dl>
 
 
@@ -266,7 +300,7 @@ Label and a column with an ID that uniquely identifies that sample</dd>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.514.g1f5e9e5.dirty',
+            VERSION:'0+untagged.528.ge27167b.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.API.project &mdash; GravitySpy 0+untagged.514.g1f5e9e5.dirty documentation</title>
+  <title>gravityspy.API.project &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.514.g1f5e9e5.dirty
+                0+untagged.528.ge27167b.dirty
               </div>
             
           
@@ -457,12 +457,13 @@
 <span class="s1">            CAST(links_subjects AS FLOAT) IN </span><span class="se">\</span>
 <span class="s1">            (SELECT </span><span class="se">\&quot;</span><span class="s1">links_subjects</span><span class="se">\&quot;</span><span class="s1"> FROM goldenimages)&#39;</span>
 
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;links_user&#39;</span><span class="p">,</span> <span class="s1">&#39;links_subjects&#39;</span><span class="p">,</span> <span class="s1">&#39;links_workflow&#39;</span><span class="p">,</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;links_user&#39;</span><span class="p">,</span> <span class="s1">&#39;links_subjects&#39;</span><span class="p">,</span> <span class="s1">&#39;links_workflow&#39;</span><span class="p">,</span>
                    <span class="s1">&#39;annotations_value_choiceINT&#39;</span><span class="p">]</span>
         <span class="n">classifications</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
                                            <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">)</span>
 
         <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+        <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
         <span class="n">golden_images</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;goldenimages&#39;</span><span class="p">)</span>
         <span class="n">golden_images_df</span> <span class="o">=</span> <span class="n">golden_images</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
 
@@ -508,6 +509,63 @@
         <span class="k">return</span> <span class="n">confusion_matrices</span></div>
 
 
+<div class="viewcode-block" id="GravitySpyProject.calculate_confusion_matrices_per_classification"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices_per_classification">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_confusion_matrices_per_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A dict with keys of workflow IDs and values list</span>
+<span class="sd">        of golden sets associated with that workflow</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Load classifications, and golden images from DB</span>
+        <span class="c1"># Make sure choice is a valid index</span>
+        <span class="c1"># Make sure to evaluate only logged in users</span>
+        <span class="c1"># Ignore NONEOFTHEABOVE classificatios when constructing confusion</span>
+        <span class="c1"># matrix</span>
+        <span class="c1"># Make sure to the subject classified was a golden image</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;classificationsdev WHERE </span><span class="se">\&quot;</span><span class="s1">annotations_value_choiceINT</span><span class="se">\&quot;</span><span class="s1"> != </span><span class="se">\</span>
+<span class="s1">            -1 AND </span><span class="se">\&quot;</span><span class="s1">links_user</span><span class="se">\&quot;</span><span class="s1"> != 0 AND </span><span class="se">\</span>
+<span class="s1">            </span><span class="se">\&quot;</span><span class="s1">annotations_value_choiceINT</span><span class="se">\&quot;</span><span class="s1"> != 12 AND </span><span class="se">\</span>
+<span class="s1">            CAST(links_subjects AS FLOAT) IN </span><span class="se">\</span>
+<span class="s1">            (SELECT </span><span class="se">\&quot;</span><span class="s1">links_subjects</span><span class="se">\&quot;</span><span class="s1"> FROM goldenimages)&#39;</span>
+
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;links_user&#39;</span><span class="p">,</span> <span class="s1">&#39;links_subjects&#39;</span><span class="p">,</span> <span class="s1">&#39;links_workflow&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;annotations_value_choiceINT&#39;</span><span class="p">]</span>
+        <span class="n">classifications</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
+                                           <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">)</span>
+
+        <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+        <span class="n">classifications</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+        <span class="n">golden_images</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;goldenimages&#39;</span><span class="p">)</span>
+        <span class="n">golden_images_df</span> <span class="o">=</span> <span class="n">golden_images</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+        <span class="c1"># From answers Dict determine number of classes</span>
+        <span class="n">numClasses</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_answers</span><span class="p">(</span><span class="n">workflow</span><span class="o">=</span><span class="mi">2360</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># merge the golden image DF with th classification (this merge is on</span>
+        <span class="c1"># links_subject (i.e. the zooID of the image classified)</span>
+        <span class="n">image_and_classification</span> <span class="o">=</span> <span class="n">classifications</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">golden_images_df</span><span class="p">,</span>
+                                                         <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;links_subjects&#39;</span><span class="p">])</span>
+
+        <span class="c1"># groupby users to get there gold classifications</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">image_and_classification</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;links_user&#39;</span><span class="p">)[[</span><span class="s1">&#39;annotations_value_choiceINT&#39;</span><span class="p">,</span><span class="s1">&#39;GoldLabel&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+        <span class="n">user_confusion_matrices</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">:</span>
+            <span class="n">user_confusion_matrices</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">userlabels</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">ilabel</span> <span class="ow">in</span> <span class="n">userlabels</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ilabel</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ilabel</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">user_confusion_matrices</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">ilabel</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">numClasses</span><span class="p">,</span><span class="n">numClasses</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">user_confusion_matrices</span></div>
+
+
 <div class="viewcode-block" id="GravitySpyProject.determine_level"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.determine_level">[docs]</a>    <span class="k">def</span> <span class="nf">determine_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
@@ -546,7 +604,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">calculate_confusion_matrices</span><span class="p">()</span>
 
         <span class="n">level</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">iuser</span><span class="p">,</span> <span class="n">ialpha</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">confusion_matrices</span><span class="o">.</span><span class="n">userID</span><span class="p">,</span> 
+        <span class="k">for</span> <span class="p">(</span><span class="n">iuser</span><span class="p">,</span> <span class="n">ialpha</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">confusion_matrices</span><span class="o">.</span><span class="n">userID</span><span class="p">,</span>
                                    <span class="bp">self</span><span class="o">.</span><span class="n">confusion_matrices</span><span class="o">.</span><span class="n">alpha</span><span class="p">):</span>
 
             <span class="n">proficiencyidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ialpha</span> <span class="o">&gt;</span> <span class="n">alpha</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -568,7 +626,7 @@
             <span class="k">if</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">proficiencyidx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">set</span><span class="p">(</span><span class="n">answersidx</span><span class="p">[</span><span class="n">minworkflow</span><span class="p">])):</span>
                 <span class="n">level</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">minworkflow</span><span class="p">,</span> <span class="n">minlevel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">iuser</span><span class="p">])</span>
                 <span class="k">continue</span>
-            
+
             <span class="k">for</span> <span class="n">ilevel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxlevel</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="c1"># first check if they should be on level 5 and end</span>
                 <span class="n">next_workflow</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">levelWorkflowDict</span><span class="p">[</span><span class="n">ilevel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
@@ -643,7 +701,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.514.g1f5e9e5.dirty',
+            VERSION:'0+untagged.528.ge27167b.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

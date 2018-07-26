@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Running wscan on the command line &mdash; GravitySpy 0+untagged.514.g1f5e9e5.dirty documentation</title>
+  <title>Running wscan on the command line &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0+untagged.514.g1f5e9e5.dirty
+                0+untagged.528.ge27167b.dirty
               </div>
             
           
@@ -169,8 +169,9 @@
   from ._conv import register_converters as _register_converters
 Using Theano backend.
 usage: wscan [-h] [-V] --inifile INIFILE --eventTime EVENTTIME [--uniqueID]
-             [--ID ID] [--outDir OUTDIR] --pathToModel PATHTOMODEL [--runML]
-             [--verbose] [--HDF5] [--PostgreSQL]
+             [--ID ID] [--outDir OUTDIR] --pathToModel PATHTOMODEL
+             --project-info-pickle PROJECT_INFO_PICKLE [--runML] [--verbose]
+             [--HDF5] [--PostgreSQL]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -185,6 +186,9 @@ optional arguments:
   --outDir OUTDIR       Outdir for images
   --pathToModel PATHTOMODEL
                         Path to folder containing trained model
+  --project-info-pickle PROJECT_INFO_PICKLE
+                        This pickle file holds informationabout what workflows
+                        a image with whatconfidence label should go into
   --runML               Run the ML classifer on the omega scans
   --verbose             Run in Verbose Mode
   --HDF5                Store triggers in local HDF5 table format
@@ -240,7 +244,7 @@ optional arguments:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.514.g1f5e9e5.dirty',
+            VERSION:'0+untagged.528.ge27167b.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

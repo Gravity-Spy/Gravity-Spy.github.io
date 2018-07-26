@@ -10,6 +10,7 @@ Submodules
    gravityspy.ML.labelling_test_glitches
    gravityspy.ML.make_pickle_for_linux
    gravityspy.ML.train_classifier
+   gravityspy.ML.train_semantic_index
 
 Module contents
 ---------------

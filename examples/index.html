@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Querying Gravity Spy data &mdash; GravitySpy 0+untagged.514.g1f5e9e5.dirty documentation</title>
+  <title>Querying Gravity Spy data &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0+untagged.514.g1f5e9e5.dirty
+                0+untagged.528.ge27167b.dirty
               </div>
             
           
@@ -90,7 +90,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Querying Gravity Spy data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pre-existing-virtualenv">Pre-Existing VirtualEnv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-glitches-database">The <cite>glitches</cite> database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#utilizing-gwpy-eventtable">Utilizing <cite>gwpy</cite> <cite>EventTable</cite></a></li>
@@ -173,25 +172,17 @@
 <p>The following example will although you to query the entire gravity spy trianingset. You do <em>not</em> need to be on CIT <em>but</em> if you do not have lal installed locally it is suggested that you do this on CIT.</p>
 <p>Ahead of time, it is encourage to set up your user environment. For LIGO users please see <a class="reference external" href="https://secrets.ligo.org/secrets/144/">Gravity Spy Authentication</a> for information concerning authentication to access certain Gravity Spy DBs.</p>
 </div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Very brief installation! Create a virtualenv on the clusters and <cite>pip install</cite></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ virtualenv --system-site-packages ~/LAAC/opt/
-$ . ~/LAAC/opt/bin/activate
-$ pip install --upgrade pip
-$ pip install gwpy sqlalchemy psycopg2 pandas git+https://github.com/duncanmmacleod/ligo.org.git
-</pre></div>
-</div>
-</div>
 <div class="section" id="pre-existing-virtualenv">
 <h2>Pre-Existing VirtualEnv<a class="headerlink" href="#pre-existing-virtualenv" title="Permalink to this headline">¶</a></h2>
-<p>On CIT, LLO and LHO</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">source</span> /home/gravityspy/.gravityspy_profile
+<p>On CIT</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">source</span> ~gravityspy/.gravityspy_py36_profile
+$ <span class="nb">source</span> ~gravityspy/.gravityspy_py27_profile
 </pre></div>
 </div>
 </div>
 <div class="section" id="the-glitches-database">
 <h2>The <cite>glitches</cite> database<a class="headerlink" href="#the-glitches-database" title="Permalink to this headline">¶</a></h2>
+<p>This database contains all of the labelled Omicron glitches in h(t) with <cite>SNR &gt; 7.5</cite> and <cite>10 &lt; peak_frequency &lt; 2048</cite></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ipython
 
  &gt;&gt;&gt; from gwpy.table import EventTable
@@ -212,8 +203,8 @@ publication quality plots easy.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">switch_backend</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gwpy.table</span> <span class="k">import</span> <span class="n">EventTable</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">blips_O2_L1</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;glitches&#39;</span><span class="p">,</span> <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&quot;Label&quot; = &quot;Blip&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;peakGPS&quot; &gt; 1137250000&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;Blip&quot; &gt; 0.95&#39;</span><span class="p">,</span> <span class="s1">&#39;ifo=L1&#39;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">koi_O2_L1</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;glitches&#39;</span><span class="p">,</span> <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&quot;Label&quot; = &quot;Koi_Fish&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;peakGPS&quot; &gt; 1137250000&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;Koi_Fish&quot; &gt; 0.95&#39;</span><span class="p">,</span> <span class="s1">&#39;ifo=L1&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blips_O2_L1</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;glitches&#39;</span><span class="p">,</span> <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&quot;Label&quot; = &quot;Blip&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;1200000000 &gt; &quot;peakGPS&quot; &gt; 1137250000&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;Blip&quot; &gt; 0.95&#39;</span><span class="p">,</span> <span class="s1">&#39;ifo=L1&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">koi_O2_L1</span> <span class="o">=</span> <span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;glitches&#39;</span><span class="p">,</span> <span class="n">selection</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&quot;Label&quot; = &quot;Koi_Fish&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;1200000000 &gt; &quot;peakGPS&quot; &gt; 1137250000&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;Koi_Fish&quot; &gt; 0.95&#39;</span><span class="p">,</span> <span class="s1">&#39;ifo=L1&#39;</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aftercomiss_koi_l1</span> <span class="o">=</span> <span class="n">koi_O2_L1</span><span class="p">[</span><span class="n">koi_O2_L1</span><span class="p">[</span><span class="s1">&#39;peakGPS&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1178841618</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">beforecomiss_koi_l1</span> <span class="o">=</span> <span class="n">koi_O2_L1</span><span class="p">[</span><span class="n">koi_O2_L1</span><span class="p">[</span><span class="s1">&#39;peakGPS&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">1178841618</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">beforecomiss_blips_l1</span> <span class="o">=</span> <span class="n">blips_O2_L1</span><span class="p">[</span><span class="n">blips_O2_L1</span><span class="p">[</span><span class="s1">&#39;peakGPS&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">1178841618</span><span class="p">]</span>
@@ -325,7 +316,7 @@ $ run_hveto.sh L1 Whistle <span class="m">1126400000</span> <span class="m">1137
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.514.g1f5e9e5.dirty',
+            VERSION:'0+untagged.528.ge27167b.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
