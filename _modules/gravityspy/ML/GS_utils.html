@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ML.GS_utils &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>gravityspy.ml.GS_utils &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -84,6 +84,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -135,7 +137,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>gravityspy.ML.GS_utils</li>
+      <li>gravityspy.ml.GS_utils</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,7 +152,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for gravityspy.ML.GS_utils</h1><div class="highlight"><pre>
+  <h1>Source code for gravityspy.ml.GS_utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot; This file contains different utility functions that are not connected</span>
 <span class="sd">in anyway to the networks presented in the tutorials, but rather help in</span>
 <span class="sd">processing the outputs into a more understandable way.</span>
@@ -168,8 +170,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1">#4/2/2018</span>
-<div class="viewcode-block" id="concatenate_views"><a class="viewcode-back" href="../../../api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.concatenate_views">[docs]</a><span class="k">def</span> <span class="nf">concatenate_views</span><span class="p">(</span><span class="n">image_set1</span><span class="p">,</span> <span class="n">image_set2</span><span class="p">,</span> <span class="n">image_set3</span><span class="p">,</span>
-                      <span class="n">image_set4</span><span class="p">,</span> <span class="n">image_size</span><span class="p">):</span>
+<div class="viewcode-block" id="concatenate_views"><a class="viewcode-back" href="../../../api/gravityspy.ml.GS_utils.html#gravityspy.ml.GS_utils.concatenate_views">[docs]</a><span class="k">def</span> <span class="nf">concatenate_views</span><span class="p">(</span><span class="n">image_set1</span><span class="p">,</span> <span class="n">image_set2</span><span class="p">,</span> <span class="n">image_set3</span><span class="p">,</span>
+                      <span class="n">image_set4</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">rgb_flag</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a merged view from a set of 4 views of one sample image</span>
 
 <span class="sd">    Parameters:</span>
@@ -193,6 +195,10 @@
 <span class="sd">            This refers to the shape of the non flattened pixelized image</span>
 <span class="sd">            array</span>
 
+<span class="sd">        rgb_flag (bool):</span>
+<span class="sd">            Are you trying to create a merged view of grayscale</span>
+<span class="sd">            or RGB image renders</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        concated_view (array):</span>
 <span class="sd">            A single merged view of the sample, in the case</span>
@@ -201,14 +207,18 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">img_rows</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">rgb_flag</span><span class="p">:</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_set1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_set2</span><span class="p">)</span>
-    <span class="n">concat_images_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">image_set1</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">))</span>
+    <span class="n">concat_images_set</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">image_set1</span><span class="p">),</span> <span class="n">ch</span><span class="p">,</span> <span class="n">img_rows</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_set1</span><span class="p">)):</span>
         <span class="n">concat_images_set</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_set1</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">image_set2</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_set3</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_set4</span><span class="p">)</span>
-    <span class="n">concat_images_set2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">image_set3</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">))</span>
+    <span class="n">concat_images_set2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">image_set3</span><span class="p">),</span> <span class="n">ch</span><span class="p">,</span> <span class="n">img_rows</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_set3</span><span class="p">)):</span>
         <span class="n">concat_images_set2</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_set3</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">image_set4</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
@@ -216,7 +226,7 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 <span class="c1">#4/2/2018</span>
-<div class="viewcode-block" id="build_cnn"><a class="viewcode-back" href="../../../api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.build_cnn">[docs]</a><span class="k">def</span> <span class="nf">build_cnn</span><span class="p">(</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">):</span>
+<div class="viewcode-block" id="build_cnn"><a class="viewcode-back" href="../../../api/gravityspy.ml.GS_utils.html#gravityspy.ml.GS_utils.build_cnn">[docs]</a><span class="k">def</span> <span class="nf">build_cnn</span><span class="p">(</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This is where we use Keras to build a covolutional neural network (CNN)</span>
 
 <span class="sd">    The CNN built here is described in the</span>
@@ -277,7 +287,7 @@
     <span class="k">return</span> <span class="n">model</span></div>
 
 
-<div class="viewcode-block" id="cosine_distance"><a class="viewcode-back" href="../../../api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.cosine_distance">[docs]</a><span class="k">def</span> <span class="nf">cosine_distance</span><span class="p">(</span><span class="n">vects</span><span class="p">):</span>
+<div class="viewcode-block" id="cosine_distance"><a class="viewcode-back" href="../../../api/gravityspy.ml.GS_utils.html#gravityspy.ml.GS_utils.cosine_distance">[docs]</a><span class="k">def</span> <span class="nf">cosine_distance</span><span class="p">(</span><span class="n">vects</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the cosine distance of an array</span>
 
 <span class="sd">    Parameters:</span>
@@ -292,7 +302,7 @@
     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">K</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="siamese_acc"><a class="viewcode-back" href="../../../api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.siamese_acc">[docs]</a><span class="k">def</span> <span class="nf">siamese_acc</span><span class="p">(</span><span class="n">thred</span><span class="p">):</span>
+<div class="viewcode-block" id="siamese_acc"><a class="viewcode-back" href="../../../api/gravityspy.ml.GS_utils.html#gravityspy.ml.GS_utils.siamese_acc">[docs]</a><span class="k">def</span> <span class="nf">siamese_acc</span><span class="p">(</span><span class="n">thred</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate simaese accuracy</span>
 
 <span class="sd">    Parameters:</span>
@@ -307,7 +317,7 @@
     <span class="k">return</span> <span class="n">inner_siamese_acc</span></div>
 
 
-<div class="viewcode-block" id="create_pairs3_gen"><a class="viewcode-back" href="../../../api/gravityspy.ML.GS_utils.html#gravityspy.ML.GS_utils.create_pairs3_gen">[docs]</a><span class="k">def</span> <span class="nf">create_pairs3_gen</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">class_indices</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+<div class="viewcode-block" id="create_pairs3_gen"><a class="viewcode-back" href="../../../api/gravityspy.ml.GS_utils.html#gravityspy.ml.GS_utils.create_pairs3_gen">[docs]</a><span class="k">def</span> <span class="nf">create_pairs3_gen</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">class_indices</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Create the pairs</span>
 
 <span class="sd">    Parameters:</span>
@@ -386,7 +396,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

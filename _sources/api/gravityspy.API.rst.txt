@@ -1,4 +1,4 @@
-gravityspy.API package
+gravityspy.api package
 ======================
 
 Submodules
@@ -6,12 +6,13 @@ Submodules
 
 .. toctree::
 
-   gravityspy.API.project
+   gravityspy.api.project
+   gravityspy.api.utils
 
 Module contents
 ---------------
 
-.. automodule:: gravityspy.API
+.. automodule:: gravityspy.api
     :members:
     :undoc-members:
     :show-inheritance:

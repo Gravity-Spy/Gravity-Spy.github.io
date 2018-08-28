@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -84,6 +84,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -139,7 +141,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/gravityspy.ML.train_semantic_index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/gravityspy.ml.train_semantic_index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -152,7 +154,49 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  
+  <span class="target" id="module-gravityspy.ml.train_semantic_index"></span><dl class="function">
+<dt id="gravityspy.ml.train_semantic_index.make_model">
+<code class="descclassname">gravityspy.ml.train_semantic_index.</code><code class="descname">make_model</code><span class="sig-paren">(</span><em>data, model_folder='model', unknown_classes_labels=['Whistle', 'Scratchy'], multi_view=False, batch_size=22, nb_epoch=10, nb_classes=22, fraction_validation=0.125, fraction_testing=None, best_model_based_validset=0, image_size=[140, 170], random_seed=1986, verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/train_semantic_index.html#make_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.train_semantic_index.make_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train a Semantic Index.</p>
+<p>This module uses <a class="reference external" href="https://keras.io/">keras</a> to interface
+with the creation of a neural net and currently uses
+<a class="reference external" href="http://deeplearning.net/software/theano/">theano</a> as the backend
+for doing the heavy gpu lifting.</p>
+<p>The optimizer <code class="xref py py-class docutils literal notranslate"><span class="pre">keras.optimizers.Adadelta</span></code></p>
+<p>The loss function being optimized is <a class="reference external" href="https://en.wikipedia.org/wiki/Softmax_function">softmax</a></p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd><dl class="first docutils">
+<dt>data (str):</dt>
+<dd>Pickle file containing training set data</dd>
+<dt>model_folder (str, optional):</dt>
+<dd>Defaults to <cite>model</cite>
+path to folder you would like to save the model</dd>
+<dt>unknown_classes_labels (list, optional):</dt>
+<dd>Defaults to [‘Whistle’, ‘Scratchy’]
+A list of classes to be considered as the unknown
+domain for which clustering will be performed
+once the knowledge from the known classes
+has been trained.</dd>
+<dt>batch_size (int, optional):</dt>
+<dd>Default 22</dd>
+<dt>nb_epoch (int, optional):</dt>
+<dd>Default 40</dd>
+<dt>nb_classes (int, optional):</dt>
+<dd>Default 22</dd>
+<dt>fraction_validation (float, optional):</dt>
+<dd>Default .125</dd>
+<dt>fraction_testing (float, optional):</dt>
+<dd>Default None</dd>
+<dt>all_data_for_train_flag (int, optional):</dt>
+<dd>Default 1</dd>
+</dl>
+<p class="last">best_model_based_validset (int,optional):</p>
+</dd>
+</dl>
+</dd></dl>
+
+
 
            </div>
            
@@ -186,7 +230,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

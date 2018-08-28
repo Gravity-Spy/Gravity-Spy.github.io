@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -84,6 +84,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -139,7 +141,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/gravityspy.ML.GS_utils.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/gravityspy.ml.GS_utils.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -152,14 +154,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <span class="target" id="module-gravityspy.ML.GS_utils"></span><p>This file contains different utility functions that are not connected
+  <span class="target" id="module-gravityspy.ml.GS_utils"></span><p>This file contains different utility functions that are not connected
 in anyway to the networks presented in the tutorials, but rather help in
 processing the outputs into a more understandable way.</p>
 <p>For example <code class="docutils literal notranslate"><span class="pre">tile_raster_images</span></code> helps in generating a easy to grasp
 image from a set of samples or weights.</p>
 <dl class="function">
-<dt id="gravityspy.ML.GS_utils.build_cnn">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">build_cnn</code><span class="sig-paren">(</span><em>img_rows</em>, <em>img_cols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#build_cnn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.build_cnn" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.ml.GS_utils.build_cnn">
+<code class="descclassname">gravityspy.ml.GS_utils.</code><code class="descname">build_cnn</code><span class="sig-paren">(</span><em>img_rows</em>, <em>img_cols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/GS_utils.html#build_cnn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.GS_utils.build_cnn" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is where we use Keras to build a covolutional neural network (CNN)</p>
 <p>The CNN built here is described in the
 <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0020025518301634#tbl0004">Table 5</a></p>
@@ -189,8 +191,8 @@ at this stage has a 50 percent chance of being set to 0.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="gravityspy.ML.GS_utils.concatenate_views">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">concatenate_views</code><span class="sig-paren">(</span><em>image_set1</em>, <em>image_set2</em>, <em>image_set3</em>, <em>image_set4</em>, <em>image_size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#concatenate_views"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.concatenate_views" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.ml.GS_utils.concatenate_views">
+<code class="descclassname">gravityspy.ml.GS_utils.</code><code class="descname">concatenate_views</code><span class="sig-paren">(</span><em>image_set1</em>, <em>image_set2</em>, <em>image_set3</em>, <em>image_set4</em>, <em>image_size</em>, <em>rgb_flag</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/GS_utils.html#concatenate_views"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.GS_utils.concatenate_views" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a merged view from a set of 4 views of one sample image</p>
 <dl class="docutils">
 <dt>Parameters:</dt>
@@ -210,6 +212,9 @@ of the samples</dd>
 <dt>image_size (list):</dt>
 <dd>This refers to the shape of the non flattened pixelized image
 array</dd>
+<dt>rgb_flag (bool):</dt>
+<dd>Are you trying to create a merged view of grayscale
+or RGB image renders</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
@@ -224,8 +229,8 @@ omega scans.</dd>
 </dd></dl>
 
 <dl class="function">
-<dt id="gravityspy.ML.GS_utils.cosine_distance">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">cosine_distance</code><span class="sig-paren">(</span><em>vects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#cosine_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.cosine_distance" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.ml.GS_utils.cosine_distance">
+<code class="descclassname">gravityspy.ml.GS_utils.</code><code class="descname">cosine_distance</code><span class="sig-paren">(</span><em>vects</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/GS_utils.html#cosine_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.GS_utils.cosine_distance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the cosine distance of an array</p>
 <p>Parameters:</p>
 <blockquote>
@@ -233,8 +238,8 @@ omega scans.</dd>
 </dd></dl>
 
 <dl class="function">
-<dt id="gravityspy.ML.GS_utils.create_pairs3_gen">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">create_pairs3_gen</code><span class="sig-paren">(</span><em>data</em>, <em>class_indices</em>, <em>batch_size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#create_pairs3_gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.create_pairs3_gen" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.ml.GS_utils.create_pairs3_gen">
+<code class="descclassname">gravityspy.ml.GS_utils.</code><code class="descname">create_pairs3_gen</code><span class="sig-paren">(</span><em>data</em>, <em>class_indices</em>, <em>batch_size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/GS_utils.html#create_pairs3_gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.GS_utils.create_pairs3_gen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the pairs</p>
 <dl class="docutils">
 <dt>Parameters:</dt>
@@ -251,8 +256,8 @@ omega scans.</dd>
 </dd></dl>
 
 <dl class="function">
-<dt id="gravityspy.ML.GS_utils.siamese_acc">
-<code class="descclassname">gravityspy.ML.GS_utils.</code><code class="descname">siamese_acc</code><span class="sig-paren">(</span><em>thred</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/GS_utils.html#siamese_acc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.GS_utils.siamese_acc" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.ml.GS_utils.siamese_acc">
+<code class="descclassname">gravityspy.ml.GS_utils.</code><code class="descname">siamese_acc</code><span class="sig-paren">(</span><em>thred</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/GS_utils.html#siamese_acc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.GS_utils.siamese_acc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate simaese accuracy</p>
 <dl class="docutils">
 <dt>Parameters:</dt>
@@ -298,7 +303,7 @@ omega scans.</dd>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

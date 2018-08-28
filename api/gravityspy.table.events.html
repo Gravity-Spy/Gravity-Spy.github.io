@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/hveto-docs.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> GravitySpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GravitySpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>&lt;no title&gt;</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/gravityspy.table.events.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-gravityspy.table.events"></span><dl class="class">
+<dt id="gravityspy.table.events.Events">
+<em class="property">class </em><code class="descclassname">gravityspy.table.events.</code><code class="descname">Events</code><span class="sig-paren">(</span><em>data=None</em>, <em>masked=None</em>, <em>names=None</em>, <em>dtype=None</em>, <em>meta=None</em>, <em>copy=True</em>, <em>rows=None</em>, <em>copy_indices=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">gwpy.table.gravityspy.GravitySpyTable</span></code></p>
+<p>This class provides method for classifying events with gravityspy</p>
+<dl class="method">
+<dt id="gravityspy.table.events.Events.classify">
+<code class="descname">classify</code><span class="sig-paren">(</span><em>project_info_pickle</em>, <em>path_to_cnn</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.classify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify triggers in this table</p>
+<p>Parameters:</p>
+<blockquote>
+<div>project_info_pickle: thing1
+path_to_cnn: thing2</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><cite>Events</cite> table</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravityspy.table.events.Events.determine_workflow_and_subjectset">
+<code class="descname">determine_workflow_and_subjectset</code><span class="sig-paren">(</span><em>project_info_pickle</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.determine_workflow_and_subjectset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.determine_workflow_and_subjectset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain omicron triggers to run gravityspy on</p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd>path_to_cnn (str): filename of file with Gravity Spy project info</dd>
+<dt>Returns:</dt>
+<dd><cite>Events</cite> table with columns workflow and subjectset</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="gravityspy.table.events.Events.get_triggers">
+<em class="property">classmethod </em><code class="descname">get_triggers</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>channel</em>, <em>dqflag</em>, <em>verbose=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.get_triggers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.get_triggers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain omicron triggers to run gravityspy on</p>
+<p>Parameters:</p>
+<blockquote>
+<div>start (int): start of time to look for triggers
+end (int): end time to look for triggers
+channel (str): channel to look for triggers
+dqflag (str): name of segment during which to keep triggers</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><cite>Events</cite> table</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="gravityspy.table.events.Events.read">
+<em class="property">classmethod </em><code class="descname">read</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify triggers in this table</p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd><cite>gwpy.table.GravitySpyTable</cite></dd>
+<dt>Returns:</dt>
+<dd><cite>Events</cite> table</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravityspy.table.events.Events.to_sql">
+<code class="descname">to_sql</code><span class="sig-paren">(</span><em>table='glitches_v2d0'</em>, <em>engine=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.to_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.to_sql" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain omicron triggers to run gravityspy on</p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd>table (str): name of SQL table</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravityspy.table.events.Events.update_scores">
+<code class="descname">update_scores</code><span class="sig-paren">(</span><em>path_to_cnn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.update_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.update_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain omicron triggers to run gravityspy on</p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd>path_to_cnn (str): filename of model</dd>
+<dt>Returns:</dt>
+<dd><cite>Events</cite> table with columns containing new scores</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravityspy.table.events.Events.update_sql">
+<code class="descname">update_sql</code><span class="sig-paren">(</span><em>table='glitches_v2d0'</em>, <em>engine=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.update_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.update_sql" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain omicron triggers to run gravityspy on</p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd>table (str): name of SQL tabl</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravityspy.table.events.Events.upload_to_zooniverse">
+<code class="descname">upload_to_zooniverse</code><span class="sig-paren">(</span><em>subject_set_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.upload_to_zooniverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.upload_to_zooniverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain omicron triggers to run gravityspy on</p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd>subject_set_id (optional, int) : subject set id to upload to</dd>
+<dt>Returns:</dt>
+<dd><cite>Events</cite> table</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gravityspy.table.events.get_connection_str">
+<code class="descclassname">gravityspy.table.events.</code><code class="descname">get_connection_str</code><span class="sig-paren">(</span><em>db='gravityspy'</em>, <em>host='gravityspy.ciera.northwestern.edu'</em>, <em>user=None</em>, <em>passwd=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#get_connection_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.get_connection_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create string to pass to create_engine</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravityspy.table.events.id_generator">
+<code class="descclassname">gravityspy.table.events.</code><code class="descname">id_generator</code><span class="sig-paren">(</span><em>x</em>, <em>size=10</em>, <em>chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#id_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.id_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain omicron triggers run gravityspy on</p>
+<p>Parameters:</p>
+<blockquote>
+<div>x (str): the item you would like a random id to be generated for</div></blockquote>
+<p>Returns:</p>
+</dd></dl>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Scott Coughlin.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

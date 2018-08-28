@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -84,6 +84,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -139,7 +141,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/gravityspy.API.project.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/gravityspy.api.project.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -152,17 +154,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <span class="target" id="module-gravityspy.API.project"></span><dl class="class">
-<dt id="gravityspy.API.project.ZooProject">
-<em class="property">class </em><code class="descclassname">gravityspy.API.project.</code><code class="descname">ZooProject</code><span class="sig-paren">(</span><em>zoo_project_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject" title="Permalink to this definition">¶</a></dt>
+  <span class="target" id="module-gravityspy.api.project"></span><dl class="class">
+<dt id="gravityspy.api.project.ZooProject">
+<em class="property">class </em><code class="descclassname">gravityspy.api.project.</code><code class="descname">ZooProject</code><span class="sig-paren">(</span><em>zoo_project_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#ZooProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.ZooProject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p><cite>ZooProject</cite> inherits from the Project class
 from the panoptes client and adds some
 wrapper functions to extracts helpful
 project information.</p>
 <dl class="method">
-<dt id="gravityspy.API.project.ZooProject.cache_project">
-<code class="descname">cache_project</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.cache_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.cache_project" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.ZooProject.cache_project">
+<code class="descname">cache_project</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#ZooProject.cache_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.ZooProject.cache_project" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -180,8 +182,8 @@ project information.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gravityspy.API.project.ZooProject.get_answers">
-<code class="descname">get_answers</code><span class="sig-paren">(</span><em>workflow=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.get_answers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.get_answers" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.ZooProject.get_answers">
+<code class="descname">get_answers</code><span class="sig-paren">(</span><em>workflow=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#ZooProject.get_answers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.ZooProject.get_answers" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -205,8 +207,8 @@ project information.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gravityspy.API.project.ZooProject.get_golden_images">
-<code class="descname">get_golden_images</code><span class="sig-paren">(</span><em>workflow=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.get_golden_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.get_golden_images" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.ZooProject.get_golden_images">
+<code class="descname">get_golden_images</code><span class="sig-paren">(</span><em>workflow=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#ZooProject.get_golden_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.ZooProject.get_golden_images" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -224,8 +226,8 @@ project information.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gravityspy.API.project.ZooProject.get_golden_subject_sets">
-<code class="descname">get_golden_subject_sets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.get_golden_subject_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.get_golden_subject_sets" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.ZooProject.get_golden_subject_sets">
+<code class="descname">get_golden_subject_sets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#ZooProject.get_golden_subject_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.ZooProject.get_golden_subject_sets" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -243,8 +245,8 @@ project information.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gravityspy.API.project.ZooProject.get_subject_sets_per_workflow">
-<code class="descname">get_subject_sets_per_workflow</code><span class="sig-paren">(</span><em>workflow=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.get_subject_sets_per_workflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.get_subject_sets_per_workflow" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.ZooProject.get_subject_sets_per_workflow">
+<code class="descname">get_subject_sets_per_workflow</code><span class="sig-paren">(</span><em>workflow=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#ZooProject.get_subject_sets_per_workflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.ZooProject.get_subject_sets_per_workflow" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -268,8 +270,8 @@ project information.</p>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="gravityspy.API.project.ZooProject.load_project_from_cache">
-<em class="property">classmethod </em><code class="descname">load_project_from_cache</code><span class="sig-paren">(</span><em>cache_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#ZooProject.load_project_from_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.ZooProject.load_project_from_cache" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.ZooProject.load_project_from_cache">
+<em class="property">classmethod </em><code class="descname">load_project_from_cache</code><span class="sig-paren">(</span><em>cache_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#ZooProject.load_project_from_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.ZooProject.load_project_from_cache" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -295,19 +297,19 @@ project information.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="gravityspy.API.project.flatten">
-<code class="descclassname">gravityspy.API.project.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>d</em>, <em>parent_key=''</em>, <em>sep='_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#flatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.flatten" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.flatten">
+<code class="descclassname">gravityspy.api.project.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>d</em>, <em>parent_key=''</em>, <em>sep='_'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#flatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.flatten" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
-<dt id="gravityspy.API.project.GravitySpyProject">
-<em class="property">class </em><code class="descclassname">gravityspy.API.project.</code><code class="descname">GravitySpyProject</code><span class="sig-paren">(</span><em>zoo_project_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#gravityspy.API.project.ZooProject" title="gravityspy.API.project.ZooProject"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravityspy.API.project.ZooProject</span></code></a></p>
+<dt id="gravityspy.api.project.GravitySpyProject">
+<em class="property">class </em><code class="descclassname">gravityspy.api.project.</code><code class="descname">GravitySpyProject</code><span class="sig-paren">(</span><em>zoo_project_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#GravitySpyProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.GravitySpyProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gravityspy.api.project.ZooProject" title="gravityspy.api.project.ZooProject"><code class="xref py py-class docutils literal notranslate"><span class="pre">gravityspy.api.project.ZooProject</span></code></a></p>
 <p><cite>GravitySpyProject</cite> inherits from the <cite>ZooProject</cite> class
 and adds some GravitySpy specific wrapper functions</p>
 <dl class="method">
-<dt id="gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices">
-<code class="descname">calculate_confusion_matrices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject.calculate_confusion_matrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.GravitySpyProject.calculate_confusion_matrices">
+<code class="descname">calculate_confusion_matrices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#GravitySpyProject.calculate_confusion_matrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.GravitySpyProject.calculate_confusion_matrices" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -325,8 +327,8 @@ and adds some GravitySpy specific wrapper functions</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices_per_classification">
-<code class="descname">calculate_confusion_matrices_per_classification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject.calculate_confusion_matrices_per_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices_per_classification" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.GravitySpyProject.calculate_confusion_matrices_per_classification">
+<code class="descname">calculate_confusion_matrices_per_classification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#GravitySpyProject.calculate_confusion_matrices_per_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.GravitySpyProject.calculate_confusion_matrices_per_classification" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -344,13 +346,13 @@ and adds some GravitySpy specific wrapper functions</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gravityspy.API.project.GravitySpyProject.check_level_by_classification">
-<code class="descname">check_level_by_classification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject.check_level_by_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject.check_level_by_classification" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.GravitySpyProject.check_level_by_classification">
+<code class="descname">check_level_by_classification</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#GravitySpyProject.check_level_by_classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.GravitySpyProject.check_level_by_classification" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="gravityspy.API.project.GravitySpyProject.determine_level">
-<code class="descname">determine_level</code><span class="sig-paren">(</span><em>alpha</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject.determine_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject.determine_level" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.GravitySpyProject.determine_level">
+<code class="descname">determine_level</code><span class="sig-paren">(</span><em>alpha</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#GravitySpyProject.determine_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.GravitySpyProject.determine_level" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -376,8 +378,8 @@ and adds some GravitySpy specific wrapper functions</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gravityspy.API.project.GravitySpyProject.get_level_structure">
-<code class="descname">get_level_structure</code><span class="sig-paren">(</span><em>workflow=None</em>, <em>IDfilter=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#GravitySpyProject.get_level_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.GravitySpyProject.get_level_structure" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.GravitySpyProject.get_level_structure">
+<code class="descname">get_level_structure</code><span class="sig-paren">(</span><em>workflow=None</em>, <em>IDfilter=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#GravitySpyProject.get_level_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.GravitySpyProject.get_level_structure" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -405,8 +407,8 @@ and adds some GravitySpy specific wrapper functions</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="gravityspy.API.project.workflow_with_most_answers">
-<code class="descclassname">gravityspy.API.project.</code><code class="descname">workflow_with_most_answers</code><span class="sig-paren">(</span><em>db</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/API/project.html#workflow_with_most_answers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.API.project.workflow_with_most_answers" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.api.project.workflow_with_most_answers">
+<code class="descclassname">gravityspy.api.project.</code><code class="descname">workflow_with_most_answers</code><span class="sig-paren">(</span><em>db</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/api/project.html#workflow_with_most_answers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.api.project.workflow_with_most_answers" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 
@@ -443,7 +445,7 @@ and adds some GravitySpy specific wrapper functions</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -84,6 +84,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -152,10 +154,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <span class="target" id="module-gravityspy.plot.plot"></span><dl class="function">
+  <span class="target" id="module-gravityspy.plot.plot"></span><p>Plotting tool for gravityspy</p>
+<dl class="function">
 <dt id="gravityspy.plot.plot.plot_qtransform">
-<code class="descclassname">gravityspy.plot.plot.</code><code class="descname">plot_qtransform</code><span class="sig-paren">(</span><em>specsgrams</em>, <em>plotNormalizedERange</em>, <em>plotTimeRanges</em>, <em>detectorName</em>, <em>startTime</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/plot/plot.html#plot_qtransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.plot.plot.plot_qtransform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">gravityspy.plot.plot.</code><code class="descname">plot_qtransform</code><span class="sig-paren">(</span><em>specsgrams</em>, <em>plot_normalized_energy_range</em>, <em>plot_time_ranges</em>, <em>detector_name</em>, <em>start_time</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/plot/plot.html#plot_qtransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.plot.plot.plot_qtransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch raw data around a glitch</p>
+<p>Parameters:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>specsgrams (list):</dt>
+<dd>A list of <cite>gwpy.spectrogram.Spectrogram</cite> objects</dd>
+<dt>plot_normalized_energy_range (array):</dt>
+<dd>The min and max of the colorbar for the plots</dd>
+<dt>plot_time_ranges (array):</dt>
+<dd>The duration assosciated with each plot to be made</dd>
+<dt>detector_name (str):</dt>
+<dd>What detetor where these spectrograms from</dd>
+<dt>start_time (float):</dt>
+<dd>What was the start time of the data used for these spectrograms
+this effects what the plot title is (ER10 O1 O2 etc)</dd>
+</dl>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>ind_fig_all</dt>
+<dd>A list of individual spectrogram plots</dd>
+<dt>super_fig</dt>
+<dd>A single <cite>plot</cite> object contianing all spectrograms</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
 
 
 
@@ -191,7 +220,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

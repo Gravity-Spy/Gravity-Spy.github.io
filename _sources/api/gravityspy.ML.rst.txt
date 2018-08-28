@@ -1,4 +1,4 @@
-gravityspy.ML package
+gravityspy.ml package
 =====================
 
 Submodules
@@ -6,16 +6,16 @@ Submodules
 
 .. toctree::
 
-   gravityspy.ML.GS_utils
-   gravityspy.ML.labelling_test_glitches
-   gravityspy.ML.make_pickle_for_linux
-   gravityspy.ML.train_classifier
-   gravityspy.ML.train_semantic_index
+   gravityspy.ml.GS_utils
+   gravityspy.ml.labelling_test_glitches
+   gravityspy.ml.read_image
+   gravityspy.ml.train_classifier
+   gravityspy.ml.train_semantic_index
 
 Module contents
 ---------------
 
-.. automodule:: gravityspy.ML
+.. automodule:: gravityspy.ml
     :members:
     :undoc-members:
     :show-inheritance:

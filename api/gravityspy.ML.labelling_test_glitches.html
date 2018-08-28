@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -84,6 +84,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -139,7 +141,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/gravityspy.ML.labelling_test_glitches.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/gravityspy.ml.labelling_test_glitches.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -152,9 +154,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <span class="target" id="module-gravityspy.ML.labelling_test_glitches"></span><dl class="function">
-<dt id="gravityspy.ML.labelling_test_glitches.get_feature_space">
-<code class="descclassname">gravityspy.ML.labelling_test_glitches.</code><code class="descname">get_feature_space</code><span class="sig-paren">(</span><em>image_data, semantic_model_adr, image_size=[140, 170], verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/labelling_test_glitches.html#get_feature_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.labelling_test_glitches.get_feature_space" title="Permalink to this definition">¶</a></dt>
+  <span class="target" id="module-gravityspy.ml.labelling_test_glitches"></span><dl class="function">
+<dt id="gravityspy.ml.labelling_test_glitches.get_feature_space">
+<code class="descclassname">gravityspy.ml.labelling_test_glitches.</code><code class="descname">get_feature_space</code><span class="sig-paren">(</span><em>image_data, semantic_model_name, image_size=[140, 170], verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/labelling_test_glitches.html#get_feature_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.labelling_test_glitches.get_feature_space" title="Permalink to this definition">¶</a></dt>
 <dd><p>Obtain N dimensional feature space of sample</p>
 <p>Parameters:</p>
 <blockquote>
@@ -163,7 +165,7 @@
 <dd>This is a DF with columns whose names are the same as
 the image and whose row entries are
 the b/w pixel values at some resoltion
-determined by <cite>make_pickle</cite></dd>
+determined by <cite>read_image</cite></dd>
 <dt>semantic_model_adr (str):</dt>
 <dd>Path to folder containing similarity model</dd>
 <dt>image_size (list, optional):</dt>
@@ -182,8 +184,37 @@ determined by <cite>make_pickle</cite></dd>
 </dd></dl>
 
 <dl class="function">
-<dt id="gravityspy.ML.labelling_test_glitches.label_glitches">
-<code class="descclassname">gravityspy.ML.labelling_test_glitches.</code><code class="descname">label_glitches</code><span class="sig-paren">(</span><em>image_data, model_adr, image_size=[140, 170], verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/labelling_test_glitches.html#label_glitches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.labelling_test_glitches.label_glitches" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.ml.labelling_test_glitches.get_multiview_feature_space">
+<code class="descclassname">gravityspy.ml.labelling_test_glitches.</code><code class="descname">get_multiview_feature_space</code><span class="sig-paren">(</span><em>image_data, semantic_model_name, image_size=[140, 170], verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/labelling_test_glitches.html#get_multiview_feature_space"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.labelling_test_glitches.get_multiview_feature_space" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain N dimensional feature space of sample</p>
+<p>Parameters:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>image_data (<cite>pd.DataFrame</cite>):</dt>
+<dd>This is a DF with columns whose names are the same as
+the image and whose row entries are
+the b/w pixel values at some resoltion
+determined by <cite>read_image</cite></dd>
+<dt>semantic_model_adr (str):</dt>
+<dd>Path to folder containing similarity model</dd>
+<dt>image_size (list, optional):</dt>
+<dd>default [140, 170]</dd>
+<dt>verbose (bool, optional):</dt>
+<dd>default False</dd>
+</dl>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>np.array:</dt>
+<dd>a 200 dimensional feature space vector</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="gravityspy.ml.labelling_test_glitches.label_glitches">
+<code class="descclassname">gravityspy.ml.labelling_test_glitches.</code><code class="descname">label_glitches</code><span class="sig-paren">(</span><em>image_data, model_name, image_size=[140, 170], verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/labelling_test_glitches.html#label_glitches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.labelling_test_glitches.label_glitches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Obtain 1XNclasses confidence vector and label for image</p>
 <p>Parameters:</p>
 <blockquote>
@@ -192,7 +223,7 @@ determined by <cite>make_pickle</cite></dd>
 <dd>This is a DF with columns whose names are the same as
 the image and whose row entries are
 the b/w pixel values at some resoltion
-determined by <cite>make_pickle</cite></dd>
+determined by <cite>read_image</cite></dd>
 <dt>model_adr (str, optional):</dt>
 <dd>Path to folder containing model</dd>
 <dt>image_size (list, optional):</dt>
@@ -212,8 +243,8 @@ index_label (int): ml label</dd>
 </dd></dl>
 
 <dl class="function">
-<dt id="gravityspy.ML.labelling_test_glitches.main">
-<code class="descclassname">gravityspy.ML.labelling_test_glitches.</code><code class="descname">main</code><span class="sig-paren">(</span><em>image_data, model_adr, image_size=[140, 170], verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ML/labelling_test_glitches.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ML.labelling_test_glitches.main" title="Permalink to this definition">¶</a></dt>
+<dt id="gravityspy.ml.labelling_test_glitches.main">
+<code class="descclassname">gravityspy.ml.labelling_test_glitches.</code><code class="descname">main</code><span class="sig-paren">(</span><em>image_data, model_adr, image_size=[140, 170], verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/labelling_test_glitches.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.labelling_test_glitches.main" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -223,7 +254,7 @@ index_label (int): ml label</dd>
 <div><p>columns whose names are the same as
 the image and whose row entries are
 the b/w pixel values at some resoltion
-determined by <cite>make_pickle</cite></p>
+determined by <cite>read_image</cite></p>
 </div></blockquote>
 <dl class="last docutils">
 <dt><strong>model_adr</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><cite>str</cite> path to folder containing model</span></dt>
@@ -273,7 +304,7 @@ determined by <cite>make_pickle</cite></p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

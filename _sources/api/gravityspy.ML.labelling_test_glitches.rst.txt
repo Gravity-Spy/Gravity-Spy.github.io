@@ -1,4 +1,4 @@
-.. automodule:: gravityspy.ML.labelling_test_glitches
+.. automodule:: gravityspy.ml.labelling_test_glitches
     :members:
     :undoc-members:
     :show-inheritance:

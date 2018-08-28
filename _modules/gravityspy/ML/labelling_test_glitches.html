@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ML.labelling_test_glitches &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>gravityspy.ml.labelling_test_glitches &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -84,6 +84,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -135,7 +137,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>gravityspy.ML.labelling_test_glitches</li>
+      <li>gravityspy.ml.labelling_test_glitches</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,12 +152,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for gravityspy.ML.labelling_test_glitches</h1><div class="highlight"><pre>
+  <h1>Source code for gravityspy.ml.labelling_test_glitches</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">concatenate_views</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">load_model</span>
 <span class="kn">from</span> <span class="nn">scipy.misc</span> <span class="k">import</span> <span class="n">imresize</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
@@ -164,7 +166,7 @@
 <span class="sd">file in a .csv file</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/gravityspy.ml.labelling_test_glitches.html#gravityspy.ml.labelling_test_glitches.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -172,7 +174,7 @@
 <span class="sd">                 columns whose names are the same as</span>
 <span class="sd">                 the image and whose row entries are</span>
 <span class="sd">                 the b/w pixel values at some resoltion</span>
-<span class="sd">                 determined by `make_pickle`</span>
+<span class="sd">                 determined by `read_image`</span>
 
 <span class="sd">    model_adr : `str` path to folder containing model</span>
 
@@ -186,12 +188,13 @@
 
     <span class="n">dw</span> <span class="o">=</span> <span class="n">label_glitches</span><span class="p">(</span><span class="n">pickle_adr</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
     <span class="n">dwslice</span> <span class="o">=</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="n">dwslice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">dwslice</span><span class="p">)))</span>
+    <span class="n">dwslice</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">dwslice</span><span class="p">)))</span>
 
-    <span class="k">return</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dwslice</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">dw</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dwslice</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="label_glitches"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.label_glitches">[docs]</a><span class="k">def</span> <span class="nf">label_glitches</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="label_glitches"><a class="viewcode-back" href="../../../api/gravityspy.ml.labelling_test_glitches.html#gravityspy.ml.labelling_test_glitches.label_glitches">[docs]</a><span class="k">def</span> <span class="nf">label_glitches</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+                   <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Obtain 1XNclasses confidence vector and label for image</span>
 
 <span class="sd">    Parameters:</span>
@@ -200,7 +203,7 @@
 <span class="sd">            This is a DF with columns whose names are the same as</span>
 <span class="sd">            the image and whose row entries are</span>
 <span class="sd">            the b/w pixel values at some resoltion</span>
-<span class="sd">            determined by `make_pickle`</span>
+<span class="sd">            determined by `read_image`</span>
 
 <span class="sd">        model_adr (str, optional):</span>
 <span class="sd">            Path to folder containing model</span>
@@ -218,18 +221,14 @@
 <span class="sd">            index_label (int): ml label</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># the path where the trained is saved there</span>
-    <span class="n">model_adr</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
-
-    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1986</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1986</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
 
     <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="c1"># load a model and weights</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Retrieving the trained ML classifier&#39;</span><span class="p">)</span>
-    <span class="n">load_folder</span> <span class="o">=</span> <span class="n">model_adr</span>
-    <span class="n">final_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">load_folder</span> <span class="o">+</span> <span class="s1">&#39;/multi_view_classifier.h5&#39;</span><span class="p">)</span>
+    <span class="n">final_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
 
     <span class="n">final_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span>
                         <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adadelta&#39;</span><span class="p">,</span>
@@ -238,21 +237,39 @@
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Scoring unlabelled glitches&#39;</span><span class="p">)</span>
 
+    <span class="n">half_second_images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;0.5.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">one_second_images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">two_second_images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;2.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">four_second_images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;4.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    
+    <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_data</span><span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">)</span>
+
     <span class="c1"># read in 4 durations</span>
-    <span class="n">test_set_unlabelled_x_1</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;0.5.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">test_set_unlabelled_x_2</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;4.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">test_set_unlabelled_x_3</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">test_set_unlabelled_x_4</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;2.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_data</span><span class="p">[</span><span class="n">half_second_images</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_1</span> <span class="o">=</span> <span class="n">test_set_unlabelled_x_1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">test_set_unlabelled_x_2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_data</span><span class="p">[</span><span class="n">four_second_images</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_2</span> <span class="o">=</span> <span class="n">test_set_unlabelled_x_2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">test_set_unlabelled_x_3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_data</span><span class="p">[</span><span class="n">one_second_images</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_3</span> <span class="o">=</span> <span class="n">test_set_unlabelled_x_3</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">test_set_unlabelled_x_4</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">image_data</span><span class="p">[</span><span class="n">two_second_images</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_4</span> <span class="o">=</span> <span class="n">test_set_unlabelled_x_4</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
 
     <span class="n">concat_test_unlabelled</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">test_set_unlabelled_x_1</span><span class="p">,</span>
-                            <span class="n">test_set_unlabelled_x_2</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_3</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+                            <span class="n">test_set_unlabelled_x_2</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_3</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
 
-    <span class="n">score3_unlabelled</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">concat_test_unlabelled</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">confidence_array</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">concat_test_unlabelled</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">index_label</span> <span class="o">=</span> <span class="n">confidence_array</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">score3_unlabelled</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">score3_unlabelled</span><span class="p">)</span></div>
+    <span class="n">ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">half_second_images</span><span class="p">:</span>
+        <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
 
+    <span class="k">return</span> <span class="n">confidence_array</span><span class="p">,</span> <span class="n">index_label</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">half_second_images</span><span class="p">,</span> <span class="n">one_second_images</span><span class="p">,</span> <span class="n">two_second_images</span><span class="p">,</span> <span class="n">four_second_images</span></div>
 
-<div class="viewcode-block" id="get_feature_space"><a class="viewcode-back" href="../../../api/gravityspy.ML.labelling_test_glitches.html#gravityspy.ML.labelling_test_glitches.get_feature_space">[docs]</a><span class="k">def</span> <span class="nf">get_feature_space</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">semantic_model_adr</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+<div class="viewcode-block" id="get_feature_space"><a class="viewcode-back" href="../../../api/gravityspy.ml.labelling_test_glitches.html#gravityspy.ml.labelling_test_glitches.get_feature_space">[docs]</a><span class="k">def</span> <span class="nf">get_feature_space</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">semantic_model_name</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
                       <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Obtain N dimensional feature space of sample</span>
 
@@ -262,7 +279,7 @@
 <span class="sd">            This is a DF with columns whose names are the same as</span>
 <span class="sd">            the image and whose row entries are</span>
 <span class="sd">            the b/w pixel values at some resoltion</span>
-<span class="sd">            determined by `make_pickle`</span>
+<span class="sd">            determined by `read_image`</span>
 
 <span class="sd">        semantic_model_adr (str):</span>
 <span class="sd">            Path to folder containing similarity model</span>
@@ -279,18 +296,72 @@
 <span class="sd">            a 200 dimensional feature space vector</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">semantic_idx_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">semantic_model_adr</span> <span class="o">+</span> <span class="s1">&#39;/semantic_idx_model.h5&#39;</span><span class="p">)</span>
+    <span class="n">semantic_idx_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">semantic_model_name</span><span class="p">)</span>
     <span class="n">test_data</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
     <span class="n">test_data</span> <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="n">test_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="n">test_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">test_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">new_data2</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">:</span>
         <span class="n">new_data2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">imresize</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)))</span>
         <span class="n">img_cols</span> <span class="o">=</span> <span class="mi">224</span>
         <span class="n">img_rows</span> <span class="o">=</span> <span class="mi">224</span>
-        <span class="n">test_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">new_data2</span><span class="p">)</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">new_data2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">semantic_idx_model</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">test_data</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="get_multiview_feature_space"><a class="viewcode-back" href="../../../api/gravityspy.ml.labelling_test_glitches.html#gravityspy.ml.labelling_test_glitches.get_multiview_feature_space">[docs]</a><span class="k">def</span> <span class="nf">get_multiview_feature_space</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">semantic_model_name</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Obtain N dimensional feature space of sample</span>
+
+<span class="sd">    Parameters:</span>
+
+<span class="sd">        image_data (`pd.DataFrame`):</span>
+<span class="sd">            This is a DF with columns whose names are the same as</span>
+<span class="sd">            the image and whose row entries are</span>
+<span class="sd">            the b/w pixel values at some resoltion</span>
+<span class="sd">            determined by `read_image`</span>
+
+<span class="sd">        semantic_model_adr (str):</span>
+<span class="sd">            Path to folder containing similarity model</span>
+
+<span class="sd">        image_size (list, optional):</span>
+<span class="sd">            default [140, 170]</span>
+
+<span class="sd">        verbose (bool, optional):</span>
+<span class="sd">            default False</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">        np.array:</span>
+<span class="sd">            a 200 dimensional feature space vector</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">test_set_unlabelled_x_1</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">test_set_unlabelled_x_2</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;2.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">test_set_unlabelled_x_3</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;4.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">test_set_unlabelled_x_4</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;0.5.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">test_set_unlabelled_x_1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">test_set_unlabelled_x_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)),</span>
+                                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">test_set_unlabelled_x_2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)),</span>
+                                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">test_set_unlabelled_x_3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)),</span>
+                                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_4</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">test_set_unlabelled_x_4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_4</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)),</span>
+                                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">semantic_idx_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">semantic_model_name</span><span class="p">)</span>
+    <span class="n">concat_test_unlabelled</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">test_set_unlabelled_x_1</span><span class="p">,</span>
+                            <span class="n">test_set_unlabelled_x_2</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_3</span><span class="p">,</span> <span class="n">test_set_unlabelled_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">semantic_idx_model</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">concat_test_unlabelled</span><span class="p">])</span></div>
 </pre></div>
 
            </div>
@@ -325,7 +396,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

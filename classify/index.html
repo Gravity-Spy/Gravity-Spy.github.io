@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Classify a Trigger With Gravity Spy &mdash; GravitySpy 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/hveto-docs.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Classifying A Table of Events" href="../events/index.html" />
+    <link rel="prev" title="Installation" href="../install/index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> GravitySpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Classify a Trigger With Gravity Spy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-excess-noise-event">The excess noise event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#breaking-down-classify">Breaking down <cite>classify</cite></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GravitySpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Classify a Trigger With Gravity Spy</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/classify/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="classify-a-trigger-with-gravity-spy">
+<span id="classify"></span><h1>Classify a Trigger With Gravity Spy<a class="headerlink" href="#classify-a-trigger-with-gravity-spy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Gravity Spy utilizes a trained convolutional nueral net (CNN)
+to classify excess noise events in gravitational wave (GW) detector data.
+Specifically, the CNN is trained on <code class="xref py py-mod docutils literal notranslate"><span class="pre">gwpy.timeseries.TimeSeries.q_transform</span></code>
+of graviatational wave data which are a specialized form of spectrograms.</p>
+<p>Below we will show what these spectrograms look like and how to use <a class="reference internal" href="#classify"><span class="std std-ref">Classify a Trigger With Gravity Spy</span></a> to classify a
+known instance of excess noise in GW data.</p>
+</div>
+<div class="section" id="the-excess-noise-event">
+<h2>The excess noise event<a class="headerlink" href="#the-excess-noise-event" title="Permalink to this headline">¶</a></h2>
+<p>In the following we demonstrate an example of the <em>Scratchy</em> excess noise event. From here on out,
+we will refer to these excess noise events as <em>glitches</em>.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">gwpy.timeseries</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
+
+<span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">gravityspy.classify</span> <span class="kn">import</span> <span class="n">classify</span>
+
+<span class="gp">In [3]: </span><span class="n">timeseries</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;data/timeseries/scratchy_timeseries_test.h5&#39;</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">event_time</span> <span class="o">=</span> <span class="mf">1127700030.877928972</span>
+
+<span class="gp">In [5]: </span><span class="n">results</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">event_time</span><span class="o">=</span><span class="n">event_time</span><span class="p">,</span> <span class="n">channel_name</span><span class="o">=</span><span class="s1">&#39;L1:GDS-CALIB_STRAIN&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>                   <span class="n">project_info_pickle</span><span class="o">=</span><span class="s1">&#39;../examples/1104.pkl&#39;</span><span class="p">,</span> <span class="n">path_to_cnn</span><span class="o">=</span><span class="s1">&#39;../models/multi_view_classifier.h5&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>                   <span class="n">timeseries</span><span class="o">=</span><span class="n">timeseries</span><span class="p">)</span>
+<span class="gp">   ...: </span>
+
+<span class="gp">In [6]: </span><span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">  1080Lines    1400Ripples  Air_Compressor ... ml_confidence     q_value     </span>
+<span class="go">------------- ------------- -------------- ... ------------- ----------------</span>
+<span class="go">4.4256126e-07 2.4700508e-09  1.6780694e-09 ...     0.9999064 5.65685424949238</span>
+</pre></div>
+</div>
+<div class="section" id="breaking-down-classify">
+<h3>Breaking down <cite>classify</cite><a class="headerlink" href="#breaking-down-classify" title="Permalink to this headline">¶</a></h3>
+<p>It is best here to break down the steps in the above. The process goes as follows:</p>
+<ul class="simple">
+<li>perform the q_transform around the provided event time</li>
+<li>plot four different durations or <em>views</em> of the q_transform</li>
+<li>utilize the four <em>views</em> of the image to create a single <strong>multiview</strong> image to be passed to the CNN</li>
+</ul>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="kn">from</span> <span class="nn">gravityspy.utils</span> <span class="kn">import</span> <span class="n">utils</span>
+
+<span class="gp">In [8]: </span><span class="n">config</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">GravitySpyConfigFile</span><span class="p">()</span>
+
+<span class="gp">In [9]: </span><span class="n">specsgrams</span><span class="p">,</span> <span class="n">q_value</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">make_q_scans</span><span class="p">(</span><span class="n">event_time</span><span class="o">=</span><span class="n">event_time</span><span class="p">,</span> <span class="n">timeseries</span><span class="o">=</span><span class="n">timeseries</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+<span class="gp">In [10]: </span><span class="k">print</span><span class="p">(</span><span class="n">specsgrams</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q_value</span><span class="p">)</span>
+<span class="go">Spectrogram([[0.42869811, 0.42869811, 0.28350745, ...,</span>
+<span class="go">              0.96240631, 0.96240631, 0.96240631],</span>
+<span class="go">             [0.37832283, 0.37832283, 0.23815371, ...,</span>
+<span class="go">              0.21052491, 0.21052491, 0.21052491],</span>
+<span class="go">             [0.33293522, 0.33293522, 0.19880182, ...,</span>
+<span class="go">              0.67535343, 0.67535343, 0.67535343],</span>
+<span class="go">             ...,</span>
+<span class="go">             [3.64622582, 3.64622582, 3.17572074, ...,</span>
+<span class="go">              0.067409  , 0.067409  , 0.067409  ],</span>
+<span class="go">             [3.65165053, 3.65165053, 3.20629217, ...,</span>
+<span class="go">              0.89817886, 0.89817886, 0.89817886],</span>
+<span class="go">             [3.65227352, 3.65227352, 3.23384896, ...,</span>
+<span class="go">              4.20301669, 4.20301669, 4.20301669]]</span>
+<span class="go">            unit: dimensionless,</span>
+<span class="go">            name: None,</span>
+<span class="go">            epoch: 1127700030.6279297,</span>
+<span class="go">            channel: None,</span>
+<span class="go">            x0: 1127700030.6279297 s,</span>
+<span class="go">            dx: 0.002 s,</span>
+<span class="go">            xindex: [1.12770003e+09 1.12770003e+09 1.12770003e+09 ... 1.12770003e+09</span>
+<span class="go">                     1.12770003e+09 1.12770003e+09] s,</span>
+<span class="go">            y0: 10.0 Hz,</span>
+<span class="go">            dy: 0.5 Hz,</span>
+<span class="go">            yindex: [  10.    10.5   11.  ... 2046.5 2047.  2047.5] Hz) 5.65685424949238</span>
+</pre></div>
+</div>
+<p>Now we plot all 4 of the spectrograms as png</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="kn">from</span> <span class="nn">gravityspy.plot</span> <span class="kn">import</span> <span class="n">plot_qtransform</span>
+
+<span class="gp">In [12]: </span><span class="n">plot_time_ranges</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plot_time_ranges</span>
+
+<span class="gp">In [13]: </span><span class="n">plot_normalized_energy_range</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plot_normalized_energy_range</span>
+
+<span class="gp">In [14]: </span><span class="n">detector_name</span> <span class="o">=</span> <span class="s1">&#39;L1&#39;</span>
+
+<span class="gp">In [15]: </span><span class="n">ind_fig_all</span><span class="p">,</span> <span class="n">super_fig</span> <span class="o">=</span> <span class="n">plot_qtransform</span><span class="p">(</span><span class="n">specsgrams</span><span class="p">,</span>
+<span class="gp">   ....: </span>                                         <span class="n">plot_normalized_energy_range</span><span class="p">,</span>
+<span class="gp">   ....: </span>                                         <span class="n">plot_time_ranges</span><span class="p">,</span>
+<span class="gp">   ....: </span>                                         <span class="n">detector_name</span><span class="p">,</span>
+<span class="gp">   ....: </span>                                         <span class="n">event_time</span><span class="p">)</span>
+<span class="gp">   ....: </span>
+
+<span class="gp">In [16]: </span><span class="n">super_fig</span>
+<span class="gh">Out[16]: </span><span class="go">&lt;Plot size 2700x600 with 5 Axes&gt;</span>
+</pre></div>
+</div>
+<img alt="../_images/plot-scratchy-all-durations.png" src="../_images/plot-scratchy-all-durations.png" />
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../events/index.html" class="btn btn-neutral float-right" title="Classifying A Table of Events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../install/index.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Scott Coughlin.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

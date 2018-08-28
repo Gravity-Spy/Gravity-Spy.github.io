@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Running wscan on the command line &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>Running wscan on the command line &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -31,7 +31,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Running trainmodel on the command line" href="../trainmodel/index.html" />
-    <link rel="prev" title="Installation" href="../install/index.html" /> 
+    <link rel="prev" title="Classifying A Table of Events" href="../events/index.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -86,6 +86,8 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-instructions">Basic instructions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#detailed-instructions">Detailed instructions</a></li>
@@ -169,7 +171,8 @@
   from ._conv import register_converters as _register_converters
 Using Theano backend.
 usage: wscan [-h] [-V] --inifile INIFILE --eventTime EVENTTIME [--uniqueID]
-             [--ID ID] [--outDir OUTDIR] --pathToModel PATHTOMODEL
+             [--ID ID] [--outDir OUTDIR] --path-to-cnn-model PATH_TO_CNN_MODEL
+             --path-to-semantic-file PATH_TO_SEMANTIC_FILE
              --project-info-pickle PROJECT_INFO_PICKLE [--runML] [--verbose]
              [--HDF5] [--PostgreSQL]
 
@@ -184,8 +187,10 @@ optional arguments:
                         label the images instead of GPS time
   --ID ID               The uniqueID string to be supplied with --uniqueID
   --outDir OUTDIR       Outdir for images
-  --pathToModel PATHTOMODEL
-                        Path to folder containing trained model
+  --path-to-cnn-model PATH_TO_CNN_MODEL
+                        Path to name of cnn model
+  --path-to-semantic-file PATH_TO_SEMANTIC_FILE
+                        Path to name of similarity model
   --project-info-pickle PROJECT_INFO_PICKLE
                         This pickle file holds informationabout what workflows
                         a image with whatconfidence label should go into
@@ -213,7 +218,7 @@ optional arguments:
         <a href="../trainmodel/index.html" class="btn btn-neutral float-right" title="Running trainmodel on the command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../install/index.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../events/index.html" class="btn btn-neutral" title="Classifying A Table of Events" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -244,7 +249,7 @@ optional arguments:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

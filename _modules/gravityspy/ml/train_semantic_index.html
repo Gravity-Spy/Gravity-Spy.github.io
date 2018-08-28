@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gravityspy.ml.train_semantic_index &mdash; GravitySpy 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/hveto-docs.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> GravitySpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../DBs/index.html">The many DBs of Gravity Spy</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GravitySpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>gravityspy.ml.train_semantic_index</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gravityspy.ml.train_semantic_index</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">keras.backend</span> <span class="k">as</span> <span class="nn">K</span>
+<span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">cosine_distance</span>
+<span class="kn">from</span> <span class="nn">keras</span> <span class="k">import</span> <span class="n">regularizers</span>
+<span class="kn">from</span> <span class="nn">keras.applications.vgg16</span> <span class="k">import</span> <span class="n">VGG16</span><span class="p">,</span> <span class="n">preprocess_input</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">GlobalAveragePooling2D</span><span class="p">,</span> <span class="n">Lambda</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Model</span><span class="p">,</span><span class="n">load_model</span>
+<span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="k">import</span> <span class="n">RMSprop</span>
+
+<span class="kn">from</span> <span class="nn">gravityspy.utils</span> <span class="k">import</span> <span class="n">log</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="make_model"><a class="viewcode-back" href="../../../api/gravityspy.ml.train_semantic_index.html#gravityspy.ml.train_semantic_index.make_model">[docs]</a><span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">model_folder</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+               <span class="n">unknown_classes_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Whistle&#39;</span><span class="p">,</span> <span class="s1">&#39;Scratchy&#39;</span><span class="p">],</span>
+               <span class="n">multi_view</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+               <span class="n">batch_size</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+               <span class="n">nb_classes</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">fraction_validation</span><span class="o">=.</span><span class="mi">125</span><span class="p">,</span> <span class="n">fraction_testing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">best_model_based_validset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+               <span class="n">random_seed</span><span class="o">=</span><span class="mi">1986</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Train a Semantic Index.</span>
+
+<span class="sd">    This module uses `keras &lt;https://keras.io/&gt;`_ to interface</span>
+<span class="sd">    with the creation of a neural net and currently uses</span>
+<span class="sd">    `theano &lt;http://deeplearning.net/software/theano/&gt;`_ as the backend</span>
+<span class="sd">    for doing the heavy gpu lifting.</span>
+
+<span class="sd">    The optimizer :class:`keras.optimizers.Adadelta`</span>
+
+<span class="sd">    The loss function being optimized is `softmax &lt;https://en.wikipedia.org/wiki/Softmax_function&gt;`_</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        data (str):</span>
+<span class="sd">            Pickle file containing training set data</span>
+
+<span class="sd">        model_folder (str, optional):</span>
+<span class="sd">            Defaults to `model`</span>
+<span class="sd">            path to folder you would like to save the model</span>
+
+<span class="sd">        unknown_classes_labels (list, optional):</span>
+<span class="sd">            Defaults to [&#39;Whistle&#39;, &#39;Scratchy&#39;]</span>
+<span class="sd">            A list of classes to be considered as the unknown</span>
+<span class="sd">            domain for which clustering will be performed</span>
+<span class="sd">            once the knowledge from the known classes</span>
+<span class="sd">            has been trained.</span>
+
+<span class="sd">        batch_size (int, optional):</span>
+<span class="sd">            Default 22</span>
+
+<span class="sd">        nb_epoch (int, optional):</span>
+<span class="sd">            Default 40</span>
+
+<span class="sd">        nb_classes (int, optional):</span>
+<span class="sd">            Default 22</span>
+
+<span class="sd">        fraction_validation (float, optional):</span>
+<span class="sd">            Default .125</span>
+
+<span class="sd">        fraction_testing (float, optional):</span>
+<span class="sd">            Default None</span>
+
+<span class="sd">        all_data_for_train_flag (int, optional):</span>
+<span class="sd">            Default 1</span>
+
+<span class="sd">        best_model_based_validset (int,optional):</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s1">&#39;Gravity Spy: Training &#39;</span>
+                        <span class="s1">&#39;Semantic Index&#39;</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Using random seed </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">random_seed</span><span class="p">))</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_seed</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="n">image_dataDF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;You data set contained </span><span class="si">{0}</span><span class="s1"> samples&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">)))</span>
+
+    <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The size of the images being trained </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image_size</span><span class="p">))</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Selecting images to be considered in the known &#39;</span>
+                <span class="s1">&#39;domain of samples which are </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image_dataDF</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+    <span class="n">knownDF</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">image_dataDF</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+                                          <span class="n">unknown_classes_labels</span><span class="p">)]</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Selecting images to be considered in the unknown &#39;</span>
+                <span class="s1">&#39;domain of samples which are </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknown_classes_labels</span><span class="p">))</span>
+    <span class="n">unknownDF</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">image_dataDF</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">unknown_classes_labels</span><span class="p">)]</span>
+
+    <span class="n">known_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">knownDF</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">unknownn_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknownDF</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">known_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">knownDF</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">unknownn_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknownDF</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">known_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">knownDF</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">unknown_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknownDF</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">known_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">knownDF</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">unknown_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknownDF</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">multi_view</span><span class="p">:</span>
+        <span class="n">known_classes</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">known_set_x_1</span><span class="p">,</span> <span class="n">known_set_x_2</span><span class="p">,</span>
+                            <span class="n">known_set_x_3</span><span class="p">,</span> <span class="n">known_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+        <span class="n">unknown_classes</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">unknown_set_x_1</span><span class="p">,</span> <span class="n">unknown_set_x_2</span><span class="p">,</span>
+                            <span class="n">unknown_set_x_3</span><span class="p">,</span> <span class="n">unknown_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># We are only using one duration for the similarity search</span>
+        <span class="n">known_classes_image_array</span> <span class="o">=</span> <span class="n">known_set_x_2</span>
+        <span class="n">unknown_classes_image_array</span> <span class="o">=</span> <span class="n">unknown_set_x_2</span>
+
+    <span class="c1"># Generate the Binary pairs for training.</span>
+    <span class="n">train_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">data_</span><span class="p">,</span> <span class="n">known_classes_indices_for_metric_learning</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
+    <span class="n">valid_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">data_x_2</span><span class="p">,</span> <span class="n">unknown_classes_indices_for_clustering</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
+
+    <span class="c1"># Create the model</span>
+    <span class="n">vgg16</span> <span class="o">=</span> <span class="n">VGG16</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="s1">&#39;imagenet&#39;</span><span class="p">,</span> <span class="n">include_top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="n">input_shape</span><span class="o">=</span><span class="n">data_x_1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">vgg16</span><span class="o">.</span><span class="n">output</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">GlobalAveragePooling2D</span><span class="p">()(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># let&#39;s add a fully-connected layer</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="n">reglularization</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+
+
+    <span class="c1">#Then create the corresponding model</span>
+    <span class="n">base_network</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">vgg16</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">predictions</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">multi_view</span><span class="p">:</span>
+        <span class="n">img_cols</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">img_cols</span>
+        <span class="n">img_rows</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">img_rows</span>
+
+    <span class="n">input_a</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">))</span>
+    <span class="n">input_b</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">))</span>
+
+    <span class="n">processed_a</span> <span class="o">=</span> <span class="n">base_network</span><span class="p">(</span><span class="n">input_a</span><span class="p">)</span>
+    <span class="n">processed_b</span> <span class="o">=</span> <span class="n">base_network</span><span class="p">(</span><span class="n">input_b</span><span class="p">)</span>
+
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">Lambda</span><span class="p">(</span><span class="n">cosine_distance</span><span class="p">,</span>
+                      <span class="n">output_shape</span><span class="o">=</span><span class="n">eucl_dist_output_shape</span><span class="p">)(</span>
+                          <span class="p">[</span><span class="n">processed_a</span><span class="p">,</span> <span class="n">processed_b</span><span class="p">]</span>
+                      <span class="p">)</span>
+
+    <span class="n">similarity_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">input_a</span><span class="p">,</span> <span class="n">input_b</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">distance</span><span class="p">)</span>
+    <span class="n">semantic_idx_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">input_a</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">processed_a</span><span class="p">)</span>
+
+    <span class="n">number_of_cnn_from_vgg</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vgg16</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span><span class="o">-</span><span class="n">number_of_cnn_from_vgg</span><span class="p">):</span>
+        <span class="n">vgg16</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+    <span class="n">similarity_model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+    <span class="n">semantic_idx_model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+    <span class="n">rms</span> <span class="o">=</span> <span class="n">RMSprop</span><span class="p">()</span>
+
+    <span class="n">similarity_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">contrastive_loss</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">rms</span><span class="p">,</span>
+                             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.3</span><span class="p">),</span> <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.4</span><span class="p">),</span>
+                                      <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.6</span><span class="p">),</span>
+                                      <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.7</span><span class="p">),</span> <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.8</span><span class="p">),</span>
+                                      <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.9</span><span class="p">),</span> <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.925</span><span class="p">),</span>
+                                      <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.95</span><span class="p">),</span> <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.975</span><span class="p">),</span>
+                                      <span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.985</span><span class="p">),</span><span class="n">siamese_acc</span><span class="p">(</span><span class="mf">0.99</span><span class="p">)])</span>
+
+    <span class="c1"># train</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;training the model ...&#39;</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;training the model ...&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">train_negative_factor</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">test_negative_factor</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">train_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">data_</span><span class="p">,</span> <span class="n">known_classes_indices_for_metric_learning</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
+    <span class="n">valid_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">data_x_2</span><span class="p">,</span> <span class="n">unknown_classes_indices_for_clustering</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
+    <span class="c1"># the samples from data_x_2 should be separated for test and valid in future</span>
+
+    <span class="n">train_batch_num</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_x_1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">train_negative_factor</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">size_of_batch</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;train batch num </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_batch_num</span><span class="p">))</span>
+    <span class="n">valid_batch_num</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_x_2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">test_negative_factor</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">size_of_batch</span>
+
+    <span class="c1">#similarity_model.fit_generator(train_generator, validation_data=valid_generator, verbose=2,</span>
+     <span class="c1">#                   steps_per_epoch=train_batch_num, validation_steps=valid_batch_num, epochs=nb_epoch)</span>
+    <span class="c1">#train_batch_num = 10</span>
+    <span class="c1">#valid_batch_num = 10</span>
+    <span class="n">similarity_model</span><span class="o">.</span><span class="n">fit_generator</span><span class="p">(</span><span class="n">train_generator</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="n">valid_generator</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="n">steps_per_epoch</span><span class="o">=</span><span class="n">train_batch_num</span><span class="p">,</span> <span class="n">validation_steps</span><span class="o">=</span><span class="n">valid_batch_num</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">nb_epoch</span><span class="p">)</span>
+
+    <span class="c1"># validation</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;validating the model&#39;</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;validating the model ...&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="sd">&#39;&#39;&#39;known_classes_negative_factor = 1</span>
+<span class="sd">    unknown_classes_negative_factor = 1</span>
+<span class="sd">    known_classes_generator = create_pairs3_gen(data_x_1, known_classes_indices_for_metric_learning, size_of_batch)</span>
+<span class="sd">    unknown_classes_generator = create_pairs3_gen(data_x_2, unknown_classes_indices_for_clustering, size_of_batch)</span>
+<span class="sd">    known_classes_batch_num = (len(data_x_1) * (known_classes_negative_factor + 1)) / size_of_batch</span>
+<span class="sd">    unknown_classes_batch_num = (len(data_x_2) * (unknown_classes_negative_factor + 1)) / size_of_batch&#39;&#39;&#39;</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Known classes&#39;</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;known classes&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1">#res1 = similarity_model.evaluate_generator(known_classes_generator, known_classes_batch_num)</span>
+    <span class="n">res1</span> <span class="o">=</span> <span class="n">similarity_model</span><span class="o">.</span><span class="n">evaluate_generator</span><span class="p">(</span><span class="n">train_generator</span><span class="p">,</span> <span class="n">train_batch_num</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">res1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">res1</span><span class="p">:</span>
+            <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2">, &quot;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39; unknown classes&#39;</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;unknown classes&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1">#res2 = similarity_model.evaluate_generator(unknown_classes_generator, unknown_classes_batch_num)</span>
+    <span class="n">res2</span> <span class="o">=</span> <span class="n">similarity_model</span><span class="o">.</span><span class="n">evaluate_generator</span><span class="p">(</span><span class="n">valid_generator</span><span class="p">,</span> <span class="n">valid_batch_num</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">res2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">res2</span><span class="p">:</span>
+            <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2">, &quot;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
+
+    <span class="n">similarity_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">)</span>
+    <span class="n">similarity_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">join</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">model_adr</span><span class="p">,</span> <span class="s1">&#39;similarity_metric_model.h5&#39;</span><span class="p">))</span>
+    <span class="n">semantic_idx_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">join</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">model_adr</span><span class="p">,</span> <span class="s1">&#39;semantic_idx_model.h5&#39;</span><span class="p">))</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Scott Coughlin.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

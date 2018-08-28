@@ -1,4 +1,4 @@
-.. automodule:: gravityspy.ML.make_pickle_for_linux
+.. automodule:: gravityspy.classify.classify
     :members:
     :undoc-members:
     :show-inheritance:

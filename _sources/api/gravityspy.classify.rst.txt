@@ -1,0 +1,17 @@
+gravityspy.classify package
+===========================
+
+Submodules
+----------
+
+.. toctree::
+
+   gravityspy.classify.classify
+
+Module contents
+---------------
+
+.. automodule:: gravityspy.classify
+    :members:
+    :undoc-members:
+    :show-inheritance:

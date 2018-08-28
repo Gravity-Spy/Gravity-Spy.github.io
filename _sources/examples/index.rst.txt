@@ -25,7 +25,7 @@ On CIT
 .. code-block:: bash
 
    $ source ~gravityspy/.gravityspy_py36_profile
-   $ source ~gravityspy/.gravityspy_py27_profile  
+   $ source ~gravityspy/.gravityspy_py27_profile
 
 =======================
 The `glitches` database

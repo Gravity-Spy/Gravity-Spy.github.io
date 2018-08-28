@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python Module Index &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>Python Module Index &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -87,6 +87,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
@@ -171,37 +173,57 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="api/gravityspy.API.html#module-gravityspy.API"><code class="xref">gravityspy.API</code></a></td><td>
+       <a href="api/gravityspy.api.html#module-gravityspy.api"><code class="xref">gravityspy.api</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="api/gravityspy.API.project.html#module-gravityspy.API.project"><code class="xref">gravityspy.API.project</code></a></td><td>
+       <a href="api/gravityspy.api.project.html#module-gravityspy.api.project"><code class="xref">gravityspy.api.project</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="api/gravityspy.ML.html#module-gravityspy.ML"><code class="xref">gravityspy.ML</code></a></td><td>
+       <a href="api/gravityspy.api.utils.html#module-gravityspy.api.utils"><code class="xref">gravityspy.api.utils</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="api/gravityspy.ML.GS_utils.html#module-gravityspy.ML.GS_utils"><code class="xref">gravityspy.ML.GS_utils</code></a></td><td>
+       <a href="api/gravityspy.classify.html#module-gravityspy.classify"><code class="xref">gravityspy.classify</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="api/gravityspy.ML.labelling_test_glitches.html#module-gravityspy.ML.labelling_test_glitches"><code class="xref">gravityspy.ML.labelling_test_glitches</code></a></td><td>
+       <a href="api/gravityspy.classify.classify.html#module-gravityspy.classify.classify"><code class="xref">gravityspy.classify.classify</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="api/gravityspy.ML.make_pickle_for_linux.html#module-gravityspy.ML.make_pickle_for_linux"><code class="xref">gravityspy.ML.make_pickle_for_linux</code></a></td><td>
+       <a href="api/gravityspy.ml.html#module-gravityspy.ml"><code class="xref">gravityspy.ml</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="api/gravityspy.ML.train_classifier.html#module-gravityspy.ML.train_classifier"><code class="xref">gravityspy.ML.train_classifier</code></a></td><td>
+       <a href="api/gravityspy.ml.GS_utils.html#module-gravityspy.ml.GS_utils"><code class="xref">gravityspy.ml.GS_utils</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="api/gravityspy.ml.labelling_test_glitches.html#module-gravityspy.ml.labelling_test_glitches"><code class="xref">gravityspy.ml.labelling_test_glitches</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="api/gravityspy.ml.read_image.html#module-gravityspy.ml.read_image"><code class="xref">gravityspy.ml.read_image</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="api/gravityspy.ml.train_classifier.html#module-gravityspy.ml.train_classifier"><code class="xref">gravityspy.ml.train_classifier</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="api/gravityspy.ml.train_semantic_index.html#module-gravityspy.ml.train_semantic_index"><code class="xref">gravityspy.ml.train_semantic_index</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -216,12 +238,27 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="api/gravityspy.table.html#module-gravityspy.table"><code class="xref">gravityspy.table</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="api/gravityspy.table.events.html#module-gravityspy.table.events"><code class="xref">gravityspy.table.events</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="api/gravityspy.utils.html#module-gravityspy.utils"><code class="xref">gravityspy.utils</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="api/gravityspy.utils.log.html#module-gravityspy.utils.log"><code class="xref">gravityspy.utils.log</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="api/gravityspy.utils.utils.html#module-gravityspy.utils.utils"><code class="xref">gravityspy.utils.utils</code></a></td><td>
        <em></em></td></tr>
    </table>
 
@@ -258,7 +295,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

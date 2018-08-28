@@ -1,0 +1,17 @@
+gravityspy.table package
+========================
+
+Submodules
+----------
+
+.. toctree::
+
+   gravityspy.table.events
+
+Module contents
+---------------
+
+.. automodule:: gravityspy.table
+    :members:
+    :undoc-members:
+    :show-inheritance:

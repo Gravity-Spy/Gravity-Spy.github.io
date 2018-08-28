@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.API.project &mdash; GravitySpy 0+untagged.528.ge27167b.dirty documentation</title>
+  <title>gravityspy.api.project &mdash; GravitySpy 0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.528.ge27167b.dirty
+                0.1.0
               </div>
             
           
@@ -84,6 +84,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -135,7 +137,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>gravityspy.API.project</li>
+      <li>gravityspy.api.project</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,7 +152,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for gravityspy.API.project</h1><div class="highlight"><pre>
+  <h1>Source code for gravityspy.api.project</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 
 <span class="c1"># ---- Import standard modules to the python path.</span>
@@ -167,7 +169,7 @@
            <span class="s1">&#39;workflow_with_most_answers&#39;</span><span class="p">]</span>
 
 <span class="c1"># This function generically flatten a dict</span>
-<div class="viewcode-block" id="flatten"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.flatten">[docs]</a><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">parent_key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="flatten"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.flatten">[docs]</a><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">parent_key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">    ----------</span>
 
@@ -184,7 +186,7 @@
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="workflow_with_most_answers"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.workflow_with_most_answers">[docs]</a><span class="k">def</span> <span class="nf">workflow_with_most_answers</span><span class="p">(</span><span class="n">db</span><span class="p">):</span>
+<div class="viewcode-block" id="workflow_with_most_answers"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.workflow_with_most_answers">[docs]</a><span class="k">def</span> <span class="nf">workflow_with_most_answers</span><span class="p">(</span><span class="n">db</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">    ----------</span>
 
@@ -195,7 +197,7 @@
     <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="n">maxcount</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ZooProject"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject">[docs]</a><span class="k">class</span> <span class="nc">ZooProject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ZooProject"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.ZooProject">[docs]</a><span class="k">class</span> <span class="nc">ZooProject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    `ZooProject` inherits from the Project class</span>
 <span class="sd">    from the panoptes client and adds some</span>
@@ -220,7 +222,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">iWorkflow</span><span class="p">)]</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">tmp1</span><span class="o">.</span><span class="n">raw</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ZooProject.cache_project"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.cache_project">[docs]</a>    <span class="k">def</span> <span class="nf">cache_project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ZooProject.cache_project"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.ZooProject.cache_project">[docs]</a>    <span class="k">def</span> <span class="nf">cache_project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 
@@ -234,7 +236,7 @@
         <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="ZooProject.load_project_from_cache"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.load_project_from_cache">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ZooProject.load_project_from_cache"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.ZooProject.load_project_from_cache">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load_project_from_cache</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cache_file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
@@ -253,7 +255,7 @@
                 <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pickle_file</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ZooProject.get_golden_subject_sets"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.get_golden_subject_sets">[docs]</a>    <span class="k">def</span> <span class="nf">get_golden_subject_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ZooProject.get_golden_subject_sets"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.ZooProject.get_golden_subject_sets">[docs]</a>    <span class="k">def</span> <span class="nf">get_golden_subject_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 
@@ -277,7 +279,7 @@
         <span class="k">return</span> <span class="n">workflowGoldenSetDict</span></div>
 
 
-<div class="viewcode-block" id="ZooProject.get_golden_images"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.get_golden_images">[docs]</a>    <span class="k">def</span> <span class="nf">get_golden_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ZooProject.get_golden_images"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.ZooProject.get_golden_images">[docs]</a>    <span class="k">def</span> <span class="nf">get_golden_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 
@@ -317,7 +319,7 @@
         <span class="k">return</span> <span class="n">workflowGoldenSetImagesDict</span></div>
 
 
-<div class="viewcode-block" id="ZooProject.get_answers"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.get_answers">[docs]</a>    <span class="k">def</span> <span class="nf">get_answers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ZooProject.get_answers"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.ZooProject.get_answers">[docs]</a>    <span class="k">def</span> <span class="nf">get_answers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        workflow : `int`, optional, default None</span>
@@ -349,7 +351,7 @@
         <span class="k">return</span> <span class="n">workflowDictAnswers</span></div>
 
 
-<div class="viewcode-block" id="ZooProject.get_subject_sets_per_workflow"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.ZooProject.get_subject_sets_per_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">get_subject_sets_per_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ZooProject.get_subject_sets_per_workflow"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.ZooProject.get_subject_sets_per_workflow">[docs]</a>    <span class="k">def</span> <span class="nf">get_subject_sets_per_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        workflow : `int`, optional, default None</span>
@@ -383,12 +385,12 @@
         <span class="k">return</span> <span class="n">workflowDictSubjectSets</span></div></div>
 
 
-<div class="viewcode-block" id="GravitySpyProject"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject">[docs]</a><span class="k">class</span> <span class="nc">GravitySpyProject</span><span class="p">(</span><span class="n">ZooProject</span><span class="p">):</span>
+<div class="viewcode-block" id="GravitySpyProject"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.GravitySpyProject">[docs]</a><span class="k">class</span> <span class="nc">GravitySpyProject</span><span class="p">(</span><span class="n">ZooProject</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    `GravitySpyProject` inherits from the `ZooProject` class</span>
 <span class="sd">    and adds some GravitySpy specific wrapper functions</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-<div class="viewcode-block" id="GravitySpyProject.get_level_structure"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.get_level_structure">[docs]</a>    <span class="k">def</span> <span class="nf">get_level_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">IDfilter</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="GravitySpyProject.get_level_structure"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.GravitySpyProject.get_level_structure">[docs]</a>    <span class="k">def</span> <span class="nf">get_level_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">IDfilter</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        workflow : `int`, optional, default None</span>
@@ -436,7 +438,7 @@
         <span class="k">return</span> <span class="n">level_structure</span></div>
 
 
-<div class="viewcode-block" id="GravitySpyProject.calculate_confusion_matrices"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_confusion_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GravitySpyProject.calculate_confusion_matrices"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.GravitySpyProject.calculate_confusion_matrices">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_confusion_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 
@@ -509,7 +511,7 @@
         <span class="k">return</span> <span class="n">confusion_matrices</span></div>
 
 
-<div class="viewcode-block" id="GravitySpyProject.calculate_confusion_matrices_per_classification"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.calculate_confusion_matrices_per_classification">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_confusion_matrices_per_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GravitySpyProject.calculate_confusion_matrices_per_classification"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.GravitySpyProject.calculate_confusion_matrices_per_classification">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_confusion_matrices_per_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 
@@ -566,7 +568,7 @@
         <span class="k">return</span> <span class="n">user_confusion_matrices</span></div>
 
 
-<div class="viewcode-block" id="GravitySpyProject.determine_level"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.determine_level">[docs]</a>    <span class="k">def</span> <span class="nf">determine_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+<div class="viewcode-block" id="GravitySpyProject.determine_level"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.GravitySpyProject.determine_level">[docs]</a>    <span class="k">def</span> <span class="nf">determine_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        alpha = 1xN vector of proficiency scores</span>
@@ -644,7 +646,7 @@
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GravitySpyProject.check_level_by_classification"><a class="viewcode-back" href="../../../api/gravityspy.API.project.html#gravityspy.API.project.GravitySpyProject.check_level_by_classification">[docs]</a>    <span class="k">def</span> <span class="nf">check_level_by_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GravitySpyProject.check_level_by_classification"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.GravitySpyProject.check_level_by_classification">[docs]</a>    <span class="k">def</span> <span class="nf">check_level_by_classification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Obtain workflow order</span>
         <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_info</span><span class="p">[</span><span class="s1">&#39;configuration_workflow_order&#39;</span><span class="p">]</span>
         <span class="n">workflows</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">iWorkflow</span><span class="p">))</span> <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
@@ -701,7 +703,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0+untagged.528.ge27167b.dirty',
+            VERSION:'0.1.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
