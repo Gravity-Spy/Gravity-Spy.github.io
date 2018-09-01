@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0 documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0
+                0.1.0+3.g5e1e365.dirty
               </div>
             
           
@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">Using Unsuperbised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -174,6 +175,43 @@ path_to_cnn: thing2</div></blockquote>
 </dd></dl>
 
 <dl class="method">
+<dt id="gravityspy.table.events.Events.cluster">
+<code class="descname">cluster</code><span class="sig-paren">(</span><em>nclusters</em>, <em>random_state=30</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.cluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new clusters from feature space vectors</p>
+<p>Parameters:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>nclusters (int): how many clusters to try to group</dt>
+<dd>these triggers into</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><cite>Events</cite> table</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="gravityspy.table.events.Events.create_collection">
+<code class="descname">create_collection</code><span class="sig-paren">(</span><em>name=None</em>, <em>private=True</em>, <em>default_subject=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.create_collection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.create_collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain omicron triggers to run gravityspy on</p>
+<dl class="docutils">
+<dt>Parameters:</dt>
+<dd><dl class="first last docutils">
+<dt>name (str, optional):</dt>
+<dd>name of collection</dd>
+<dt>private (bool, optional):</dt>
+<dd>would you like this collection to be private or public</dd>
+<dt>default_subject (int, optional):</dt>
+<dd>subject id to be the cover image of collection</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><cite>str</cite> url link to the created collection</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="gravityspy.table.events.Events.determine_workflow_and_subjectset">
 <code class="descname">determine_workflow_and_subjectset</code><span class="sig-paren">(</span><em>project_info_pickle</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.determine_workflow_and_subjectset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.determine_workflow_and_subjectset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Obtain omicron triggers to run gravityspy on</p>
@@ -183,6 +221,88 @@ path_to_cnn: thing2</div></blockquote>
 <dt>Returns:</dt>
 <dd><cite>Events</cite> table with columns workflow and subjectset</dd>
 </dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="gravityspy.table.events.Events.fetch">
+<em class="property">classmethod </em><code class="descname">fetch</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/table/events.html#Events.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.table.events.Events.fetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a table of events from a database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>format</strong> : <cite>str</cite>, <cite>~sqlalchemy.engine.Engine</cite></p>
+<blockquote>
+<div><p>the format of the remote data, see _Notes_ for a list of
+registered formats, OR an SQL database <cite>Engine</cite> object</p>
+</div></blockquote>
+<p><strong>*args</strong></p>
+<blockquote>
+<div><p>all other positional arguments are specific to the
+data format, see below for basic usage</p>
+</div></blockquote>
+<p><strong>columns</strong> : <cite>list</cite> of <cite>str</cite>, optional</p>
+<blockquote>
+<div><p>the columns to fetch from the database table, defaults to all</p>
+</div></blockquote>
+<p><strong>selection</strong> : <cite>str</cite>, or <cite>list</cite> of <cite>str</cite>, optional</p>
+<blockquote>
+<div><p>one or more column filters with which to downselect the
+returned table rows as they as read, e.g. <code class="docutils literal notranslate"><span class="pre">'snr</span> <span class="pre">&gt;</span> <span class="pre">5'</span></code>;
+multiple selections should be connected by ‘ &amp;&amp; ‘, or given as
+a <cite>list</cite>, e.g. <code class="docutils literal notranslate"><span class="pre">'snr</span> <span class="pre">&gt;</span> <span class="pre">5</span> <span class="pre">&amp;&amp;</span> <span class="pre">frequency</span> <span class="pre">&lt;</span> <span class="pre">1000'</span></code> or
+<code class="docutils literal notranslate"><span class="pre">['snr</span> <span class="pre">&gt;</span> <span class="pre">5',</span> <span class="pre">'frequency</span> <span class="pre">&lt;</span> <span class="pre">1000']</span></code></p>
+</div></blockquote>
+<p><strong>**kwargs</strong></p>
+<blockquote>
+<div><p>all other positional arguments are specific to the
+data format, see the online documentation for more details</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>table</strong> : <cite>EventTable</cite></p>
+<blockquote class="last">
+<div><p>a table of events recovered from the remote database</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The available named formats are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Format</th>
+<th class="head">Basic usage</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>gravityspy</td>
+<td><code class="docutils literal notranslate"><span class="pre">fetch('gravityspy',</span> <span class="pre">tablename)</span></code></td>
+</tr>
+<tr class="row-odd"><td>hacr</td>
+<td><code class="docutils literal notranslate"><span class="pre">fetch('hacr',</span> <span class="pre">channel,</span> <span class="pre">gpsstart,</span> <span class="pre">gpstop)</span></code></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gwpy.table</span> <span class="k">import</span> <span class="n">EventTable</span>
+</pre></div>
+</div>
+<p>To download a table of all blip glitches from the Gravity Spy database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;glitches&#39;</span><span class="p">,</span> <span class="n">selection</span><span class="o">=</span><span class="s1">&#39;Label=Blip&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To download a table from any SQL-type server</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sqlalchemy.engine</span> <span class="k">import</span> <span class="n">create_engine</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EventTable</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s1">&#39;mytable&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="classmethod">
@@ -309,7 +429,7 @@ dqflag (str): name of segment during which to keep triggers</div></blockquote>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0',
+            VERSION:'0.1.0+3.g5e1e365.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

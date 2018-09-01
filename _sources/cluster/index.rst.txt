@@ -1,0 +1,48 @@
+.. _cluster:
+
+##########################################################
+Using Unsupervised Machine Learning to Create New Clusters
+##########################################################
+
+============
+Introduction
+============
+
+Gravity Spy also provides a feature space extraction tool which allows for the
+clustering of groups of *q_transforms* into families of specotrgrams that can
+be used to help expediate the discovery of new excess noise transients in LIGO
+data.
+
+To use this feature space tool to find similar *q_transforms* to an input
+transform please use the online tool 
+`gravityspytools <https://gravityspytools.ciera.northwestern.edu/>`_
+
+===============================================================
+Creating new glitch familes using unsupervised Machine Learning
+===============================================================
+
+Below we demonstrate how the feature space information that is available for all
+gravity spy images can then be used to cluster images into new families or
+*clusters* of similar q_transforms
+
+.. ipython::
+
+    In [1]: from gravityspy.table import Events
+
+    In [3]: virgo_images = Events.fetch('gravityspy', 'updated_similarity_index WHERE ifo = \'V1\'')
+
+    In [4]: virgo_glitch_info = Events.fetch('gravityspy', 'glitches WHERE ifo = \'V1\'')
+
+    In [5]: virgo_clusters = virgo_images.cluster(60)
+
+    In [6]: print(virgo_clusters.to_pandas().clusters.value_counts())
+
+    In [7]: allinfo = Events.from_pandas(virgo_clusters.to_pandas().merge(virgo_glitch_info.to_pandas(),on=['uniqueID',  'ifo', 'links_subjects']))
+
+    In [8]: allinfo['Label'] = allinfo['clusters']
+
+    In [9]: allinfo['Label'] = allinfo['Label'].astype(str)
+
+    In [10]: # This line can be used to download 1 sample from each cluster locally to see an example of each "Label"
+
+    In [10]: # for ncluster in range(0,60): allinfo[allinfo['clusters'] ==ncluster][0:1].download(TrainingSet=True)

@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Using Unsupervised Machine Learning to Create New Clusters &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/hveto-docs.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Running wscan on the command line" href="../wscan/index.html" />
+    <link rel="prev" title="Classifying A Table of Events" href="../events/index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> GravitySpy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0+3.g5e1e365.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using Unsupervised Machine Learning to Create New Clusters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-new-glitch-familes-using-unsupervised-machine-learning">Creating new glitch familes using unsupervised Machine Learning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GravitySpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Using Unsupervised Machine Learning to Create New Clusters</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/cluster/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-unsupervised-machine-learning-to-create-new-clusters">
+<span id="cluster"></span><h1>Using Unsupervised Machine Learning to Create New Clusters<a class="headerlink" href="#using-unsupervised-machine-learning-to-create-new-clusters" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Gravity Spy also provides a feature space extraction tool which allows for the
+clustering of groups of <em>q_transforms</em> into families of specotrgrams that can
+be used to help expediate the discovery of new excess noise transients in LIGO
+data.</p>
+<p>To use this feature space tool to find similar <em>q_transforms</em> to an input
+transform please use the online tool
+<a class="reference external" href="https://gravityspytools.ciera.northwestern.edu/">gravityspytools</a></p>
+</div>
+<div class="section" id="creating-new-glitch-familes-using-unsupervised-machine-learning">
+<h2>Creating new glitch familes using unsupervised Machine Learning<a class="headerlink" href="#creating-new-glitch-familes-using-unsupervised-machine-learning" title="Permalink to this headline">¶</a></h2>
+<p>Below we demonstrate how the feature space information that is available for all
+gravity spy images can then be used to cluster images into new families or
+<em>clusters</em> of similar q_transforms</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">gravityspy.table</span> <span class="kn">import</span> <span class="n">Events</span>
+
+<span class="gp">In [2]: </span><span class="n">virgo_images</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;updated_similarity_index WHERE ifo = </span><span class="se">\&#39;</span><span class="s1">V1</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="gp">In [3]: </span><span class="n">virgo_glitch_info</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;glitches WHERE ifo = </span><span class="se">\&#39;</span><span class="s1">V1</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">virgo_clusters</span> <span class="o">=</span> <span class="n">virgo_images</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="gp">In [5]: </span><span class="k">print</span><span class="p">(</span><span class="n">virgo_clusters</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">clusters</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="go">2     3544</span>
+<span class="go">55    2316</span>
+<span class="go">40    2218</span>
+<span class="go">56    1447</span>
+<span class="go">10    1207</span>
+<span class="go">29    1196</span>
+<span class="go">1     1098</span>
+<span class="go">8     1094</span>
+<span class="go">19    1044</span>
+<span class="go">36    1035</span>
+<span class="go">31     970</span>
+<span class="go">28     912</span>
+<span class="go">38     907</span>
+<span class="go">9      890</span>
+<span class="go">53     886</span>
+<span class="go">5      868</span>
+<span class="go">52     852</span>
+<span class="go">16     845</span>
+<span class="go">4      837</span>
+<span class="go">0      821</span>
+<span class="go">34     774</span>
+<span class="go">37     756</span>
+<span class="go">15     697</span>
+<span class="go">49     686</span>
+<span class="go">54     683</span>
+<span class="go">57     619</span>
+<span class="go">59     610</span>
+<span class="go">41     599</span>
+<span class="go">20     580</span>
+<span class="go">45     545</span>
+<span class="go">32     526</span>
+<span class="go">24     520</span>
+<span class="go">14     506</span>
+<span class="go">44     490</span>
+<span class="go">39     447</span>
+<span class="go">51     431</span>
+<span class="go">21     428</span>
+<span class="go">47     330</span>
+<span class="go">22     319</span>
+<span class="go">26     313</span>
+<span class="go">43     309</span>
+<span class="go">17     307</span>
+<span class="go">13     299</span>
+<span class="go">25     280</span>
+<span class="go">27     269</span>
+<span class="go">7      266</span>
+<span class="go">18     263</span>
+<span class="go">11     257</span>
+<span class="go">3      214</span>
+<span class="go">12     192</span>
+<span class="go">50     183</span>
+<span class="go">42     157</span>
+<span class="go">30     146</span>
+<span class="go">58     139</span>
+<span class="go">23     138</span>
+<span class="go">35     129</span>
+<span class="go">46     126</span>
+<span class="go">48      99</span>
+<span class="go">6       68</span>
+<span class="go">33      60</span>
+<span class="go">Name: clusters, dtype: int64</span>
+
+<span class="gp">In [6]: </span><span class="n">allinfo</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">virgo_clusters</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">virgo_glitch_info</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(),</span><span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;uniqueID&#39;</span><span class="p">,</span>  <span class="s1">&#39;ifo&#39;</span><span class="p">,</span> <span class="s1">&#39;links_subjects&#39;</span><span class="p">]))</span>
+
+<span class="gp">In [7]: </span><span class="n">allinfo</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allinfo</span><span class="p">[</span><span class="s1">&#39;clusters&#39;</span><span class="p">]</span>
+
+<span class="gp">In [8]: </span><span class="n">allinfo</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allinfo</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+<span class="gp">In [9]: </span><span class="c1"># This line can be used to download 1 sample from each cluster locally to see an example of each &quot;Label&quot;</span>
+
+<span class="gp">In [10]: </span><span class="c1"># for ncluster in range(0,60): allinfo[allinfo[&#39;clusters&#39;] ==ncluster][0:1].download(TrainingSet=True)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../wscan/index.html" class="btn btn-neutral float-right" title="Running wscan on the command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../events/index.html" class="btn btn-neutral" title="Classifying A Table of Events" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Scott Coughlin.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0+3.g5e1e365.dirty',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

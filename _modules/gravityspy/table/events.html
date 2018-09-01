@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.table.events &mdash; GravitySpy 0.1.0 documentation</title>
+  <title>gravityspy.table.events &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0
+                0.1.0+3.g5e1e365.dirty
               </div>
             
           
@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cluster/index.html">Using Unsupervised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -174,6 +175,7 @@
 <span class="kn">from</span> <span class="nn">gwtrigfind</span> <span class="k">import</span> <span class="n">find_trigger_files</span>
 <span class="kn">from</span> <span class="nn">gwpy.segments</span> <span class="k">import</span> <span class="n">DataQualityFlag</span>
 <span class="kn">from</span> <span class="nn">gwpy.table</span> <span class="k">import</span> <span class="n">GravitySpyTable</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">KMeans</span>
 
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="k">import</span> <span class="n">log</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="k">import</span> <span class="n">utils</span>
@@ -231,6 +233,11 @@
                              <span class="s2">&quot;been defined for this ETG&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">tab</span></div>
+
+<div class="viewcode-block" id="Events.fetch"><a class="viewcode-back" href="../../../api/gravityspy.table.events.html#gravityspy.table.events.Events.fetch">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">tab</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Events</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span></div>
         
 <div class="viewcode-block" id="Events.classify"><a class="viewcode-back" href="../../../api/gravityspy.table.events.html#gravityspy.table.events.Events.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_info_pickle</span><span class="p">,</span> <span class="n">path_to_cnn</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Classify triggers in this table</span>
@@ -446,6 +453,67 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
+<div class="viewcode-block" id="Events.create_collection"><a class="viewcode-back" href="../../../api/gravityspy.table.events.html#gravityspy.table.events.Events.create_collection">[docs]</a>    <span class="k">def</span> <span class="nf">create_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">default_subject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Obtain omicron triggers to run gravityspy on</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            name (str, optional):</span>
+<span class="sd">                name of collection</span>
+<span class="sd">            private (bool, optional):</span>
+<span class="sd">                would you like this collection to be private or public</span>
+<span class="sd">            default_subject (int, optional):</span>
+<span class="sd">                subject id to be the cover image of collection</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `str` url link to the created collection </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># will name it after the label of event table</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">default_subject</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">default_subject</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;links_subjects&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">collection_url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.zooniverse.org/&#39;</span>
+                          <span class="s1">&#39;projects/zooniverse/gravity-spy/collections/&#39;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">panoptes_client</span><span class="o">.</span><span class="n">Panoptes</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+            <span class="n">collection</span> <span class="o">=</span> <span class="n">panoptes_client</span><span class="o">.</span><span class="n">Collection</span><span class="p">()</span>
+            <span class="n">collection</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;1104&#39;</span>
+            <span class="n">collection</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">collection</span><span class="o">.</span><span class="n">private</span> <span class="o">=</span> <span class="n">private</span>
+            <span class="n">urltmp</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">collection_url</span> <span class="o">=</span> <span class="n">collection_url</span> <span class="o">+</span> <span class="n">urltmp</span><span class="p">[</span><span class="s1">&#39;collections&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;slug&#39;</span><span class="p">]</span>
+            <span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;links_subjects&#39;</span><span class="p">]))</span>
+            <span class="n">collection</span><span class="o">.</span><span class="n">set_default_subject</span><span class="p">(</span><span class="n">default_subject</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">collection_url</span></div>
+
+<div class="viewcode-block" id="Events.cluster"><a class="viewcode-back" href="../../../api/gravityspy.table.events.html#gravityspy.table.events.Events.cluster">[docs]</a>    <span class="k">def</span> <span class="nf">cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nclusters</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create new clusters from feature space vectors</span>
+
+<span class="sd">        Parameters:</span>
+
+<span class="sd">            nclusters (int): how many clusters to try to group</span>
+<span class="sd">                these triggers into</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `Events` table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s1">&#39;0&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You are trying to cluster but you do not have &quot;</span>
+                             <span class="s2">&quot;the feature space information in this table.&quot;</span><span class="p">)</span>
+
+        <span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">200</span><span class="p">]</span>
+        <span class="n">kmeans_1</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">nclusters</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="n">clusters</span> <span class="o">=</span> <span class="n">kmeans_1</span><span class="o">.</span><span class="n">labels_</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;clusters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clusters</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
 <div class="viewcode-block" id="Events.get_triggers"><a class="viewcode-back" href="../../../api/gravityspy.table.events.html#gravityspy.table.events.Events.get_triggers">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_triggers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span>
                      <span class="n">dqflag</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -597,7 +665,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0',
+            VERSION:'0.1.0+3.g5e1e365.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
