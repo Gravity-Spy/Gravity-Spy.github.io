@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+13.gbdf4d08.dirty
               </div>
             
           
@@ -86,7 +86,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">Using Unsuperbised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -157,7 +156,7 @@
             
   <span class="target" id="module-gravityspy.classify.classify"></span><dl class="function">
 <dt id="gravityspy.classify.classify.classify">
-<code class="descclassname">gravityspy.classify.classify.</code><code class="descname">classify</code><span class="sig-paren">(</span><em>event_time</em>, <em>channel_name</em>, <em>project_info_pickle</em>, <em>path_to_cnn</em>, <em>verbose=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/classify/classify.html#classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.classify.classify.classify" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">gravityspy.classify.classify.</code><code class="descname">classify</code><span class="sig-paren">(</span><em>event_time</em>, <em>channel_name</em>, <em>path_to_cnn</em>, <em>verbose=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/classify/classify.html#classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.classify.classify.classify" title="Permalink to this definition">¶</a></dt>
 <dd><p>classify an excess noise event</p>
 <dl class="docutils">
 <dt>Note:</dt>
@@ -172,8 +171,6 @@ generated on the fly uses <cite>gwpy.timeseries.TimeSeries.get</cite></dd>
 <dd>A list of <cite>gwpy.spectrogram.Spectrogram</cite> objects</dd>
 <dt>channel_name (array):</dt>
 <dd>The min and max of the colorbar for the plots</dd>
-<dt>project_info_pickle (array):</dt>
-<dd>The duration assosciated with each plot to be made</dd>
 <dt>path_to_cnn (str):</dt>
 <dd>What detetor where these spectrograms from</dd>
 <dt><a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs:</dt>
@@ -226,7 +223,7 @@ source</dd>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+13.gbdf4d08.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

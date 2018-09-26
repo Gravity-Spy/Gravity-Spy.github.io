@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Classifying A Table of Events &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>Classifying A Table of Events &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="../_static/hveto-docs.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Using Unsuperbised Machine Learning to Create New Clusters" href="../cluster/index.html" />
+    <link rel="next" title="Running wscan on the command line" href="../wscan/index.html" />
     <link rel="prev" title="Classify a Trigger With Gravity Spy" href="../classify/index.html" /> 
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+13.gbdf4d08.dirty
               </div>
             
           
@@ -92,7 +92,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#a-table-of-events">A Table of Events</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">Using Unsuperbised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -182,16 +181,16 @@ that server as wrappers on tables of events to help with a varity of tasks descr
 
 <span class="gp">In [4]: </span><span class="n">triggers</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;data/omicron/L1-DCH_FAKE_STRAIN_16k_BBH-SEOBNRv3_OMICRON-1173188120-14996.xml.gz&#39;</span><span class="p">)</span>
 
-<span class="gp">In [5]: </span><span class="n">results</span> <span class="o">=</span> <span class="n">triggers</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">project_info_pickle</span><span class="o">=</span><span class="s1">&#39;../examples/1104.pkl&#39;</span><span class="p">,</span> <span class="n">path_to_cnn</span><span class="o">=</span><span class="s1">&#39;../models/multi_view_classifier.h5&#39;</span><span class="p">,</span>
-<span class="gp">   ...: </span>                            <span class="n">timeseries</span><span class="o">=</span><span class="n">timeseries</span><span class="p">)</span>
+<span class="gp">In [5]: </span><span class="n">results</span> <span class="o">=</span> <span class="n">triggers</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">path_to_cnn</span><span class="o">=</span><span class="s1">&#39;../models/multi_view_classifier.h5&#39;</span><span class="p">,</span>
+<span class="gp">   ...: </span>                            <span class="n">timeseries</span><span class="o">=</span><span class="n">timeseries</span><span class="p">,</span> <span class="n">nproc</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">   ...: </span>
 
 <span class="gp">In [6]: </span><span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-<span class="go">  1080Lines    1400Ripples  ...     event_time         q_value     </span>
-<span class="go">------------- ------------- ... ----------------- -----------------</span>
-<span class="go">0.00053035305  1.003789e-06 ... 1173197717.328125 45.25483399593904</span>
-<span class="go">  0.012259132 0.00019965306 ...   1173197715.3125 45.25483399593904</span>
-<span class="go"> 0.0052330876 6.1228646e-05 ...  1173197716.53125 45.25483399593904</span>
+<span class="go"> 1080Lines    1400Ripples  ...     event_time         q_value      </span>
+<span class="go">------------ ------------- ... ----------------- ------------------</span>
+<span class="go">0.0052330946  6.122876e-05 ...  1173197716.53125  45.25483399593904</span>
+<span class="go">0.0005303548 1.0037879e-06 ... 1173197717.328125  45.25483399593904</span>
+<span class="go">  0.01225915 0.00019965359 ...   1173197715.3125 22.627416997969522</span>
 </pre></div>
 </div>
 </div>
@@ -205,7 +204,7 @@ that server as wrappers on tables of events to help with a varity of tasks descr
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../cluster/index.html" class="btn btn-neutral float-right" title="Using Unsuperbised Machine Learning to Create New Clusters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../wscan/index.html" class="btn btn-neutral float-right" title="Running wscan on the command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../classify/index.html" class="btn btn-neutral" title="Classify a Trigger With Gravity Spy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -239,7 +238,7 @@ that server as wrappers on tables of events to help with a varity of tasks descr
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+13.gbdf4d08.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

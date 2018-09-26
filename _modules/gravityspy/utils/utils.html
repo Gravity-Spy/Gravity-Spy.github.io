@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.utils.utils &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>gravityspy.utils.utils &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+13.gbdf4d08.dirty
               </div>
             
           
@@ -86,7 +86,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../cluster/index.html">Using Unsupervised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -174,7 +173,6 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">log</span>
 <span class="kn">from</span> <span class="nn">..plot.plot</span> <span class="k">import</span> <span class="n">plot_qtransform</span>
-<span class="kn">from</span> <span class="nn">..api.project</span> <span class="k">import</span> <span class="n">GravitySpyProject</span>
 <span class="kn">from</span> <span class="nn">..ml</span> <span class="k">import</span> <span class="n">read_image</span>
 <span class="kn">from</span> <span class="nn">..ml</span> <span class="k">import</span> <span class="n">labelling_test_glitches</span> <span class="k">as</span> <span class="n">label_glitches</span>
 
@@ -183,8 +181,10 @@
 <span class="kn">from</span> <span class="nn">gwpy.table</span> <span class="k">import</span> <span class="n">GravitySpyTable</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <div class="viewcode-block" id="GravitySpyConfigFile"><a class="viewcode-back" href="../../../api/gravityspy.utils.utils.html#gravityspy.utils.utils.GravitySpyConfigFile">[docs]</a><span class="k">class</span> <span class="nc">GravitySpyConfigFile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_frequency</span><span class="o">=</span><span class="mi">16384</span><span class="p">,</span> <span class="n">block_time</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
@@ -213,6 +213,7 @@
     <span class="n">timeseries</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;timeseries&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">source</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">channel_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;channel_name&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">frametype</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;frametype&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">verbose</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -268,8 +269,8 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Fetching Data...&#39;</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">channel_name</span><span class="p">,</span>
-                              <span class="n">start_time</span><span class="p">,</span> <span class="n">stop_time</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">channel_name</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">stop_time</span><span class="p">,</span>
+                              <span class="n">frametype</span><span class="o">=</span><span class="n">frametype</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
 
     <span class="c1"># resample data</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -348,7 +349,7 @@
                                              <span class="n">plot_normalized_energy_range</span><span class="p">,</span>
                                              <span class="n">plot_time_ranges</span><span class="p">,</span>
                                              <span class="n">detector_name</span><span class="p">,</span>
-                                             <span class="n">event_time</span><span class="p">)</span>
+                                             <span class="n">event_time</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ind_fig</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ind_fig_all</span><span class="p">):</span>
         <span class="n">dur</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">plot_time_ranges</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
@@ -362,10 +363,11 @@
     <span class="n">super_fig</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_directory</span><span class="p">,</span> <span class="n">id_string</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">),</span>
                    <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+
     <span class="k">return</span></div>
 
-<div class="viewcode-block" id="label_q_scans"><a class="viewcode-back" href="../../../api/gravityspy.utils.utils.html#gravityspy.utils.utils.label_q_scans">[docs]</a><span class="k">def</span> <span class="nf">label_q_scans</span><span class="p">(</span><span class="n">plot_directory</span><span class="p">,</span> <span class="n">path_to_cnn</span><span class="p">,</span> <span class="n">project_info_pickle</span><span class="p">,</span>
-                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="label_q_scans"><a class="viewcode-back" href="../../../api/gravityspy.utils.utils.html#gravityspy.utils.utils.label_q_scans">[docs]</a><span class="k">def</span> <span class="nf">label_q_scans</span><span class="p">(</span><span class="n">plot_directory</span><span class="p">,</span> <span class="n">path_to_cnn</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Classify triggers in this table</span>
 
 <span class="sd">    Parameters:</span>
@@ -375,13 +377,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">verbose</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path_to_cnn</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
     <span class="c1"># load the api gravityspy project cached class</span>
-    <span class="n">gspyproject</span> <span class="o">=</span> <span class="n">GravitySpyProject</span><span class="o">.</span><span class="n">load_project_from_cache</span><span class="p">(</span>
-                                                            <span class="n">project_info_pickle</span>
-                                                            <span class="p">)</span>
-
-    <span class="n">workflows_for_each_class</span> <span class="o">=</span> <span class="n">gspyproject</span><span class="o">.</span><span class="n">get_level_structure</span><span class="p">(</span><span class="n">IDfilter</span><span class="o">=</span><span class="s1">&#39;O2&#39;</span><span class="p">)</span>
-    <span class="n">classes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">workflows_for_each_class</span><span class="p">[</span><span class="s1">&#39;2117&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;classes&#39;</span><span class="p">,</span>
+                         <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;/labels/labels&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">logger</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s1">&#39;Gravity Spy: Labelling Images&#39;</span><span class="p">)</span>
@@ -460,7 +459,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+13.gbdf4d08.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

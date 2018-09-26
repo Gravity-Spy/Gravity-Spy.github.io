@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>&lt;no title&gt; &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+13.gbdf4d08.dirty
               </div>
             
           
@@ -86,7 +86,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">Using Unsuperbised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -157,7 +156,7 @@
             
   <span class="target" id="module-gravityspy.ml.train_classifier"></span><dl class="function">
 <dt id="gravityspy.ml.train_classifier.fetch_data">
-<code class="descclassname">gravityspy.ml.train_classifier.</code><code class="descname">fetch_data</code><span class="sig-paren">(</span><em>ifo</em>, <em>event_time</em>, <em>duration=8</em>, <em>sample_frequency=4096</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/train_classifier.html#fetch_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.train_classifier.fetch_data" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">gravityspy.ml.train_classifier.</code><code class="descname">fetch_data</code><span class="sig-paren">(</span><em>ifo</em>, <em>event_time</em>, <em>duration=8</em>, <em>sample_frequency=4096</em>, <em>verbose=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/train_classifier.html#fetch_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.train_classifier.fetch_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch raw data around a glitch</p>
 <p>Parameters:</p>
 <blockquote>
@@ -253,7 +252,7 @@ Label and a column with an ID that uniquely identifies that sample</dd>
 
 <dl class="function">
 <dt id="gravityspy.ml.train_classifier.training_set_raw_data">
-<code class="descclassname">gravityspy.ml.train_classifier.</code><code class="descname">training_set_raw_data</code><span class="sig-paren">(</span><em>filename</em>, <em>format</em>, <em>duration=8</em>, <em>sample_frequency=4096</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/train_classifier.html#training_set_raw_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.train_classifier.training_set_raw_data" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">gravityspy.ml.train_classifier.</code><code class="descname">training_set_raw_data</code><span class="sig-paren">(</span><em>filename</em>, <em>format</em>, <em>duration=8</em>, <em>sample_frequency=4096</em>, <em>verbose=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gravityspy/ml/train_classifier.html#training_set_raw_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gravityspy.ml.train_classifier.training_set_raw_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Obtain the raw timeseries for the whole training set</p>
 <p>Parameters:</p>
 <blockquote>
@@ -302,7 +301,7 @@ Label and a column with an ID that uniquely identifies that sample</dd>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+13.gbdf4d08.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

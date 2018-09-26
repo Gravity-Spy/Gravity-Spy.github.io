@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ml.train_classifier &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>gravityspy.ml.train_classifier &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+13.gbdf4d08.dirty
               </div>
             
           
@@ -86,7 +86,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../cluster/index.html">Using Unsupervised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -174,7 +173,7 @@
 <span class="sd">and write it into a model folder</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <div class="viewcode-block" id="fetch_data"><a class="viewcode-back" href="../../../api/gravityspy.ml.train_classifier.html#gravityspy.ml.train_classifier.fetch_data">[docs]</a><span class="k">def</span> <span class="nf">fetch_data</span><span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">sample_frequency</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
-               <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+               <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Fetch raw data around a glitch</span>
 
 <span class="sd">    Parameters:</span>
@@ -201,11 +200,14 @@
     <span class="c1"># determine segment start and stop times</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">center_time</span> <span class="o">-</span> <span class="n">duration</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">stop_time</span> <span class="o">=</span> <span class="n">start_time</span> <span class="o">+</span> <span class="n">duration</span>
+    <span class="n">frametype</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;frametype&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">frametype</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">_HOFT_</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">frametype</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">channel_name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">:GDS-CALIB_STRAIN&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ifo</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">channel_name</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span>
-                              <span class="n">stop_time</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+                              <span class="n">stop_time</span><span class="p">,</span> <span class="n">frametype</span><span class="o">=</span><span class="n">frametype</span><span class="p">,</span>
+                              <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="n">TimeSeries</span><span class="o">.</span><span class="n">fetch_open_data</span><span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">stop_time</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
@@ -216,7 +218,7 @@
 
 
 <div class="viewcode-block" id="training_set_raw_data"><a class="viewcode-back" href="../../../api/gravityspy.ml.train_classifier.html#gravityspy.ml.train_classifier.training_set_raw_data">[docs]</a><span class="k">def</span> <span class="nf">training_set_raw_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">sample_frequency</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
-                          <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                          <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Obtain the raw timeseries for the whole training set</span>
 
 <span class="sd">    Parameters:</span>
@@ -248,7 +250,7 @@
                     <span class="s1">&#39;</span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">gps</span><span class="p">,</span> <span class="n">ifo</span><span class="p">))</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">fetch_data</span><span class="p">(</span><span class="n">ifo</span><span class="p">,</span> <span class="n">gps</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
                           <span class="n">sample_frequency</span><span class="o">=</span><span class="n">sample_frequency</span><span class="p">,</span>
-                          <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+                          <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Writing Sample To File..&#39;</span><span class="p">)</span>
         <span class="n">data</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">,</span>
                    <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -578,7 +580,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+13.gbdf4d08.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

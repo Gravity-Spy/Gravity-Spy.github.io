@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Running trainmodel on the command line &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>Running trainmodel on the command line &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+13.gbdf4d08.dirty
               </div>
             
           
@@ -88,7 +88,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">Using Unsuperbised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-instructions">Basic instructions</a></li>
@@ -173,8 +172,8 @@ Using Theano backend.
 usage: trainmodel [-h] [--path-to-trainingset PATH_TO_TRAININGSET]
                   --number-of-classes NUMBER_OF_CLASSES
                   [--trainingset-pickle-file TRAININGSET_PICKLE_FILE]
-                  [--path-to-trained-model PATH_TO_TRAINED_MODEL]
-                  [--batch-size BATCH_SIZE] [--nb-epoch NB_EPOCH]
+                  [--model-name MODEL_NAME] [--batch-size BATCH_SIZE]
+                  [--nb-epoch NB_EPOCH]
                   [--fraction-validation FRACTION_VALIDATION]
                   [--fraction-testing FRACTION_TESTING]
                   [--randomseed RANDOMSEED] [--verbose]
@@ -192,8 +191,8 @@ optional arguments:
   --trainingset-pickle-file TRAININGSET_PICKLE_FILE
                         folder where the entire pickled training set will
                         live. This pickle file should be read in by pandas
-  --path-to-trained-model PATH_TO_TRAINED_MODEL
-                        folder where the final trained model will go.
+  --model-name MODEL_NAME
+                        what you would like to model filename to be
   --batch-size BATCH_SIZE
                         defines the batch size, 30 is a reasonable size
   --nb-epoch NB_EPOCH   defines the number of iterations, 130 is reasonable.
@@ -257,7 +256,7 @@ optional arguments:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+13.gbdf4d08.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

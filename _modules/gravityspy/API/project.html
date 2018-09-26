@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.api.project &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>gravityspy.api.project &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+13.gbdf4d08.dirty
               </div>
             
           
@@ -86,7 +86,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../cluster/index.html">Using Unsupervised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -205,7 +204,7 @@
 <span class="sd">    wrapper functions to extracts helpful</span>
 <span class="sd">    project information.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zoo_project_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zoo_project_id</span><span class="p">,</span> <span class="n">workflow_order</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">zoo_project_id</span> <span class="o">=</span> <span class="n">zoo_project_id</span>
         <span class="n">tmp</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">zoo_project_id</span><span class="p">)</span>
@@ -213,7 +212,11 @@
 
         <span class="c1"># Determine workflow order</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_info</span><span class="p">[</span><span class="s1">&#39;configuration_workflow_order&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">workflow_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_info</span><span class="p">[</span><span class="s1">&#39;configuration_workflow_order&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="n">workflow_order</span>
+
         <span class="n">workflows</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">iWorkflow</span><span class="p">))</span> <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">workflow_order</span> <span class="o">=</span> <span class="n">workflows</span>
 
@@ -234,7 +237,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zoo_project_id</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
         <span class="c1"># Pickle dictionary using protocol 0.</span>
-        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ZooProject.load_project_from_cache"><a class="viewcode-back" href="../../../api/gravityspy.api.project.html#gravityspy.api.project.ZooProject.load_project_from_cache">[docs]</a>    <span class="nd">@classmethod</span>
@@ -342,9 +345,12 @@
         <span class="c1"># Determine possible answers to the workflows</span>
         <span class="k">for</span> <span class="n">iWorkflow</span> <span class="ow">in</span> <span class="n">workflows</span><span class="p">:</span>
             <span class="n">answerDict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">answers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">][</span><span class="s1">&#39;tasks_T1_choicesOrder&#39;</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">answers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">][</span><span class="s1">&#39;tasks_T0_choicesOrder&#39;</span><span class="p">]</span>
 
-            <span class="k">for</span> <span class="n">iAnswer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_info</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">]</span>\
-                                             <span class="p">[</span><span class="s1">&#39;tasks_T1_choicesOrder&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">iAnswer</span> <span class="ow">in</span> <span class="n">answers</span><span class="p">:</span>
                 <span class="n">answerDict</span><span class="p">[</span><span class="n">iAnswer</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">workflowDictAnswers</span><span class="p">[</span><span class="n">iWorkflow</span><span class="p">]</span> <span class="o">=</span> <span class="n">answerDict</span>
 
@@ -704,7 +710,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+13.gbdf4d08.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

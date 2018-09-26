@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.classify.classify &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>gravityspy.classify.classify &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+13.gbdf4d08.dirty
               </div>
             
           
@@ -86,7 +86,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../cluster/index.html">Using Unsupervised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -178,8 +177,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <div class="viewcode-block" id="classify"><a class="viewcode-back" href="../../../api/gravityspy.classify.classify.html#gravityspy.classify.classify.classify">[docs]</a><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">event_time</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span>
-             <span class="n">project_info_pickle</span><span class="p">,</span> <span class="n">path_to_cnn</span><span class="p">,</span>
-             <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+             <span class="n">path_to_cnn</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;classify an excess noise event</span>
 
 <span class="sd">    Note:</span>
@@ -194,9 +192,6 @@
 
 <span class="sd">        channel_name (array):</span>
 <span class="sd">            The min and max of the colorbar for the plots</span>
-
-<span class="sd">        project_info_pickle (array):</span>
-<span class="sd">            The duration assosciated with each plot to be made</span>
 
 <span class="sd">        path_to_cnn (str):</span>
 <span class="sd">            What detetor where these spectrograms from</span>
@@ -229,6 +224,7 @@
     <span class="c1"># Parse Ini File</span>
     <span class="n">plot_time_ranges</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plot_time_ranges</span>
     <span class="n">plot_normalized_energy_range</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plot_normalized_energy_range</span>
+    <span class="n">frange</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">search_frequency_range</span>
 
     <span class="c1"># Cropping the results before interpolation to save on time and memory</span>
     <span class="c1"># perform the q-transform</span>
@@ -239,13 +235,12 @@
 
     <span class="n">utils</span><span class="o">.</span><span class="n">save_q_scans</span><span class="p">(</span><span class="n">plot_directory</span><span class="p">,</span> <span class="n">specsgrams</span><span class="p">,</span>
                        <span class="n">plot_normalized_energy_range</span><span class="p">,</span> <span class="n">plot_time_ranges</span><span class="p">,</span>
-                       <span class="n">detector_name</span><span class="p">,</span> <span class="n">event_time</span><span class="p">,</span>
+                       <span class="n">detector_name</span><span class="p">,</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">frange</span><span class="o">=</span><span class="n">frange</span><span class="p">,</span>
                        <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
     <span class="n">results</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">label_q_scans</span><span class="p">(</span><span class="n">plot_directory</span><span class="o">=</span><span class="n">plot_directory</span><span class="p">,</span>
                                   <span class="n">path_to_cnn</span><span class="o">=</span><span class="n">path_to_cnn</span><span class="p">,</span>
-                                  <span class="n">project_info_pickle</span><span class="o">=</span><span class="n">project_info_pickle</span><span class="p">,</span>
                                   <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;q_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">q_value</span>
 
@@ -284,7 +279,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+13.gbdf4d08.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

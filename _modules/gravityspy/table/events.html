@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.table.events &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>gravityspy.table.events &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+13.gbdf4d08.dirty
               </div>
             
           
@@ -86,7 +86,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../cluster/index.html">Using Unsupervised Machine Learning to Create New Clusters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
@@ -175,6 +174,7 @@
 <span class="kn">from</span> <span class="nn">gwtrigfind</span> <span class="k">import</span> <span class="n">find_trigger_files</span>
 <span class="kn">from</span> <span class="nn">gwpy.segments</span> <span class="k">import</span> <span class="n">DataQualityFlag</span>
 <span class="kn">from</span> <span class="nn">gwpy.table</span> <span class="k">import</span> <span class="n">GravitySpyTable</span>
+<span class="kn">from</span> <span class="nn">gwpy.utils</span> <span class="k">import</span> <span class="n">mp</span> <span class="k">as</span> <span class="n">mp_utils</span>
 <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">KMeans</span>
 
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="k">import</span> <span class="n">log</span>
@@ -238,14 +238,17 @@
     <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">tab</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Events</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span></div>
-        
-<div class="viewcode-block" id="Events.classify"><a class="viewcode-back" href="../../../api/gravityspy.table.events.html#gravityspy.table.events.Events.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_info_pickle</span><span class="p">,</span> <span class="n">path_to_cnn</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Events.classify"><a class="viewcode-back" href="../../../api/gravityspy.table.events.html#gravityspy.table.events.Events.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_cnn</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Classify triggers in this table</span>
 
 <span class="sd">        Parameters:</span>
 
-<span class="sd">            project_info_pickle: thing1</span>
-<span class="sd">            path_to_cnn: thing2</span>
+<span class="sd">            path_to_cnn:</span>
+<span class="sd">                file name of the CNN you would like to use</span>
+
+<span class="sd">            **kwargs:</span>
+<span class="sd">                nproc : number of parallel event times to be processing at once</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `Events` table</span>
@@ -255,32 +258,44 @@
                              <span class="s2">&quot;a column event_time for your &quot;</span>
                              <span class="s2">&quot;Event Trigger Generator.&quot;</span><span class="p">)</span>
 
+        <span class="c1"># Parse key word arguments</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">GravitySpyConfigFile</span><span class="p">())</span>
-
-        <span class="c1"># Parse Ini File</span>
-        <span class="n">plot_time_ranges</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plot_time_ranges</span>
-        <span class="n">plot_normalized_energy_range</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plot_normalized_energy_range</span>
-
         <span class="n">plot_directory</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;plot_directory&#39;</span><span class="p">,</span> <span class="s1">&#39;plots&#39;</span><span class="p">)</span>
+        <span class="n">timeseries</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;timeseries&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">channel_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;channel_name&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">frametype</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;frametype&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">ifo</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">gid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;event_time&#39;</span><span class="p">],</span>
-                                                 <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ifo&#39;</span><span class="p">],</span>
-                                                 <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">],</span>
-                                                 <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;gravityspy_id&#39;</span><span class="p">]):</span>
-            <span class="n">specsgrams</span><span class="p">,</span> <span class="n">q_value</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">make_q_scans</span><span class="p">(</span><span class="n">event_time</span><span class="o">=</span><span class="n">event_time</span><span class="p">,</span>
-                                                     <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
-                                                     <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> 
+        <span class="c1"># make a list of event times</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;event_time&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ifo&#39;</span><span class="p">],</span>
+                     <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;gravityspy_id&#39;</span><span class="p">]))</span>
 
-            <span class="n">utils</span><span class="o">.</span><span class="n">save_q_scans</span><span class="p">(</span><span class="n">plot_directory</span><span class="p">,</span> <span class="n">specsgrams</span><span class="p">,</span>
-                               <span class="n">plot_normalized_energy_range</span><span class="p">,</span> <span class="n">plot_time_ranges</span><span class="p">,</span>
-                               <span class="n">ifo</span><span class="p">,</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">id_string</span><span class="o">=</span><span class="n">gid</span><span class="p">,</span>
-                               <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">((</span><span class="n">etime</span><span class="p">,</span> <span class="n">ifo</span><span class="p">,</span> <span class="n">gid</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">plot_directory</span><span class="p">,</span>
+                   <span class="n">timeseries</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span> <span class="n">frametype</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">etime</span><span class="p">,</span> <span class="n">ifo</span><span class="p">,</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;q_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">q_value</span>
+        <span class="c1"># calculate maximum number of processes</span>
+        <span class="n">nproc</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;nproc&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># make q_scans</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">mp_utils</span><span class="o">.</span><span class="n">multiprocess_with_queues</span><span class="p">(</span><span class="n">nproc</span><span class="p">,</span>
+                                                   <span class="n">_make_single_qscan</span><span class="p">,</span>
+                                                   <span class="n">inputs</span><span class="p">)</span>
+
+        <span class="n">qvalues</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># raise exceptions (from multiprocessing, single process raises inline)</span>
+        <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Failed to make q scan at time </span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span>
+                                                                    <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)),)</span>
+                <span class="k">raise</span> <span class="n">x</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">qvalues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;q_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qvalues</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">label_q_scans</span><span class="p">(</span><span class="n">plot_directory</span><span class="o">=</span><span class="n">plot_directory</span><span class="p">,</span>
                                       <span class="n">path_to_cnn</span><span class="o">=</span><span class="n">path_to_cnn</span><span class="p">,</span>
-                                      <span class="n">project_info_pickle</span><span class="o">=</span><span class="n">project_info_pickle</span><span class="p">,</span>
                                       <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
@@ -293,10 +308,9 @@
         <span class="n">results</span><span class="p">[</span><span class="s1">&#39;Filename4&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;Filename4&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
                                                           <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">plot_directory</span><span class="p">,))</span>
 
-        
+
         <span class="n">results</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(),</span>
                                                    <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gravityspy_id&#39;</span><span class="p">]))</span>
-
         <span class="k">return</span> <span class="n">results</span></div>
 
 <div class="viewcode-block" id="Events.to_sql"><a class="viewcode-back" href="../../../api/gravityspy.table.events.html#gravityspy.table.events.Events.to_sql">[docs]</a>    <span class="k">def</span> <span class="nf">to_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="s1">&#39;glitches_v2d0&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -466,7 +480,7 @@
 <span class="sd">                subject id to be the cover image of collection</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            `str` url link to the created collection </span>
+<span class="sd">            `str` url link to the created collection</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># will name it after the label of event table</span>
@@ -631,6 +645,46 @@
                          <span class="s1">&#39; description is username and secret is password.&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="s1">&#39;postgresql://</span><span class="si">{0}</span><span class="s1">:</span><span class="si">{1}</span><span class="s1">@</span><span class="si">{2}</span><span class="s1">:5432/</span><span class="si">{3}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">passwd</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span></div>
+
+<span class="c1"># define multiprocessing method</span>
+<span class="k">def</span> <span class="nf">_make_single_qscan</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+    <span class="n">event_time</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ifo</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">gid</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">plot_directory</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">timeseries</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">channel_name</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">frametype</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+
+    <span class="c1"># Parse Ini File</span>
+    <span class="n">plot_time_ranges</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plot_time_ranges</span>
+    <span class="n">plot_normalized_energy_range</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plot_normalized_energy_range</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">timeseries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">specsgrams</span><span class="p">,</span> <span class="n">q_value</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">make_q_scans</span><span class="p">(</span><span class="n">event_time</span><span class="o">=</span><span class="n">event_time</span><span class="p">,</span>
+                                                     <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                                     <span class="n">timeseries</span><span class="o">=</span><span class="n">timeseries</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">specsgrams</span><span class="p">,</span> <span class="n">q_value</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">make_q_scans</span><span class="p">(</span><span class="n">event_time</span><span class="o">=</span><span class="n">event_time</span><span class="p">,</span>
+                                                     <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                                     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">specsgrams</span><span class="p">,</span> <span class="n">q_value</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">make_q_scans</span><span class="p">(</span><span class="n">event_time</span><span class="o">=</span><span class="n">event_time</span><span class="p">,</span>
+                                                     <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+                                                     <span class="n">channel_name</span><span class="o">=</span><span class="n">channel_name</span><span class="p">,</span>
+                                                     <span class="n">frametype</span><span class="o">=</span><span class="n">frametype</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">save_q_scans</span><span class="p">(</span><span class="n">plot_directory</span><span class="p">,</span> <span class="n">specsgrams</span><span class="p">,</span>
+                           <span class="n">plot_normalized_energy_range</span><span class="p">,</span> <span class="n">plot_time_ranges</span><span class="p">,</span>
+                           <span class="n">ifo</span><span class="p">,</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">id_string</span><span class="o">=</span><span class="n">gid</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">q_value</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+        <span class="k">if</span> <span class="n">nproc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">exc</span>
 </pre></div>
 
            </div>
@@ -665,7 +719,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+13.gbdf4d08.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
