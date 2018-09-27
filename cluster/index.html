@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using Unsupervised Machine Learning to Create New Clusters &mdash; GravitySpy 0.1.0+3.g5e1e365.dirty documentation</title>
+  <title>Clustering Gravity Spy Events &mdash; GravitySpy 0.1.0+25.g4998762.dirty documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.1.0+3.g5e1e365.dirty
+                0.1.0+25.g4998762.dirty
               </div>
             
           
@@ -88,9 +88,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Using Unsupervised Machine Learning to Create New Clusters</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Clustering Gravity Spy Events</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#creating-new-glitch-familes-using-unsupervised-machine-learning">Creating new glitch familes using unsupervised Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cluster-a-table-of-events">Cluster a Table Of Events</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
@@ -142,7 +142,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Using Unsupervised Machine Learning to Create New Clusters</li>
+      <li>Clustering Gravity Spy Events</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -161,23 +161,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="using-unsupervised-machine-learning-to-create-new-clusters">
-<span id="cluster"></span><h1>Using Unsupervised Machine Learning to Create New Clusters<a class="headerlink" href="#using-unsupervised-machine-learning-to-create-new-clusters" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="clustering-gravity-spy-events">
+<span id="cluster"></span><h1>Clustering Gravity Spy Events<a class="headerlink" href="#clustering-gravity-spy-events" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>Gravity Spy also provides a feature space extraction tool which allows for the
-clustering of groups of <em>q_transforms</em> into families of specotrgrams that can
-be used to help expediate the discovery of new excess noise transients in LIGO
-data.</p>
-<p>To use this feature space tool to find similar <em>q_transforms</em> to an input
-transform please use the online tool
-<a class="reference external" href="https://gravityspytools.ciera.northwestern.edu/">gravityspytools</a></p>
 </div>
-<div class="section" id="creating-new-glitch-familes-using-unsupervised-machine-learning">
-<h2>Creating new glitch familes using unsupervised Machine Learning<a class="headerlink" href="#creating-new-glitch-familes-using-unsupervised-machine-learning" title="Permalink to this headline">¶</a></h2>
-<p>Below we demonstrate how the feature space information that is available for all
-gravity spy images can then be used to cluster images into new families or
-<em>clusters</em> of similar q_transforms</p>
+<div class="section" id="cluster-a-table-of-events">
+<h2>Cluster a Table Of Events<a class="headerlink" href="#cluster-a-table-of-events" title="Permalink to this headline">¶</a></h2>
+<p>stuff</p>
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">gravityspy.table</span> <span class="kn">import</span> <span class="n">Events</span>
 
 <span class="gp">In [2]: </span><span class="n">virgo_images</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;gravityspy&#39;</span><span class="p">,</span> <span class="s1">&#39;updated_similarity_index WHERE ifo = </span><span class="se">\&#39;</span><span class="s1">V1</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -187,77 +178,73 @@ gravity spy images can then be used to cluster images into new families or
 <span class="gp">In [4]: </span><span class="n">virgo_clusters</span> <span class="o">=</span> <span class="n">virgo_images</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
 
 <span class="gp">In [5]: </span><span class="k">print</span><span class="p">(</span><span class="n">virgo_clusters</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">clusters</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
-<span class="go">2     3544</span>
-<span class="go">55    2316</span>
-<span class="go">40    2218</span>
-<span class="go">56    1447</span>
-<span class="go">10    1207</span>
-<span class="go">29    1196</span>
-<span class="go">1     1098</span>
-<span class="go">8     1094</span>
-<span class="go">19    1044</span>
-<span class="go">36    1035</span>
-<span class="go">31     970</span>
-<span class="go">28     912</span>
-<span class="go">38     907</span>
-<span class="go">9      890</span>
-<span class="go">53     886</span>
-<span class="go">5      868</span>
-<span class="go">52     852</span>
-<span class="go">16     845</span>
-<span class="go">4      837</span>
-<span class="go">0      821</span>
-<span class="go">34     774</span>
-<span class="go">37     756</span>
-<span class="go">15     697</span>
-<span class="go">49     686</span>
-<span class="go">54     683</span>
-<span class="go">57     619</span>
-<span class="go">59     610</span>
-<span class="go">41     599</span>
-<span class="go">20     580</span>
-<span class="go">45     545</span>
-<span class="go">32     526</span>
-<span class="go">24     520</span>
-<span class="go">14     506</span>
-<span class="go">44     490</span>
-<span class="go">39     447</span>
-<span class="go">51     431</span>
-<span class="go">21     428</span>
-<span class="go">47     330</span>
-<span class="go">22     319</span>
-<span class="go">26     313</span>
-<span class="go">43     309</span>
-<span class="go">17     307</span>
-<span class="go">13     299</span>
-<span class="go">25     280</span>
-<span class="go">27     269</span>
-<span class="go">7      266</span>
-<span class="go">18     263</span>
-<span class="go">11     257</span>
-<span class="go">3      214</span>
-<span class="go">12     192</span>
-<span class="go">50     183</span>
-<span class="go">42     157</span>
-<span class="go">30     146</span>
-<span class="go">58     139</span>
-<span class="go">23     138</span>
-<span class="go">35     129</span>
-<span class="go">46     126</span>
-<span class="go">48      99</span>
-<span class="go">6       68</span>
-<span class="go">33      60</span>
+<span class="go">36    3364</span>
+<span class="go">18    2162</span>
+<span class="go">0     2148</span>
+<span class="go">42    1360</span>
+<span class="go">22    1322</span>
+<span class="go">21    1212</span>
+<span class="go">30    1120</span>
+<span class="go">41    1090</span>
+<span class="go">3     1038</span>
+<span class="go">52    1029</span>
+<span class="go">37     999</span>
+<span class="go">57     966</span>
+<span class="go">16     955</span>
+<span class="go">9      926</span>
+<span class="go">45     913</span>
+<span class="go">47     896</span>
+<span class="go">4      809</span>
+<span class="go">34     721</span>
+<span class="go">7      715</span>
+<span class="go">40     700</span>
+<span class="go">19     699</span>
+<span class="go">26     689</span>
+<span class="go">23     688</span>
+<span class="go">1      687</span>
+<span class="go">38     673</span>
+<span class="go">5      668</span>
+<span class="go">43     603</span>
+<span class="go">48     580</span>
+<span class="go">32     577</span>
+<span class="go">49     549</span>
+<span class="go">59     540</span>
+<span class="go">24     528</span>
+<span class="go">39     525</span>
+<span class="go">6      504</span>
+<span class="go">13     490</span>
+<span class="go">46     468</span>
+<span class="go">55     452</span>
+<span class="go">53     438</span>
+<span class="go">10     432</span>
+<span class="go">51     378</span>
+<span class="go">50     357</span>
+<span class="go">15     343</span>
+<span class="go">25     320</span>
+<span class="go">31     319</span>
+<span class="go">44     272</span>
+<span class="go">56     263</span>
+<span class="go">14     262</span>
+<span class="go">12     233</span>
+<span class="go">27     224</span>
+<span class="go">8      183</span>
+<span class="go">35     183</span>
+<span class="go">33     183</span>
+<span class="go">29     159</span>
+<span class="go">20     157</span>
+<span class="go">2      155</span>
+<span class="go">54     150</span>
+<span class="go">58     134</span>
+<span class="go">17     106</span>
+<span class="go">11      73</span>
+<span class="go">28      58</span>
 <span class="go">Name: clusters, dtype: int64</span>
 
-<span class="gp">In [6]: </span><span class="n">allinfo</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">virgo_clusters</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">virgo_glitch_info</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(),</span><span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;uniqueID&#39;</span><span class="p">,</span>  <span class="s1">&#39;ifo&#39;</span><span class="p">,</span> <span class="s1">&#39;links_subjects&#39;</span><span class="p">]))</span>
+<span class="gp">In [6]: </span><span class="n">allinfo</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">virgo_clusters</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;links_subjects&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">virgo_glitch_info</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(),</span><span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;uniqueID&#39;</span><span class="p">,</span>  <span class="s1">&#39;ifo&#39;</span><span class="p">,</span> <span class="s1">&#39;links_subjects&#39;</span><span class="p">]))</span>
 
 <span class="gp">In [7]: </span><span class="n">allinfo</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allinfo</span><span class="p">[</span><span class="s1">&#39;clusters&#39;</span><span class="p">]</span>
 
 <span class="gp">In [8]: </span><span class="n">allinfo</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allinfo</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-
-<span class="gp">In [9]: </span><span class="c1"># This line can be used to download 1 sample from each cluster locally to see an example of each &quot;Label&quot;</span>
-
-<span class="gp">In [10]: </span><span class="c1"># for ncluster in range(0,60): allinfo[allinfo[&#39;clusters&#39;] ==ncluster][0:1].download(TrainingSet=True)</span>
 </pre></div>
 </div>
 </div>
@@ -305,7 +292,7 @@ gravity spy images can then be used to cluster images into new families or
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0+3.g5e1e365.dirty',
+            VERSION:'0.1.0+25.g4998762.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

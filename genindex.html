@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; GravitySpy 0.1.0+24.gac12833.dirty documentation</title>
+  <title>Index &mdash; GravitySpy 0.1.0+25.g4998762.dirty documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.1.0+24.gac12833.dirty
+                0.1.0+25.g4998762.dirty
               </div>
             
           
@@ -87,6 +87,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events/index.html">Classifying A Table of Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster/index.html">Clustering Gravity Spy Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
@@ -160,8 +161,10 @@
  <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#O"><strong>O</strong></a>
@@ -169,6 +172,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  | <a href="#W"><strong>W</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
  
@@ -192,10 +196,16 @@
 </li>
       <li><a href="api/gravityspy.api.project.html#gravityspy.api.project.GravitySpyProject.check_level_by_classification">check_level_by_classification() (gravityspy.api.project.GravitySpyProject method)</a>
 </li>
-      <li><a href="api/gravityspy.classify.classify.html#gravityspy.classify.classify.classify">classify() (in module gravityspy.classify.classify)</a>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.classify">classify() (gravityspy.table.events.Events method)</a>
+
+      <ul>
+        <li><a href="api/gravityspy.classify.classify.html#gravityspy.classify.classify.classify">(in module gravityspy.classify.classify)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.cluster">cluster() (gravityspy.table.events.Events method)</a>
+</li>
       <li><a href="api/gravityspy.utils.log.html#gravityspy.utils.log.color_text">color_text() (in module gravityspy.utils.log)</a>
 </li>
       <li><a href="api/gravityspy.utils.log.html#gravityspy.utils.log.ColoredFormatter">ColoredFormatter (class in gravityspy.utils.log)</a>
@@ -203,6 +213,8 @@
       <li><a href="api/gravityspy.ml.GS_utils.html#gravityspy.ml.GS_utils.concatenate_views">concatenate_views() (in module gravityspy.ml.GS_utils)</a>
 </li>
       <li><a href="api/gravityspy.ml.GS_utils.html#gravityspy.ml.GS_utils.cosine_distance">cosine_distance() (in module gravityspy.ml.GS_utils)</a>
+</li>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.create_collection">create_collection() (gravityspy.table.events.Events method)</a>
 </li>
       <li><a href="api/gravityspy.ml.GS_utils.html#gravityspy.ml.GS_utils.create_pairs3_gen">create_pairs3_gen() (in module gravityspy.ml.GS_utils)</a>
 </li>
@@ -215,17 +227,31 @@
       <li><a href="api/gravityspy.api.project.html#gravityspy.api.project.GravitySpyProject.determine_level">determine_level() (gravityspy.api.project.GravitySpyProject method)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.determine_workflow_and_subjectset">determine_workflow_and_subjectset() (gravityspy.table.events.Events method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events">Events (class in gravityspy.table.events)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/gravityspy.ml.train_classifier.html#gravityspy.ml.train_classifier.fetch_data">fetch_data() (in module gravityspy.ml.train_classifier)</a>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.fetch">fetch() (gravityspy.table.events.Events class method)</a>
 </li>
-      <li><a href="api/gravityspy.api.project.html#gravityspy.api.project.flatten">flatten() (in module gravityspy.api.project)</a>
+      <li><a href="api/gravityspy.ml.train_classifier.html#gravityspy.ml.train_classifier.fetch_data">fetch_data() (in module gravityspy.ml.train_classifier)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.api.project.html#gravityspy.api.project.flatten">flatten() (in module gravityspy.api.project)</a>
+</li>
       <li><a href="api/gravityspy.utils.log.html#gravityspy.utils.log.Logger.FORMAT">FORMAT (gravityspy.utils.log.Logger attribute)</a>
 </li>
       <li><a href="api/gravityspy.utils.log.html#gravityspy.utils.log.ColoredFormatter.format">format() (gravityspy.utils.log.ColoredFormatter method)</a>
@@ -237,6 +263,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/gravityspy.api.project.html#gravityspy.api.project.ZooProject.get_answers">get_answers() (gravityspy.api.project.ZooProject method)</a>
+</li>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.get_connection_str">get_connection_str() (in module gravityspy.table.events)</a>
 </li>
       <li><a href="api/gravityspy.ml.labelling_test_glitches.html#gravityspy.ml.labelling_test_glitches.get_deeplayer">get_deeplayer() (in module gravityspy.ml.labelling_test_glitches)</a>
 </li>
@@ -251,6 +279,8 @@
       <li><a href="api/gravityspy.ml.labelling_test_glitches.html#gravityspy.ml.labelling_test_glitches.get_multiview_feature_space">get_multiview_feature_space() (in module gravityspy.ml.labelling_test_glitches)</a>
 </li>
       <li><a href="api/gravityspy.api.project.html#gravityspy.api.project.ZooProject.get_subject_sets_per_workflow">get_subject_sets_per_workflow() (gravityspy.api.project.ZooProject method)</a>
+</li>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.get_triggers">get_triggers() (gravityspy.table.events.Events class method)</a>
 </li>
       <li><a href="api/gravityspy.html#module-gravityspy">gravityspy (module)</a>
 </li>
@@ -282,6 +312,10 @@
 </li>
       <li><a href="api/gravityspy.plot.plot.html#module-gravityspy.plot.plot">gravityspy.plot.plot (module)</a>
 </li>
+      <li><a href="api/gravityspy.table.html#module-gravityspy.table">gravityspy.table (module)</a>
+</li>
+      <li><a href="api/gravityspy.table.events.html#module-gravityspy.table.events">gravityspy.table.events (module)</a>
+</li>
       <li><a href="api/gravityspy.utils.html#module-gravityspy.utils">gravityspy.utils (module)</a>
 </li>
       <li><a href="api/gravityspy.utils.log.html#module-gravityspy.utils.log">gravityspy.utils.log (module)</a>
@@ -291,6 +325,14 @@
       <li><a href="api/gravityspy.utils.utils.html#gravityspy.utils.utils.GravitySpyConfigFile">GravitySpyConfigFile (class in gravityspy.utils.utils)</a>
 </li>
       <li><a href="api/gravityspy.api.project.html#gravityspy.api.project.GravitySpyProject">GravitySpyProject (class in gravityspy.api.project)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.id_generator">id_generator() (in module gravityspy.table.events)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -356,6 +398,8 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.read">read() (gravityspy.table.events.Events class method)</a>
+</li>
       <li><a href="api/gravityspy.ml.read_image.html#gravityspy.ml.read_image.read_and_crop_image">read_and_crop_image() (in module gravityspy.ml.read_image)</a>
 </li>
   </ul></td>
@@ -384,7 +428,25 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.to_sql">to_sql() (gravityspy.table.events.Events method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/gravityspy.ml.train_classifier.html#gravityspy.ml.train_classifier.training_set_raw_data">training_set_raw_data() (in module gravityspy.ml.train_classifier)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.update_scores">update_scores() (gravityspy.table.events.Events method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.update_sql">update_sql() (gravityspy.table.events.Events method)</a>
+</li>
+      <li><a href="api/gravityspy.table.events.html#gravityspy.table.events.Events.upload_to_zooniverse">upload_to_zooniverse() (gravityspy.table.events.Events method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -439,7 +501,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0+24.gac12833.dirty',
+            VERSION:'0.1.0+25.g4998762.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

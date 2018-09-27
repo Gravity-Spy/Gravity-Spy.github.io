@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Classifying A Table of Events &mdash; GravitySpy 0.1.0+24.gac12833.dirty documentation</title>
+  <title>Classifying A Table of Events &mdash; GravitySpy 0.1.0+25.g4998762.dirty documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="../_static/hveto-docs.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Running wscan on the command line" href="../wscan/index.html" />
+    <link rel="next" title="Clustering Gravity Spy Events" href="../cluster/index.html" />
     <link rel="prev" title="Classify a Trigger With Gravity Spy" href="../classify/index.html" /> 
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.1.0+24.gac12833.dirty
+                0.1.0+25.g4998762.dirty
               </div>
             
           
@@ -92,6 +92,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#a-table-of-events">A Table of Events</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">Clustering Gravity Spy Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
@@ -176,51 +177,21 @@ that server as wrappers on tables of events to help with a varity of tasks descr
 <div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">gwpy.timeseries</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
 
 <span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">gravityspy.table</span> <span class="kn">import</span> <span class="n">Events</span>
-<span class="go">Traceback (most recent call last):</span>
-
-<span class="go">  File &quot;/Users/scottcoughlin/Documents/virtualenvs/GravitySpy-py35/lib/python3.5/site-packages/IPython/core/interactiveshell.py&quot;, line 2963, in run_code</span>
-<span class="go">    exec(code_obj, self.user_global_ns, self.user_ns)</span>
-
-<span class="go">  File &quot;&lt;ipython-input-2-8efb77bebc85&gt;&quot;, line 1, in &lt;module&gt;</span>
-<span class="go">    from gravityspy.table import Events</span>
-
-<span class="go">  File &quot;/Users/scottcoughlin/Documents/virtualenvs/GravitySpy-py35/lib/python3.5/site-packages/gravityspy/table/__init__.py&quot;, line 19, in &lt;module&gt;</span>
-<span class="go">    from .events import Events</span>
-
-<span class="gt">  File</span><span class="nn"> &quot;/Users/scottcoughlin/Documents/virtualenvs/GravitySpy-py35/lib/python3.5/site-packages/gravityspy/table/events.py&quot;</span><span class="gt">, line </span><span class="mi">272</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This method only works if the file paths</span>
-                                                              <span class="o">^</span>
-<span class="ne">SyntaxError</span>: EOL while scanning string literal
-
 
 <span class="gp">In [3]: </span><span class="n">timeseries</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;data/timeseries/L-L1_SOFTWAREINJ-1173197648-132.h5&#39;</span><span class="p">)</span>
 
 <span class="gp">In [4]: </span><span class="n">triggers</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;data/omicron/L1-DCH_FAKE_STRAIN_16k_BBH-SEOBNRv3_OMICRON-1173188120-14996.xml.gz&#39;</span><span class="p">)</span>
-<span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="nn">&lt;ipython-input-4-15918aae4a5d&gt;</span> in <span class="ni">&lt;module&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">triggers</span> <span class="o">=</span> <span class="n">Events</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;data/omicron/L1-DCH_FAKE_STRAIN_16k_BBH-SEOBNRv3_OMICRON-1173188120-14996.xml.gz&#39;</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;Events&#39; is not defined
 
 <span class="gp">In [5]: </span><span class="n">results</span> <span class="o">=</span> <span class="n">triggers</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">path_to_cnn</span><span class="o">=</span><span class="s1">&#39;../models/multi_view_classifier.h5&#39;</span><span class="p">,</span>
 <span class="gp">   ...: </span>                            <span class="n">timeseries</span><span class="o">=</span><span class="n">timeseries</span><span class="p">,</span> <span class="n">nproc</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">   ...: </span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                 ---------------------------------------------------------------------------</span>
-<span class="go">NameError                                 Traceback (most recent call last)</span>
-<span class="go">&lt;ipython-input-5-4b26fd3acf18&gt; in &lt;module&gt;()</span>
-<span class="go">----&gt; 1 results = triggers.classify(path_to_cnn=&#39;../models/multi_view_classifier.h5&#39;,</span>
-<span class="go">      2                             timeseries=timeseries, nproc=3)</span>
-
-<span class="go">NameError: name &#39;triggers&#39; is not defined</span>
 
 <span class="gp">In [6]: </span><span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-<span class="go">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             1080Lines    1400Ripples  Air_Compressor ... ml_confidence     q_value     </span>
-<span class="go">------------- ------------- -------------- ... ------------- ----------------</span>
-<span class="go"> 0.0052330946  6.122876e-05      0.7031893 ...     0.7031893 5.65685424949238</span>
-<span class="go">4.4256254e-07 2.4700508e-09  1.6780694e-09 ...     0.9999064 5.65685424949238</span>
-<span class="go"> 0.0005303548 1.0037879e-06   0.0051641865 ...     0.9870476 5.65685424949238</span>
-<span class="go">   0.01225915 0.00019965359   0.0012857278 ...    0.46951523 5.65685424949238</span>
+<span class="go"> 1080Lines    1400Ripples  ...     event_time         q_value      </span>
+<span class="go">------------ ------------- ... ----------------- ------------------</span>
+<span class="go">0.0052330946  6.122876e-05 ...  1173197716.53125  45.25483399593904</span>
+<span class="go">  0.01225915 0.00019965359 ...   1173197715.3125 22.627416997969522</span>
+<span class="go">0.0005303548 1.0037879e-06 ... 1173197717.328125  45.25483399593904</span>
 </pre></div>
 </div>
 </div>
@@ -234,7 +205,7 @@ that server as wrappers on tables of events to help with a varity of tasks descr
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../wscan/index.html" class="btn btn-neutral float-right" title="Running wscan on the command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../cluster/index.html" class="btn btn-neutral float-right" title="Clustering Gravity Spy Events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../classify/index.html" class="btn btn-neutral" title="Classify a Trigger With Gravity Spy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -268,7 +239,7 @@ that server as wrappers on tables of events to help with a varity of tasks descr
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0+24.gac12833.dirty',
+            VERSION:'0.1.0+25.g4998762.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
