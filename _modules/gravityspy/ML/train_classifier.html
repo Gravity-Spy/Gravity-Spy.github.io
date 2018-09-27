@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ml.train_classifier &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
+  <title>gravityspy.ml.train_classifier &mdash; GravitySpy 0.1.0+24.gac12833.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+13.gbdf4d08.dirty
+                0.1.0+24.gac12833.dirty
               </div>
             
           
@@ -154,6 +154,8 @@
             
   <h1>Source code for gravityspy.ml.train_classifier</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">build_cnn</span><span class="p">,</span> <span class="n">concatenate_views</span>
+<span class="kn">from</span> <span class="nn">keras</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">K</span>
+<span class="n">K</span><span class="o">.</span><span class="n">set_image_dim_ordering</span><span class="p">(</span><span class="s1">&#39;th&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dense</span>
 <span class="kn">from</span> <span class="nn">keras.utils</span> <span class="k">import</span> <span class="n">np_utils</span>
@@ -580,7 +582,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+13.gbdf4d08.dirty',
+            VERSION:'0.1.0+24.gac12833.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ml.GS_utils &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
+  <title>gravityspy.ml.GS_utils &mdash; GravitySpy 0.1.0+24.gac12833.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+13.gbdf4d08.dirty
+                0.1.0+24.gac12833.dirty
               </div>
             
           
@@ -362,6 +362,93 @@
                     <span class="n">pairs1</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="n">pairs2</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="split_data_set"><a class="viewcode-back" href="../../../api/gravityspy.ml.GS_utils.html#gravityspy.ml.GS_utils.split_data_set">[docs]</a><span class="k">def</span> <span class="nf">split_data_set</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fraction_validation</span><span class="o">=.</span><span class="mi">125</span><span class="p">,</span> <span class="n">fraction_testing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Split data set to training validation and optional testing</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        data (str):</span>
+<span class="sd">            Pickle file containing training set data</span>
+
+<span class="sd">        fraction_validation (float, optional):</span>
+<span class="sd">            Default .125</span>
+
+<span class="sd">        fraction_testing (float, optional):</span>
+<span class="sd">            Default None</span>
+
+<span class="sd">        image_size (list, optional):</span>
+<span class="sd">            Default [140, 170]</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy arrays</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">validationDF</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Label&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                       <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="n">fraction_validation</span><span class="p">,</span>
+                       <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span>
+                       <span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">data</span><span class="o">.</span><span class="n">uniqueID</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+                                    <span class="n">validationDF</span><span class="o">.</span><span class="n">uniqueID</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">testingDF</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Label&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                   <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="n">fraction_testing</span><span class="p">,</span>
+                             <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span>
+                   <span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">data</span><span class="o">.</span><span class="n">uniqueID</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+                                        <span class="n">testingDF</span><span class="o">.</span><span class="n">uniqueID</span><span class="p">)]</span>
+
+
+    <span class="c1"># concatenate the pixels</span>
+    <span class="n">train_set_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">validation_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">train_set_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">validation_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">train_set_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">validation_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">train_set_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">validation_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">validationDF</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">testing_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+        <span class="n">testing_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+        <span class="n">testing_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+        <span class="n">testing_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">testingDF</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">concat_train</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">train_set_x_1</span><span class="p">,</span> <span class="n">train_set_x_2</span><span class="p">,</span>
+                            <span class="n">train_set_x_3</span><span class="p">,</span> <span class="n">train_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">concat_valid</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">validation_x_1</span><span class="p">,</span> <span class="n">validation_x_2</span><span class="p">,</span>
+                            <span class="n">validation_x_3</span><span class="p">,</span> <span class="n">validation_x_4</span><span class="p">,</span>
+                            <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fraction_testing</span><span class="p">:</span>
+        <span class="n">concat_test</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">testing_x_1</span><span class="p">,</span> <span class="n">testing_x_2</span><span class="p">,</span>
+                            <span class="n">testing_x_3</span><span class="p">,</span> <span class="n">testing_x_4</span><span class="p">,</span>
+                            <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">concat_test</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">concat_train</span><span class="p">,</span> <span class="n">concat_valid</span><span class="p">,</span> <span class="n">concat_test</span></div>
 </pre></div>
 
            </div>
@@ -396,7 +483,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+13.gbdf4d08.dirty',
+            VERSION:'0.1.0+24.gac12833.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

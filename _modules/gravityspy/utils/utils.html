@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.utils.utils &mdash; GravitySpy 0.1.0+13.gbdf4d08.dirty documentation</title>
+  <title>gravityspy.utils.utils &mdash; GravitySpy 0.1.0+24.gac12833.dirty documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1.0+13.gbdf4d08.dirty
+                0.1.0+24.gac12833.dirty
               </div>
             
           
@@ -425,6 +425,69 @@
     <span class="n">scores_table</span><span class="p">[</span><span class="s1">&#39;ml_confidence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">scores_table</span></div>
+
+<div class="viewcode-block" id="label_select_images"><a class="viewcode-back" href="../../../api/gravityspy.utils.utils.html#gravityspy.utils.utils.label_select_images">[docs]</a><span class="k">def</span> <span class="nf">label_select_images</span><span class="p">(</span><span class="n">filename1</span><span class="p">,</span> <span class="n">filename2</span><span class="p">,</span> <span class="n">filename3</span><span class="p">,</span> <span class="n">filename4</span><span class="p">,</span>
+                        <span class="n">path_to_cnn</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Classify triggers in this table</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># determine class names</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path_to_cnn</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;classes&#39;</span><span class="p">,</span>
+                         <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;/labels/labels&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">logger</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s1">&#39;Gravity Spy: Labelling Select Images&#39;</span><span class="p">)</span>
+
+    <span class="n">list_of_images_all</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename1</span><span class="p">,</span>
+                          <span class="n">filename2</span><span class="p">,</span>
+                          <span class="n">filename3</span><span class="p">,</span>
+                          <span class="n">filename4</span><span class="p">]</span>
+
+    <span class="n">list_of_images_all</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">list_of_images_all</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">list_of_images_all</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                             <span class="n">list_of_images_all</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">list_of_images_all</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Converting image to ML readable...&#39;</span><span class="p">)</span>
+
+    <span class="n">image_data_for_cnn</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">list_of_images</span> <span class="ow">in</span> <span class="n">list_of_images_all</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">list_of_images</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Converting </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+
+            <span class="n">image_data</span> <span class="o">=</span> <span class="n">read_image</span><span class="o">.</span><span class="n">read_grayscale</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plot_directory</span><span class="p">,</span>
+                                                                <span class="n">image</span><span class="p">),</span>
+                                                   <span class="n">resolution</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+            <span class="n">image_data_for_cnn</span><span class="p">[</span><span class="n">image</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">image_data</span><span class="p">]</span>
+
+    <span class="c1"># Now label the image</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Labelling images...&#39;</span><span class="p">)</span>
+
+    <span class="n">scores</span><span class="p">,</span> <span class="n">ml_label</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> \
+         <span class="n">label_glitches</span><span class="o">.</span><span class="n">label_glitches</span><span class="p">(</span><span class="n">image_data</span><span class="o">=</span><span class="n">image_data_for_cnn</span><span class="p">,</span>
+                                       <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path_to_cnn</span><span class="p">),</span>
+                                       <span class="n">image_size</span><span class="o">=</span><span class="p">[</span><span class="mi">140</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span>
+                                       <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">classes</span><span class="p">)[</span><span class="n">ml_label</span><span class="p">]</span>
+
+    <span class="n">scores_table</span> <span class="o">=</span> <span class="n">GravitySpyTable</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">classes</span><span class="p">)</span>
+
+    <span class="n">scores_table</span><span class="p">[</span><span class="s1">&#39;gravityspy_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ids</span>
+    <span class="n">scores_table</span><span class="p">[</span><span class="s1">&#39;ml_label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+    <span class="n">scores_table</span><span class="p">[</span><span class="s1">&#39;ml_confidence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">scores_table</span></div>
 </pre></div>
 
            </div>
@@ -459,7 +522,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+13.gbdf4d08.dirty',
+            VERSION:'0.1.0+24.gac12833.dirty',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
