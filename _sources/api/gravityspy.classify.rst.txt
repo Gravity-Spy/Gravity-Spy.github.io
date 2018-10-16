@@ -1,5 +1,5 @@
-gravityspy.classify package
-===========================
+gravityspy\.classify package
+============================
 
 Submodules
 ----------

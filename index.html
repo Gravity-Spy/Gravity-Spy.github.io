@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to GravitySpy’s documentation! &mdash; GravitySpy 0.1.0+25.g4998762.dirty documentation</title>
+  <title>Welcome to GravitySpy’s documentation! &mdash; GravitySpy 0.1.0+27.g952f923.dirty documentation</title>
   
 
   
@@ -25,19 +25,27 @@
   
 
   
+  
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/hveto-docs.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="install/index.html" /> 
+  
+
+  
+    <link rel="stylesheet" href="_static/hveto-docs.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="GravitySpy 0.1.0+27.g952f923.dirty documentation" href="#"/>
+        <link rel="next" title="Installation" href="install/index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -59,7 +67,7 @@
             
             
               <div class="version">
-                0.1.0+25.g4998762.dirty
+                0.1.0+27.g952f923.dirty
               </div>
             
           
@@ -88,8 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cluster/index.html">Clustering Gravity Spy Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
@@ -103,7 +111,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="#">GravitySpy</a>
@@ -111,10 +119,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -164,7 +171,7 @@
 <h2>Installing GravitySpy<a class="headerlink" href="#installing-gravityspy" title="Permalink to this headline">¶</a></h2>
 <p>The easiest method to install gravityspy is using <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> directly from the <a class="reference external" href="https://github.com/Gravity-Spy/GravitySpy.git">GitHub repository</a>:</p>
 <p>Gravity Spy software has been tested on py35 and py27. Work is in progress to have unit tests verify gravity spy on py27 and py34 py35 and py36.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/Gravity-Spy/GravitySpy.git
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/Gravity-Spy/GravitySpy.git
 </pre></div>
 </div>
 <p>For more details see <a class="reference internal" href="install/index.html#install"><span class="std std-ref">Installation</span></a>.</p>
@@ -193,12 +200,12 @@
 <h2>How to classify unlabeled excess noise<a class="headerlink" href="#how-to-classify-unlabeled-excess-noise" title="Permalink to this headline">¶</a></h2>
 <p>One of the main product of this package is the command-line executable <cite>wscan</cite>, which takes an excess noise time makes an omega scan of the event and classifies the image.</p>
 <p>To run an analysis:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wscan --inifile my-wini-config-file.ini --eventTime &lt;eventTime&gt; --outDir ./public_html/GravitySpy/Test/ --uniqueID --ID 123abc1234 --HDF5 --runML --pathToModel ../bin
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ wscan --inifile my-wini-config-file.ini --eventTime &lt;eventTime&gt; --outDir ./public_html/GravitySpy/Test/ --uniqueID --ID 123abc1234 --HDF5 --runML --pathToModel ../bin
 </pre></div>
 </div>
-<p>where <code class="docutils literal notranslate"><span class="pre">&lt;eventtime&gt;</span></code> is the GPS time stamp assosciated with an Omicron trigger or other time of known excess noise, and <code class="docutils literal notranslate"><span class="pre">./my-wini-config-file.ini</span></code> is the path of your configuration file. In the folder Production, is an example of an ini file.</p>
+<p>where <code class="docutils literal"><span class="pre">&lt;eventtime&gt;</span></code> is the GPS time stamp assosciated with an Omicron trigger or other time of known excess noise, and <code class="docutils literal"><span class="pre">./my-wini-config-file.ini</span></code> is the path of your configuration file. In the folder Production, is an example of an ini file.</p>
 <p>For a full list of command-line argument and options, run</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wscan --help
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ wscan --help
 </pre></div>
 </div>
 <p>For more details see <a class="reference internal" href="wscan/index.html#wscan"><span class="std std-ref">Running wscan on the command line</span></a>.</p>
@@ -207,12 +214,12 @@
 <h2>How to train a new model<a class="headerlink" href="#how-to-train-a-new-model" title="Permalink to this headline">¶</a></h2>
 <p>Another main product of this package is the command-line executable <cite>trainmodel</cite>, which serves as an easy wrapper function for training a new Convolutional Neural Net Model (CNN).</p>
 <p>To train a model:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nv">THEANO_FLAGS</span><span class="o">=</span><span class="nv">mode</span><span class="o">=</span>FAST_RUN,device<span class="o">=</span>cuda,floatX<span class="o">=</span>float32 trainmodel --path-to-trainingset &lt;path-to-trainingset&gt; --number-of-classes &lt;number-of-classes&gt;
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nv">THEANO_FLAGS</span><span class="o">=</span><span class="nv">mode</span><span class="o">=</span>FAST_RUN,device<span class="o">=</span>cuda,floatX<span class="o">=</span>float32 trainmodel --path-to-trainingset &lt;path-to-trainingset&gt; --number-of-classes &lt;number-of-classes&gt;
 </pre></div>
 </div>
-<p>where <code class="docutils literal notranslate"><span class="pre">&lt;path-to-trainingset&gt;</span></code> is a folder that has the structure <cite>“class”/”sampes”</cite> and <code class="docutils literal notranslate"><span class="pre">&lt;number-of-classes&gt;</span></code> is how many different classes there are.</p>
+<p>where <code class="docutils literal"><span class="pre">&lt;path-to-trainingset&gt;</span></code> is a folder that has the structure <cite>“class”/”sampes”</cite> and <code class="docutils literal"><span class="pre">&lt;number-of-classes&gt;</span></code> is how many different classes there are.</p>
 <p>For a full list of command-line argument and options, run</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ trainmodel --help
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ trainmodel --help
 </pre></div>
 </div>
 <p>For more details see <a class="reference internal" href="trainmodel/index.html#trainmodel"><span class="std std-ref">Running trainmodel on the command line</span></a>.</p>
@@ -230,8 +237,8 @@
 <li class="toctree-l1"><a class="reference internal" href="classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cluster/index.html">Clustering Gravity Spy Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wscan/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trainmodel/index.html">Running <code class="docutils literal"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
@@ -249,7 +256,9 @@
 
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -269,7 +278,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -287,8 +296,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0+25.g4998762.dirty',
-            LANGUAGE:'None',
+            VERSION:'0.1.0+27.g952f923.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -306,13 +314,14 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

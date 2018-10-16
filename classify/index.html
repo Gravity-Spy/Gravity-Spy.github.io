@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Classify a Trigger With Gravity Spy &mdash; GravitySpy 0.1.0+25.g4998762.dirty documentation</title>
+  <title>Classify a Trigger With Gravity Spy &mdash; GravitySpy 0.1.0+27.g952f923.dirty documentation</title>
   
 
   
@@ -25,20 +25,28 @@
   
 
   
+  
     <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/hveto-docs.css" type="text/css" />
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Classifying A Table of Events" href="../events/index.html" />
-    <link rel="prev" title="Installation" href="../install/index.html" /> 
+  
+
+  
+    <link rel="stylesheet" href="../_static/hveto-docs.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="GravitySpy 0.1.0+27.g952f923.dirty documentation" href="../index.html"/>
+        <link rel="next" title="Classifying A Table of Events" href="../events/index.html"/>
+        <link rel="prev" title="Installation" href="../install/index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -60,7 +68,7 @@
             
             
               <div class="version">
-                0.1.0+25.g4998762.dirty
+                0.1.0+27.g952f923.dirty
               </div>
             
           
@@ -96,8 +104,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cluster/index.html">Clustering Gravity Spy Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wscan/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trainmodel/index.html">Running <code class="docutils literal"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
@@ -111,7 +119,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">GravitySpy</a>
@@ -119,10 +127,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -170,7 +177,7 @@
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>Gravity Spy utilizes a trained convolutional nueral net (CNN)
 to classify excess noise events in gravitational wave (GW) detector data.
-Specifically, the CNN is trained on <code class="xref py py-mod docutils literal notranslate"><span class="pre">gwpy.timeseries.TimeSeries.q_transform</span></code>
+Specifically, the CNN is trained on <code class="xref py py-mod docutils literal"><span class="pre">gwpy.timeseries.TimeSeries.q_transform</span></code>
 of graviatational wave data which are a specialized form of spectrograms.</p>
 <p>Below we will show what these spectrograms look like and how to use <a class="reference internal" href="#classify"><span class="std std-ref">Classify a Trigger With Gravity Spy</span></a> to classify a
 known instance of excess noise in GW data.</p>
@@ -179,7 +186,7 @@ known instance of excess noise in GW data.</p>
 <h2>The excess noise event<a class="headerlink" href="#the-excess-noise-event" title="Permalink to this headline">¶</a></h2>
 <p>In the following we demonstrate an example of the <em>Scratchy</em> excess noise event. From here on out,
 we will refer to these excess noise events as <em>glitches</em>.</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">gwpy.timeseries</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">gwpy.timeseries</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
 
 <span class="gp">In [2]: </span><span class="kn">from</span> <span class="nn">gravityspy.classify</span> <span class="kn">import</span> <span class="n">classify</span>
 
@@ -193,9 +200,9 @@ we will refer to these excess noise events as <em>glitches</em>.</p>
 <span class="gp">   ...: </span>
 
 <span class="gp">In [6]: </span><span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-<span class="go">  1080Lines    1400Ripples  Air_Compressor ... ml_confidence     q_value     </span>
-<span class="go">------------- ------------- -------------- ... ------------- ----------------</span>
-<span class="go">4.4256126e-07 2.4700508e-09  1.6780694e-09 ...     0.9999064 5.65685424949238</span>
+<span class="go"> 1080Lines  1400Ripples Air_Compressor ... ml_label ml_confidence    q_value   </span>
+<span class="go">----------- ----------- -------------- ... -------- ------------- -------------</span>
+<span class="go">9.41278e-07 6.72757e-09      1.156e-08 ... Scratchy      0.999717 5.65685424949</span>
 </pre></div>
 </div>
 <div class="section" id="breaking-down-classify">
@@ -206,41 +213,41 @@ we will refer to these excess noise events as <em>glitches</em>.</p>
 <li>plot four different durations or <em>views</em> of the q_transform</li>
 <li>utilize the four <em>views</em> of the image to create a single <strong>multiview</strong> image to be passed to the CNN</li>
 </ul>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="kn">from</span> <span class="nn">gravityspy.utils</span> <span class="kn">import</span> <span class="n">utils</span>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="kn">from</span> <span class="nn">gravityspy.utils</span> <span class="kn">import</span> <span class="n">utils</span>
 
 <span class="gp">In [8]: </span><span class="n">config</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">GravitySpyConfigFile</span><span class="p">()</span>
 
 <span class="gp">In [9]: </span><span class="n">specsgrams</span><span class="p">,</span> <span class="n">q_value</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">make_q_scans</span><span class="p">(</span><span class="n">event_time</span><span class="o">=</span><span class="n">event_time</span><span class="p">,</span> <span class="n">timeseries</span><span class="o">=</span><span class="n">timeseries</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
 
 <span class="gp">In [10]: </span><span class="k">print</span><span class="p">(</span><span class="n">specsgrams</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">q_value</span><span class="p">)</span>
-<span class="go">Spectrogram([[0.42869811, 0.42869811, 0.28350745, ...,</span>
-<span class="go">              0.96240631, 0.96240631, 0.96240631],</span>
-<span class="go">             [0.37832283, 0.37832283, 0.23815371, ...,</span>
-<span class="go">              0.21052491, 0.21052491, 0.21052491],</span>
-<span class="go">             [0.33293522, 0.33293522, 0.19880182, ...,</span>
-<span class="go">              0.67535343, 0.67535343, 0.67535343],</span>
-<span class="go">             ...,</span>
-<span class="go">             [3.64622582, 3.64622582, 3.17572074, ...,</span>
-<span class="go">              0.067409  , 0.067409  , 0.067409  ],</span>
-<span class="go">             [3.65165053, 3.65165053, 3.20629217, ...,</span>
-<span class="go">              0.89817886, 0.89817886, 0.89817886],</span>
-<span class="go">             [3.65227352, 3.65227352, 3.23384896, ...,</span>
-<span class="go">              4.20301669, 4.20301669, 4.20301669]]</span>
-<span class="go">            unit: dimensionless,</span>
-<span class="go">            name: None,</span>
-<span class="go">            epoch: 1127700030.6279297,</span>
-<span class="go">            channel: None,</span>
-<span class="go">            x0: 1127700030.6279297 s,</span>
-<span class="go">            dx: 0.002 s,</span>
-<span class="go">            xindex: [1.12770003e+09 1.12770003e+09 1.12770003e+09 ... 1.12770003e+09</span>
-<span class="go">                     1.12770003e+09 1.12770003e+09] s,</span>
-<span class="go">            y0: 10.0 Hz,</span>
-<span class="go">            dy: 0.5 Hz,</span>
-<span class="go">            yindex: [  10.    10.5   11.  ... 2046.5 2047.  2047.5] Hz) 5.65685424949238</span>
+<span class="go">(&lt;Spectrogram([[ 0.62872391,  0.62872391,  0.33236706, ...,</span>
+<span class="go">                0.77925605,  0.77925605,  0.77925605],</span>
+<span class="go">              [ 0.58244376,  0.58244376,  0.29672182, ...,</span>
+<span class="go">                0.274742  ,  0.274742  ,  0.274742  ],</span>
+<span class="go">              [ 0.54079268,  0.54079268,  0.26722797, ...,</span>
+<span class="go">                1.29703917,  1.29703917,  1.29703917],</span>
+<span class="go">              ..., </span>
+<span class="go">              [ 3.42043208,  3.42043208,  3.03072497, ...,</span>
+<span class="go">                0.03701189,  0.03701189,  0.03701189],</span>
+<span class="go">              [ 3.44803694,  3.44803694,  3.07957551, ...,</span>
+<span class="go">                1.00338999,  1.00338999,  1.00338999],</span>
+<span class="go">              [ 3.47218412,  3.47218412,  3.12661063, ...,</span>
+<span class="go">                3.8507399 ,  3.8507399 ,  3.8507399 ]]</span>
+<span class="go">             unit=Unit(dimensionless),</span>
+<span class="go">             name=None,</span>
+<span class="go">             epoch=&lt;Time object: scale=&#39;utc&#39; format=&#39;gps&#39; value=1127700030.63&gt;,</span>
+<span class="go">             channel=None,</span>
+<span class="go">             x0=&lt;Quantity 1127700030.6279297 s&gt;,</span>
+<span class="go">             dx=&lt;Quantity 0.002 s&gt;,</span>
+<span class="go">             xindex=&lt;Index [  1.12770003e+09,  1.12770003e+09,  1.12770003e+09,...,</span>
+<span class="go">                              1.12770003e+09,  1.12770003e+09,  1.12770003e+09] s&gt;,</span>
+<span class="go">             y0=&lt;Quantity 10.0 Hz&gt;,</span>
+<span class="go">             dy=&lt;Quantity 0.5 Hz&gt;,</span>
+<span class="go">             yindex=&lt;Index [   10. ,   10.5,   11. ,...,  2046.5, 2047. , 2047.5] Hz&gt;)&gt;, 5.65685424949238)</span>
 </pre></div>
 </div>
 <p>Now we plot all 4 of the spectrograms as png</p>
-<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="kn">from</span> <span class="nn">gravityspy.plot</span> <span class="kn">import</span> <span class="n">plot_qtransform</span>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="gp">In [11]: </span><span class="kn">from</span> <span class="nn">gravityspy.plot</span> <span class="kn">import</span> <span class="n">plot_qtransform</span>
 
 <span class="gp">In [12]: </span><span class="n">plot_time_ranges</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plot_time_ranges</span>
 
@@ -256,17 +263,19 @@ we will refer to these excess noise events as <em>glitches</em>.</p>
 <span class="gp">   ....: </span>
 
 <span class="gp">In [16]: </span><span class="n">super_fig</span>
-<span class="gh">Out[16]: </span><span class="go">&lt;Plot size 2700x600 with 5 Axes&gt;</span>
+<span class="gh">Out[16]: </span><span class="go">&lt;gwpy.plot.plot.Plot at 0x11f2a8cd0&gt;</span>
 </pre></div>
 </div>
-<img alt="../_images/plot-scratchy-all-durations.png" src="../_images/plot-scratchy-all-durations.png" />
+<img alt="classify/../_build/html/_static/plot-scratchy-all-durations.png" src="classify/../_build/html/_static/plot-scratchy-all-durations.png" />
 </div>
 </div>
 </div>
 
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -288,7 +297,7 @@ we will refer to these excess noise events as <em>glitches</em>.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -306,8 +315,7 @@ we will refer to these excess noise events as <em>glitches</em>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0+25.g4998762.dirty',
-            LANGUAGE:'None',
+            VERSION:'0.1.0+27.g952f923.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -325,13 +333,14 @@ we will refer to these excess noise events as <em>glitches</em>.</p>
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

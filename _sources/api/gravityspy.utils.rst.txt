@@ -1,5 +1,5 @@
-gravityspy.utils package
-========================
+gravityspy\.utils package
+=========================
 
 Submodules
 ----------

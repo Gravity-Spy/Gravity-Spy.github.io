@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.ml.train_semantic_index &mdash; GravitySpy 0.1.0+25.g4998762.dirty documentation</title>
+  <title>gravityspy.ml.train_semantic_index &mdash; GravitySpy 0.1.0+27.g952f923.dirty documentation</title>
   
 
   
@@ -25,18 +25,27 @@
   
 
   
+  
     <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/hveto-docs.css" type="text/css" />
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/hveto-docs.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="GravitySpy 0.1.0+27.g952f923.dirty documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -58,7 +67,7 @@
             
             
               <div class="version">
-                0.1.0+25.g4998762.dirty
+                0.1.0+27.g952f923.dirty
               </div>
             
           
@@ -87,8 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cluster/index.html">Clustering Gravity Spy Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
@@ -102,7 +111,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">GravitySpy</a>
@@ -110,10 +119,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -143,6 +151,8 @@
     
       <li class="wy-breadcrumbs-aside">
         
+            
+        
       </li>
     
   </ul>
@@ -155,7 +165,8 @@
             
   <h1>Source code for gravityspy.ml.train_semantic_index</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">keras.backend</span> <span class="k">as</span> <span class="nn">K</span>
-<span class="kn">from</span> <span class="nn">.GS_utils</span> <span class="k">import</span> <span class="n">cosine_distance</span>
+<span class="n">K</span><span class="o">.</span><span class="n">set_image_data_format</span><span class="p">(</span><span class="s2">&quot;channels_first&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">GS_utils</span> <span class="k">import</span> <span class="n">cosine_distance</span>
 <span class="kn">from</span> <span class="nn">keras</span> <span class="k">import</span> <span class="n">regularizers</span>
 <span class="kn">from</span> <span class="nn">keras.applications.vgg16</span> <span class="k">import</span> <span class="n">VGG16</span><span class="p">,</span> <span class="n">preprocess_input</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">GlobalAveragePooling2D</span><span class="p">,</span> <span class="n">Lambda</span>
@@ -163,7 +174,79 @@
 <span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="k">import</span> <span class="n">RMSprop</span>
 
 <span class="kn">from</span> <span class="nn">gravityspy.utils</span> <span class="k">import</span> <span class="n">log</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<div class="viewcode-block" id="pickle_trainingset"><a class="viewcode-back" href="../../../api/gravityspy.ml.train_semantic_index.html#gravityspy.ml.train_semantic_index.pickle_trainingset">[docs]</a><span class="k">def</span> <span class="nf">pickle_trainingset</span><span class="p">(</span><span class="n">path_to_trainingset</span><span class="p">,</span>
+                       <span class="n">save_address</span><span class="o">=</span><span class="s1">&#39;pickleddata/trainingset.pkl&#39;</span><span class="p">,</span>
+                       <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pre-processes the training set images and save to pickle.</span>
+
+<span class="sd">    Parameters:</span>
+
+<span class="sd">        path_to_trainingset (str):</span>
+<span class="sd">            Path to trainingset where format of training set folder</span>
+<span class="sd">            is &quot;somedirectoryname&quot;/&quot;classname/&quot;images&quot;</span>
+
+<span class="sd">        save_address (str, optional):</span>
+<span class="sd">            Defaults to `pickleddata`</span>
+<span class="sd">            Path to folder you would like to save the pixelated training data</span>
+
+<span class="sd">        verbose (bool, optional):</span>
+<span class="sd">            Defaults to False</span>
+<span class="sd">            Extra verbosity</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">        A pickled `pandas.DataFrame`:</span>
+<span class="sd">            with rows of samples</span>
+<span class="sd">            and columns containing the pixelated 0.5, 1.0, 2.0,</span>
+<span class="sd">            and 4.0 duration images as well as a column with the True</span>
+<span class="sd">            Label and a column with an ID that uniquely identifies that sample</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="s1">&#39;Gravity Spy: Pickling &#39;</span>
+                        <span class="s1">&#39;Trainingset RGB&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">save_address</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;making... &#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">save_address</span><span class="p">))</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">save_address</span><span class="p">))</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path_to_trainingset</span><span class="p">))</span>
+    <span class="n">nb_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The number of classes are </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nb_classes</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The classes you are pickling are </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+          <span class="n">classes</span><span class="p">))</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">iclass</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Converting </span><span class="si">{0}</span><span class="s1"> into RGB info&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iclass</span><span class="p">))</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_to_trainingset</span><span class="p">,</span> <span class="n">iclass</span><span class="p">)))</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">imageidx</span> <span class="k">for</span> <span class="n">imageidx</span> <span class="ow">in</span> <span class="n">images</span> \
+                  <span class="k">if</span> <span class="s1">&#39;L1_&#39;</span> <span class="ow">in</span> <span class="n">imageidx</span> <span class="ow">or</span> <span class="s1">&#39;H1_&#39;</span> <span class="ow">in</span> <span class="n">imageidx</span> <span class="ow">or</span> <span class="s1">&#39;V1_&#39;</span> <span class="ow">in</span> <span class="n">imageidx</span><span class="p">]</span>
+        <span class="c1"># Group each sample into sets of 4 different durations</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">images</span><span class="p">),)</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">isample</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+            <span class="n">tmpDF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">idur</span> <span class="ow">in</span> <span class="n">isample</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Converting </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idur</span><span class="p">))</span>
+                <span class="n">image_data_r</span><span class="p">,</span> <span class="n">image_data_g</span><span class="p">,</span> <span class="n">image_data_b</span>  <span class="o">=</span> <span class="n">read_image</span><span class="o">.</span><span class="n">read_rgb</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_to_trainingset</span><span class="p">,</span>
+                                                              <span class="n">iclass</span><span class="p">,</span> <span class="n">idur</span><span class="p">),</span>
+                                                              <span class="n">resolution</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+                <span class="n">information_on_image</span> <span class="o">=</span> <span class="n">idur</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+                <span class="n">tmpDF</span><span class="p">[</span><span class="n">information_on_image</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">image_data_r</span><span class="p">,</span> <span class="n">image_data_g</span><span class="p">,</span> <span class="n">image_data_b</span><span class="p">]]</span>
+            <span class="n">tmpDF</span><span class="p">[</span><span class="s1">&#39;uniqueID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">information_on_image</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">tmpDF</span><span class="p">[</span><span class="s1">&#39;Label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iclass</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmpDF</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finished converting </span><span class="si">{0}</span><span class="s1"> into b/w info&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iclass</span><span class="p">))</span>
+
+    <span class="n">picklepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_address</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Saving pickled data to </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">picklepath</span><span class="p">))</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">picklepath</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
 
 <div class="viewcode-block" id="make_model"><a class="viewcode-back" href="../../../api/gravityspy.ml.train_semantic_index.html#gravityspy.ml.train_semantic_index.make_model">[docs]</a><span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">model_folder</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
                <span class="n">unknown_classes_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Whistle&#39;</span><span class="p">,</span> <span class="s1">&#39;Scratchy&#39;</span><span class="p">],</span>
@@ -222,59 +305,78 @@
                         <span class="s1">&#39;Semantic Index&#39;</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Using random seed </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">random_seed</span><span class="p">))</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_seed</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
+    <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_seed</span><span class="p">)</span>  <span class="c1"># for reproducibility</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-
-    <span class="n">image_dataDF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;You data set contained </span><span class="si">{0}</span><span class="s1"> samples&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image_dataDF</span><span class="p">)))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;You data set contained </span><span class="si">{0}</span><span class="s1"> samples&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
 
     <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;The size of the images being trained </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image_size</span><span class="p">))</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Selecting images to be considered in the known &#39;</span>
-                <span class="s1">&#39;domain of samples which are </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image_dataDF</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
-    <span class="n">knownDF</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">image_dataDF</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
-                                          <span class="n">unknown_classes_labels</span><span class="p">)]</span>
+    <span class="n">known_df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">data</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">unknown_classes_labels</span><span class="p">)]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Given unknown images here is what is to be considered in &#39;</span>
+                <span class="s1">&#39;the known &#39;</span>
+                <span class="s1">&#39;domain of samples which are </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">knwon_df</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Selecting images to be considered in the unknown &#39;</span>
                 <span class="s1">&#39;domain of samples which are </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unknown_classes_labels</span><span class="p">))</span>
-    <span class="n">unknownDF</span> <span class="o">=</span> <span class="n">image_dataDF</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">image_dataDF</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">unknown_classes_labels</span><span class="p">)]</span>
+    <span class="n">unknown_df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">Label</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">unknown_classes_labels</span><span class="p">)]</span>
 
-    <span class="n">known_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">knownDF</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+    <span class="n">known_x_1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">known_df</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
                                                      <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">unknownn_x_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknownDF</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-
-    <span class="n">known_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">knownDF</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">unknownn_x_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknownDF</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+    <span class="n">unknownn_x_1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknown_df</span><span class="p">[</span><span class="s1">&#39;0.5.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
                                                      <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
 
-    <span class="n">known_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">knownDF</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+    <span class="n">known_x_2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">known_df</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
                                                      <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">unknown_x_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknownDF</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+    <span class="n">unknownn_x_2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknown_df</span><span class="p">[</span><span class="s1">&#39;1.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
                                                      <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
 
-    <span class="n">known_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">knownDF</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+    <span class="n">known_x_3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">known_df</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
                                                      <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
-    <span class="n">unknown_x_4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknownDF</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+    <span class="n">unknown_x_3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknown_df</span><span class="p">[</span><span class="s1">&#39;2.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
                                                      <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">known_x_4</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">known_df</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+    <span class="n">unknown_x_4</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">unknown_df</span><span class="p">[</span><span class="s1">&#39;4.0.png&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                                                     <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)</span>
+
+    <span class="n">test_set_unlabelled_x_1</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;1.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">test_set_unlabelled_x_2</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;2.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">test_set_unlabelled_x_3</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;4.0.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">test_set_unlabelled_x_4</span> <span class="o">=</span> <span class="n">image_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;0.5.png&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">test_set_unlabelled_x_1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">test_set_unlabelled_x_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)),</span>
+                                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">test_set_unlabelled_x_2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)),</span>
+                                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">test_set_unlabelled_x_3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)),</span>
+                                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">test_set_unlabelled_x_4</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">test_set_unlabelled_x_4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">),</span>
+                                              <span class="n">test_set_unlabelled_x_4</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">)),</span>
+                                             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">multi_view</span><span class="p">:</span>
         <span class="n">known_classes</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">known_set_x_1</span><span class="p">,</span> <span class="n">known_set_x_2</span><span class="p">,</span>
-                            <span class="n">known_set_x_3</span><span class="p">,</span> <span class="n">known_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+                            <span class="n">known_set_x_3</span><span class="p">,</span> <span class="n">known_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
         <span class="n">unknown_classes</span> <span class="o">=</span> <span class="n">concatenate_views</span><span class="p">(</span><span class="n">unknown_set_x_1</span><span class="p">,</span> <span class="n">unknown_set_x_2</span><span class="p">,</span>
-                            <span class="n">unknown_set_x_3</span><span class="p">,</span> <span class="n">unknown_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">])</span>
+                            <span class="n">unknown_set_x_3</span><span class="p">,</span> <span class="n">unknown_set_x_4</span><span class="p">,</span> <span class="p">[</span><span class="n">img_rows</span><span class="p">,</span> <span class="n">img_cols</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># We are only using one duration for the similarity search</span>
         <span class="n">known_classes_image_array</span> <span class="o">=</span> <span class="n">known_set_x_2</span>
         <span class="n">unknown_classes_image_array</span> <span class="o">=</span> <span class="n">unknown_set_x_2</span>
 
     <span class="c1"># Generate the Binary pairs for training.</span>
-    <span class="n">train_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">data_</span><span class="p">,</span> <span class="n">known_classes_indices_for_metric_learning</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
-    <span class="n">valid_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">data_x_2</span><span class="p">,</span> <span class="n">unknown_classes_indices_for_clustering</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
+    <span class="n">train_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">known_classes</span><span class="p">,</span> <span class="n">known_classes_indices_for_metric_learning</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
+    <span class="n">valid_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">unknown_classes</span><span class="p">,</span> <span class="n">unknown_classes_indices_for_clustering</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
 
     <span class="c1"># Create the model</span>
     <span class="n">vgg16</span> <span class="o">=</span> <span class="n">VGG16</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="s1">&#39;imagenet&#39;</span><span class="p">,</span> <span class="n">include_top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -330,47 +432,25 @@
 
     <span class="n">train_negative_factor</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">test_negative_factor</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">train_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">data_</span><span class="p">,</span> <span class="n">known_classes_indices_for_metric_learning</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
-    <span class="n">valid_generator</span> <span class="o">=</span> <span class="n">create_pairs3_gen</span><span class="p">(</span><span class="n">data_x_2</span><span class="p">,</span> <span class="n">unknown_classes_indices_for_clustering</span><span class="p">,</span> <span class="n">size_of_batch</span><span class="p">)</span>
     <span class="c1"># the samples from data_x_2 should be separated for test and valid in future</span>
 
     <span class="n">train_batch_num</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_x_1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">train_negative_factor</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">size_of_batch</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;train batch num </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_batch_num</span><span class="p">))</span>
     <span class="n">valid_batch_num</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_x_2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">test_negative_factor</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">size_of_batch</span>
 
-    <span class="c1">#similarity_model.fit_generator(train_generator, validation_data=valid_generator, verbose=2,</span>
-     <span class="c1">#                   steps_per_epoch=train_batch_num, validation_steps=valid_batch_num, epochs=nb_epoch)</span>
-    <span class="c1">#train_batch_num = 10</span>
-    <span class="c1">#valid_batch_num = 10</span>
     <span class="n">similarity_model</span><span class="o">.</span><span class="n">fit_generator</span><span class="p">(</span><span class="n">train_generator</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="n">valid_generator</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                         <span class="n">steps_per_epoch</span><span class="o">=</span><span class="n">train_batch_num</span><span class="p">,</span> <span class="n">validation_steps</span><span class="o">=</span><span class="n">valid_batch_num</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">nb_epoch</span><span class="p">)</span>
 
     <span class="c1"># validation</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;validating the model&#39;</span><span class="p">)</span>
-    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;validating the model ...&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-
-    <span class="sd">&#39;&#39;&#39;known_classes_negative_factor = 1</span>
-<span class="sd">    unknown_classes_negative_factor = 1</span>
-<span class="sd">    known_classes_generator = create_pairs3_gen(data_x_1, known_classes_indices_for_metric_learning, size_of_batch)</span>
-<span class="sd">    unknown_classes_generator = create_pairs3_gen(data_x_2, unknown_classes_indices_for_clustering, size_of_batch)</span>
-<span class="sd">    known_classes_batch_num = (len(data_x_1) * (known_classes_negative_factor + 1)) / size_of_batch</span>
-<span class="sd">    unknown_classes_batch_num = (len(data_x_2) * (unknown_classes_negative_factor + 1)) / size_of_batch&#39;&#39;&#39;</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Known classes&#39;</span><span class="p">)</span>
-    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;known classes&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="c1">#res1 = similarity_model.evaluate_generator(known_classes_generator, known_classes_batch_num)</span>
     <span class="n">res1</span> <span class="o">=</span> <span class="n">similarity_model</span><span class="o">.</span><span class="n">evaluate_generator</span><span class="p">(</span><span class="n">train_generator</span><span class="p">,</span> <span class="n">train_batch_num</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">res1</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">res1</span><span class="p">:</span>
-            <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2">, &quot;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39; unknown classes&#39;</span><span class="p">)</span>
-    <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;unknown classes&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="c1">#res2 = similarity_model.evaluate_generator(unknown_classes_generator, unknown_classes_batch_num)</span>
     <span class="n">res2</span> <span class="o">=</span> <span class="n">similarity_model</span><span class="o">.</span><span class="n">evaluate_generator</span><span class="p">(</span><span class="n">valid_generator</span><span class="p">,</span> <span class="n">valid_batch_num</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">res2</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">res2</span><span class="p">:</span>
-            <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2">, &quot;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
 
     <span class="n">similarity_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">)</span>
     <span class="n">similarity_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">join</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">model_adr</span><span class="p">,</span> <span class="s1">&#39;similarity_metric_model.h5&#39;</span><span class="p">))</span>
@@ -378,7 +458,9 @@
 </pre></div>
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -391,7 +473,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -409,8 +491,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+25.g4998762.dirty',
-            LANGUAGE:'None',
+            VERSION:'0.1.0+27.g952f923.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -428,13 +509,14 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
   
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

@@ -1,5 +1,5 @@
-gravityspy.table package
-========================
+gravityspy\.table package
+=========================
 
 Submodules
 ----------

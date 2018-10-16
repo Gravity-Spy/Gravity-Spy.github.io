@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gravityspy.table.events &mdash; GravitySpy 0.1.0+25.g4998762.dirty documentation</title>
+  <title>gravityspy.table.events &mdash; GravitySpy 0.1.0+27.g952f923.dirty documentation</title>
   
 
   
@@ -25,18 +25,27 @@
   
 
   
+  
     <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/hveto-docs.css" type="text/css" />
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/hveto-docs.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="GravitySpy 0.1.0+27.g952f923.dirty documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -58,7 +67,7 @@
             
             
               <div class="version">
-                0.1.0+25.g4998762.dirty
+                0.1.0+27.g952f923.dirty
               </div>
             
           
@@ -87,8 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../classify/index.html">Classify a Trigger With Gravity Spy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events/index.html">Classifying A Table of Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cluster/index.html">Clustering Gravity Spy Events</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal notranslate"><span class="pre">wscan</span></code> on the command line</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal notranslate"><span class="pre">trainmodel</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../wscan/index.html">Running <code class="docutils literal"><span class="pre">wscan</span></code> on the command line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../trainmodel/index.html">Running <code class="docutils literal"><span class="pre">trainmodel</span></code> on the command line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Querying Gravity Spy data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../DBs/index.html">The many DBs of Gravity Spy</a></li>
 </ul>
@@ -102,7 +111,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">GravitySpy</a>
@@ -110,10 +119,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -142,6 +150,8 @@
     
     
       <li class="wy-breadcrumbs-aside">
+        
+            
         
       </li>
     
@@ -254,7 +264,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            `Events` table</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;event_time&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="s1">&#39;event_time&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This method only works if you have defined &quot;</span>
                              <span class="s2">&quot;a column event_time for your &quot;</span>
                              <span class="s2">&quot;Event Trigger Generator.&quot;</span><span class="p">)</span>
@@ -268,8 +278,8 @@
         <span class="n">frametype</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;frametype&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="c1"># make a list of event times</span>
-        <span class="n">inputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;event_time&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ifo&#39;</span><span class="p">],</span>
-                     <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;gravityspy_id&#39;</span><span class="p">]))</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;event_time&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ifo&#39;</span><span class="p">],</span>
+                     <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;gravityspy_id&#39;</span><span class="p">])</span>
 
         <span class="n">inputs</span> <span class="o">=</span> <span class="p">((</span><span class="n">etime</span><span class="p">,</span> <span class="n">ifo</span><span class="p">,</span> <span class="n">gid</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">plot_directory</span><span class="p">,</span>
                    <span class="n">timeseries</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">,</span> <span class="n">frametype</span><span class="p">)</span>
@@ -423,7 +433,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            `Events` table with columns containing new scores</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">elem</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Filename1&#39;</span><span class="p">,</span> <span class="s1">&#39;Filename2&#39;</span><span class="p">,</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">elem</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Filename1&#39;</span><span class="p">,</span> <span class="s1">&#39;Filename2&#39;</span><span class="p">,</span>
                                                     <span class="s1">&#39;Filename3&#39;</span><span class="p">,</span> <span class="s1">&#39;Filename4&#39;</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This method only works if the file paths &quot;</span>
                              <span class="s2">&quot;of the images of the images are known.&quot;</span><span class="p">)</span>
@@ -447,7 +457,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            `Events` table with columns workflow and subjectset</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;ml_confidence&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">or</span> <span class="s1">&#39;ml_label&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="s1">&#39;ml_confidence&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;ml_label&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This method only works if the confidence and label &quot;</span>
                              <span class="s2">&quot;of the image in known.&quot;</span><span class="p">)</span>
         <span class="n">gspyproject</span> <span class="o">=</span> <span class="n">GravitySpyProject</span><span class="o">.</span><span class="n">load_project_from_cache</span><span class="p">(</span>
@@ -459,8 +469,8 @@
         <span class="n">level_of_images</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">subjectset_of_images</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">confidence</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ml_label&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ml_confidence&#39;</span><span class="p">]):</span>
-            <span class="k">for</span> <span class="n">iworkflow</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;1610&#39;</span><span class="p">,</span> <span class="s1">&#39;1934&#39;</span><span class="p">,</span> <span class="s1">&#39;1935&#39;</span><span class="p">,</span> <span class="s1">&#39;2360&#39;</span><span class="p">,</span> <span class="s1">&#39;2117&#39;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">workflows_for_each_class</span><span class="p">[</span><span class="n">iworkflow</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">iworkflow</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;1610&#39;</span><span class="p">,</span> <span class="s1">&#39;1934&#39;</span><span class="p">,</span> <span class="s1">&#39;1935&#39;</span><span class="p">,</span> <span class="s1">&#39;7765&#39;</span><span class="p">,</span> <span class="s1">&#39;7766&#39;</span><span class="p">,</span> <span class="s1">&#39;7767&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">workflows_for_each_class</span><span class="p">[</span><span class="n">iworkflow</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                      <span class="k">if</span> <span class="n">workflows_for_each_class</span><span class="p">[</span><span class="n">iworkflow</span><span class="p">][</span><span class="n">label</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> \
                             <span class="n">confidence</span> <span class="o">&lt;=</span> \
                                  <span class="n">workflows_for_each_class</span><span class="p">[</span><span class="n">iworkflow</span><span class="p">][</span><span class="n">label</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
@@ -694,7 +704,9 @@
 </pre></div>
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -707,7 +719,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -725,8 +737,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.0+25.g4998762.dirty',
-            LANGUAGE:'None',
+            VERSION:'0.1.0+27.g952f923.dirty',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -744,13 +755,14 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
   
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

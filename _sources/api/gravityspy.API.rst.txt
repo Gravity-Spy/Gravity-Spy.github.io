@@ -1,5 +1,5 @@
-gravityspy.api package
-======================
+gravityspy\.api package
+=======================
 
 Submodules
 ----------
